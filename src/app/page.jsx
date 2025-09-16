@@ -31,7 +31,7 @@ export default function Home() {
           </div>
         </div>
         <div className="flex flex-row-reverse md:mt-50 mt-25 md:text-3xl   ">
-          <div className="pr-10 2xl:pr-0 flex lg:flex-col  items-center justify-center  md:gap-10 gap-4  mx-auto md:mt-10 lg:mt-0 lg:mx-0">
+          <div className="md:pr-10 2xl:pr-0 flex lg:flex-col  items-center justify-center  md:gap-10 gap-4  mx-auto md:mt-10 lg:mt-0 lg:mx-0">
             <button className="bg-[#fd5747] text-white md:px-5 md:py-2 p-2 rounded-full flex items-center gap-2">
               {" "}
               TRY FOR FREE{" "}
