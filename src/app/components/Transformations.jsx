@@ -70,9 +70,9 @@ export default function Transformations() {
         >
           {clientReviews.map((item) => (
             <SwiperSlide key={item.id}>
-              <div className="flex px-30 flex-col lg:flex-row items-center justify-center gap-8 p-8">
+              <div className="flex lg:px-30 flex-col lg:flex-row items-center  justify-center gap-8 p-8">
                 {/* Text Review Section - 50% width (Left Side) */}
-                <div className="w-full lg:w-1/2 flex flex-col justify-center pt-10 lg:pt-0">
+                <div className="w-full lg:w-1/2 flex flex-col justify-center  pt-10 lg:pt-0">
                   <div className="text-left p-10 rounded-4xl shadow-2xl relative bg-black/20  ">
                   
                     <p className="text-white text-lg leading-relaxed italic">
@@ -116,10 +116,10 @@ export default function Transformations() {
         </Swiper>
 
           {/* Custom Navigation Buttons */}
-          <div className="custom-prev absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-red-500 hover:bg-red-500 text-black w-12 h-12 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 border-4 border-white shadow-lg hover:scale-110">
+          <div className="custom-prev hidden  absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-red-500 hover:bg-red-500 text-black w-12 h-12 rounded-full lg:flex items-center justify-center cursor-pointer transition-all duration-300 border-4 border-white shadow-lg hover:scale-110">
             <FaArrowLeft className="text-lg" />
           </div>
-          <div className="custom-next absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-red-500 hover:bg-red-500 text-w w-12 h-12 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 border-4 border-white shadow-lg hover:scale-110">
+          <div className="custom-next absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-red-500 hover:bg-red-500 text-w w-12 h-12 rounded-full hidden lg:flex items-center justify-center cursor-pointer transition-all duration-300 border-4 border-white shadow-lg hover:scale-110">
             <FaArrowRight className="text-lg" />
           </div>
         </div>
