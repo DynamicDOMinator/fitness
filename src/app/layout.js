@@ -20,7 +20,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className="
-      bg-[#1a1c21] max-w-7xl mx-auto">{children}</body>
+      bg-[#1a1c21] max-w-[1600px] mx-auto">{children}</body>
     </html>
   );
 }
