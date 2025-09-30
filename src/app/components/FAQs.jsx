@@ -34,11 +34,11 @@ export default function FAQs() {
   return (
     <div className="max-w-6xl mx-auto p-6 mt-20">
       <h2 className="text-4xl font-bold text-center text-red-500 mb-8">Frequently Asked Questions</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+      <div className="flex flex-col gap-5">
         {faqs.map((faq) => (
           <div
             key={faq.id}
-            className={`backdrop-blur-md bg-white/10 border-2 border-red-500 rounded-3xl transition-all duration-300 ${
+            className={`bg-gradient-to-r from-blaack to-red-700  border-2 border-white  rounded-3xl transition-all duration-300 hover:from-red-500 hover:via-red-700 hover:to-black/90 ${
               openFAQ === faq.id ? 'shadow-lg shadow-red-500/20' : ''
             } flex flex-col`}
           >
@@ -46,9 +46,9 @@ export default function FAQs() {
               className="p-6 cursor-pointer flex items-center justify-between"
               onClick={() => toggleFAQ(faq.id)}
             >
-              <h6 className="text-red-500 text-xl font-bold pr-4">{faq.question}</h6>
+              <h6 className="text-white text-xl font-bold pr-4">{faq.question}</h6>
               <button
-                className="flex-shrink-0 w-8 h-8 rounded-full border-2 border-red-500 flex items-center justify-center text-red-500 font-bold text-xl transition-all duration-300"
+                className="flex-shrink-0 w-8 h-8 rounded-full border-2 border-white flex items-center justify-center text-white font-bold text-xl transition-all duration-300"
               >
                 {openFAQ === faq.id ? '−' : '+'}
               </button>
