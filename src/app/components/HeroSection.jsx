@@ -7,8 +7,8 @@ export default function HeroSection() {
   return (
     <div>
       <div
-        className="w-full h-full bg-gradient-to-r from-red-700 to-gray-700
-      opacity-70 absolute rounded-br-full top-0 -left-30  "
+        className="w-[100vw] h-full bg-gradient-to-r from-red-700 to-gray-700
+      opacity-70 absolute rounded-br-[100%] top-0 right-40     "
       ></div>
       <div className="hero relative ">
         <div className="md:pt-50 pt-30 ">
@@ -37,20 +37,12 @@ export default function HeroSection() {
               </h2>
             </div>
           </div>
-        
 
-
-
-   <video 
-              
-                className="w-1/2 mt-30 mx-auto rounded-3xl shadow-[#fd5747] outline-8 outline-[#fd5747]  shadow-2xl h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] xl:h-[700px] object-cover "
-                src="/vid1.webm"
-               controls
-            
-               
-              />
-
-
+          <video
+            className="w-1/2 mt-30 mx-auto rounded-3xl shadow-[#fd5747] outline-8 outline-[#fd5747]  shadow-2xl h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] xl:h-[700px] object-cover "
+            src="/vid1.webm"
+            controls
+          />
         </div>
 
         <div className="backdrop-blur-xl bg-black/20  bg-gradient-to-br from-[#fd5747]/10 to-blue-700/10">
