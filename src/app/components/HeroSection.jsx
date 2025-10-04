@@ -62,6 +62,7 @@ export default function HeroSection() {
 
             <div className="flex items-center gap-5">
               <CgGym className="text-5xl lg:text-9xl text-[#fd5747]" />
+
               <div className="border-b-4 md:border-b-0 md:border-r-4 border-[#fd5747] pb-6 md:pb-0 md:pr-7">
                 <h2 className="lg:text-3xl text-xl text-[#fd5747]">
                   Results-Driven Programs{" "}

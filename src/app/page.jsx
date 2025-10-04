@@ -7,12 +7,14 @@ import Transformations from "@/app/components/Transformations";
 import Journey from "@/app/components/Journey";
 import FAQs from "@/app/components/FAQs";
 import Pricing from "@/app/components/Pricing";
+import SecondService from "@/app/components/SecondService";
 export default function Home() {
   return (
     <div>
       <HeroSection />
       <Services />
       <Testimonials />
+      <SecondService />
       <Experiences />
       <Transformations />
       <Journey />
