@@ -16,9 +16,9 @@ export default function Home() {
       <Testimonials />
  
       <Experiences />
+      <Pricing />
       <Transformations />
       <Journey />
-      <Pricing />
       <FAQs />
     </div>
   );
