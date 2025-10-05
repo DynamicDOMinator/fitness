@@ -84,6 +84,11 @@ export default function Testimonials() {
   return (
     <div className="flex items-center justify-center p-4 md:p-8 lg:p-12 md:mt-96 mt-80 lg:mt-0">
       <div className="relative max-w-7xl w-full">
+        {/* Heading */}
+        <h5 className="text-6xl font-bold text-center mb-12 animated-gradient-text">
+          HEAR IT FROM THEM
+        </h5>
+        
         {/* Grid container for 2 videos */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
           {/* First Video */}
@@ -293,6 +298,38 @@ export default function Testimonials() {
           </div>
         </div>
       </div>
+      
+      {/* Custom styles for animated gradient text */}
+      <style jsx>{`
+        .animated-gradient-text {
+          background: linear-gradient(
+            45deg,
+            #ff6b6b,
+            #ee5a24,
+            #ff3838,
+            #c44569,
+            #f8b500,
+            #ff6b6b
+          );
+          background-size: 300% 300%;
+          background-clip: text;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          animation: gradientShift 7s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+      `}</style>
     </div>
   );
 }
