@@ -181,6 +181,12 @@ export default function Testimonials() {
 
             {/* Bottom accent line */}
             <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1/2 h-0.5 bg-gradient-to-r from-transparent via-red-500/60 to-transparent"></div>
+            
+            {/* Testimonial Information */}
+            <div className="mt-6 text-center">
+              <h3 className="text-xl md:text-2xl font-bold text-white mb-2">Seif El-Masry</h3>
+              <p className="text-red-400 text-lg md:text-xl font-medium">Alex, Egypt</p>
+            </div>
           </div>
 
           {/* Second Video */}
@@ -278,6 +284,12 @@ export default function Testimonials() {
 
             {/* Bottom accent line */}
             <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1/2 h-0.5 bg-gradient-to-r from-transparent via-red-500/60 to-transparent"></div>
+            
+            {/* Testimonial Information */}
+            <div className="mt-6 text-center">
+              <h3 className="text-xl md:text-2xl font-bold text-white mb-2">Ahmed Farag</h3>
+              <p className="text-red-400 text-lg md:text-xl font-medium">Texas, US</p>
+            </div>
           </div>
         </div>
       </div>
