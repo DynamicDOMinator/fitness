@@ -53,24 +53,24 @@ export default function HeroSection() {
         <div className="absolute top-[50px] right-0 2xl:w-[650px] rounded-full 2xl:h-[450px] w-[500px] h-[300px] bg-[#fd5747] opacity-40 blur-[100px] z-[1] pointer-events-none"></div> */}
 
           <div className="flex items-center justify-center relative z-[10]   ">
-            <div className="lg:text-8xl md:text-6xl text-4xl  ">
-              <h1 className="text-white  font-bold">
-                SCULT{" "}
-                <span className="bg-gradient-to-r from-[#fd5747] to-blue-700  bg-clip-text text-transparent">
-                  {" "}
-                  YOUR{" "}
-                </span>{" "}
-                BODY,
+            <div className="lg:text-8xl md:text-6xl text-4xl text-center">
+              <h1 className="text-white font-bold">
+                Real fitness for{" "}
+                <span className="bg-gradient-to-r from-[#fd5747] to-blue-700 bg-clip-text text-transparent">
+                  real life
+                </span>
               </h1>
 
-              <h2 className="text-white  font-bold pt-3">
-                ELEVATE{" "}
-                <span className="bg-gradient-to-r from-[#fd5747] to-blue-700  bg-clip-text text-transparent">
-                  {" "}
-                  YOUR{" "}
-                </span>{" "}
-                SPIRIT
+              <h2 className="text-white font-bold pt-3">
+                no extremes, just{" "}
+                <span className="bg-gradient-to-r from-[#fd5747] to-blue-700 bg-clip-text text-transparent">
+                  results.
+                </span>
               </h2>
+              
+              <p className="text-white text-lg md:text-xl lg:text-2xl font-normal mt-6 max-w-4xl mx-auto leading-relaxed">
+                Fitness should improve your quality of life. Our Exercise Programs are tailored to fit your current lifestyle and help you make better choices regarding your health– no crash-diets, no unrealistic 2 hours workouts
+              </p>
             </div>
           </div>
 

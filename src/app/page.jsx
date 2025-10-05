@@ -1,3 +1,4 @@
+import Header from "@/app/components/Header";
 import HeroSection from "@/app/components/HeroSection";
 import Services from "@/app/components/Experiences";
 import Experiences from "@/app/components/Services";
@@ -10,14 +11,31 @@ import Pricing from "@/app/components/Pricing";
 export default function Home() {
   return (
     <div>
-      <HeroSection />
-      <Services />
-      <Testimonials />
-      <Experiences />
-      <Pricing />
-      <Transformations />
-      <Journey />
-      <FAQs />
+      <Header />
+      <section id="home">
+        <HeroSection />
+      </section>
+      <section id="services">
+        <Services />
+      </section>
+      <section id="testimonials">
+        <Testimonials />
+      </section>
+      <section id="experiences">
+        <Experiences />
+      </section>
+      <section id="pricing">
+        <Pricing />
+      </section>
+      <section id="transformations">
+        <Transformations />
+      </section>
+      <section id="journey">
+        <Journey />
+      </section>
+      <section id="faqs">
+        <FAQs />
+      </section>
     </div>
   );
 }
