@@ -82,7 +82,7 @@ export default function Testimonials() {
   };
 
   return (
-    <div className="flex items-center justify-center p-4 md:p-8 lg:p-12 md:mt-96 mt-80 lg:mt-0">
+    <div className="flex items-center justify-center p-4 md:p-8 lg:p-12 md:mt-96  lg:mt-0">
       <div className="relative max-w-7xl w-full">
         {/* Heading */}
         <h5 className="text-6xl font-bold text-center mb-12 animated-gradient-text">
@@ -137,10 +137,18 @@ export default function Testimonials() {
                   ref={videoRef1}
                   className="w-full h-[250px] sm:h-[300px] md:h-[350px] lg:h-[400px] xl:h-[450px] object-cover transition-all duration-700"
                   src="/vid1.webm"
+                  poster="/sport.png"
+                  preload="metadata"
+                  loading="lazy"
+                  muted
+                  playsInline
                   onPlay={() => handleVideoPlay(1)}
                   onPause={() => handleVideoPause(1)}
                   onEnded={() => handleVideoEnded(1)}
                   onClick={() => handleVideoClick(1)}
+                  onLoadStart={() => console.log('Testimonials video 1 loading started')}
+                  onCanPlay={() => console.log('Testimonials video 1 can start playing')}
+                  onError={(e) => console.error('Testimonials video 1 error:', e)}
                   style={{
                     filter: isPlaying1 ? 'none' : 'brightness(0.8) contrast(1.1)',
                   }}
@@ -240,10 +248,18 @@ export default function Testimonials() {
                     ref={videoRef2}
                     className="w-full h-[250px] sm:h-[300px] md:h-[350px] lg:h-[400px] xl:h-[450px] object-cover transition-all duration-700"
                     src="/vid1.webm"
+                    poster="/sport.png"
+                    preload="metadata"
+                    loading="lazy"
+                    muted
+                    playsInline
                     onPlay={() => handleVideoPlay(2)}
                     onPause={() => handleVideoPause(2)}
                     onEnded={() => handleVideoEnded(2)}
                     onClick={() => handleVideoClick(2)}
+                    onLoadStart={() => console.log('Testimonials video 2 loading started')}
+                    onCanPlay={() => console.log('Testimonials video 2 can start playing')}
+                    onError={(e) => console.error('Testimonials video 2 error:', e)}
                     style={{
                       filter: isPlaying2 ? 'none' : 'brightness(0.8) contrast(1.1)',
                     }}

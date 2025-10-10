@@ -43,8 +43,8 @@ export default function HeroSection() {
   return (
     <div>
       <div
-        className="w-[100vw] h-full bg-gradient-to-r from-red-700 to-gray-700
-      opacity-70 absolute rounded-br-[100%] top-0 right-40     "
+        className="w-[100vw] md:h-full h-[40%] bg-gradient-to-r from-red-700 to-gray-700
+      opacity-70 absolute md:rounded-br-[100%] rounded-br-[100%] top-0 md:right-40     "
       ></div>
       <div className="hero relative ">
         <div className="md:pt-50 pt-30 ">
@@ -54,41 +54,47 @@ export default function HeroSection() {
 
           <div className="flex items-center justify-center relative z-[10]   ">
             <div className="lg:text-8xl md:text-6xl text-4xl text-center">
-              <h1 className="text-white font-bold">
+              <h1 className="text-white font-bold p-2 md:p-0">
                 Real fitness for{" "}
                 <span className="bg-gradient-to-r from-[#fd5747] to-blue-700 bg-clip-text text-transparent">
                   real life
                 </span>
               </h1>
 
-              <h2 className="text-white font-bold pt-3">
+              <h2 className="text-white font-bold pt-3 p-2 md:p-0">
                 no extremes, just{" "}
                 <span className="bg-gradient-to-r from-[#fd5747] to-blue-700 bg-clip-text text-transparent">
                   results.
                 </span>
               </h2>
               
-              <p className="text-white text-lg md:text-xl lg:text-2xl font-normal mt-6 max-w-4xl mx-auto leading-relaxed">
+              <p className="text-white p-3 md:p-0 text-lg md:text-xl lg:text-2xl font-normal mt-6 max-w-4xl mx-auto leading-relaxed">
                 Fitness should improve your quality of life. Our Exercise Programs are tailored to fit your current lifestyle and help you make better choices regarding your health– no crash-diets, no unrealistic 2 hours workouts
               </p>
             </div>
           </div>
 
           <div 
-            className="w-1/2 mt-30 mx-auto relative rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(253,87,71,0.8)]"
+            className="md:w-1/2 mx-10 md:mt-30 mt-10 md:mx-auto relative rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(253,87,71,0.8)]"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
             <video
               ref={videoRef}
-              className="w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] xl:h-[700px] object-cover"
+              className="w-full  h-[350px] sm:h-[400px] md:h-[500px] lg:h-[600px] xl:h-[700px] object-cover"
               src="/vid1.webm"
+              poster="/sport.png"
+              preload="metadata"
               onPlay={handleVideoPlay}
               onPause={handleVideoPause}
               onEnded={handleVideoEnded}
+              onLoadStart={() => console.log('Hero video loading started')}
+              onCanPlay={() => console.log('Hero video can start playing')}
+              onError={(e) => console.error('Hero video error:', e)}
               controls={isPlaying}
               muted
               playsInline
+              loading="lazy"
               style={{
                 filter: isPlaying ? 'none' : 'brightness(0.8) contrast(1.1)',
               }}

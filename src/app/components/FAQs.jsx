@@ -33,14 +33,17 @@ export default function FAQs() {
 
   return (
     <div className="max-w-6xl mx-auto p-6 mt-20">
-      <h2 className="text-4xl font-bold text-center text-red-500 mb-8">Frequently Asked Questions</h2>
+      <h2 className="text-4xl font-bold text-center text-red-500 mb-8"> <span className='text-white'>Frequently Asked</span> Questions</h2>
       <div className="flex flex-col gap-5">
         {faqs.map((faq) => (
           <div
             key={faq.id}
-            className={`bg-gradient-to-r from-blaack to-red-700  border-2 border-white  rounded-3xl transition-all duration-300 hover:from-red-500 hover:via-red-700 hover:to-black/90 ${
+            className={`rounded-3xl backdrop-blur-xl shadow-2xl overflow-hidden relative flex flex-col bg-gradient-to-br from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow transition-all duration-300 ${
               openFAQ === faq.id ? 'shadow-lg shadow-red-500/20' : ''
-            } flex flex-col`}
+            }`}
+            style={{
+              backgroundSize: '400% 400%',
+            }}
           >
             <div
               className="p-6 cursor-pointer flex items-center justify-between"

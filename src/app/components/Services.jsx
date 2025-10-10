@@ -1,10 +1,12 @@
 'use client';
 import { useState, useRef } from 'react';
+import { useVideoOptimization } from '../hooks/useVideoOptimization';
 
 export default function Testimonials() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [showPlayIcon, setShowPlayIcon] = useState(true);
   const videoRef = useRef(null);
+  const { isMobile, shouldShowVideo, getOptimizedVideoProps } = useVideoOptimization();
 
   const handlePlayClick = () => {
     if (videoRef.current) {
@@ -35,8 +37,8 @@ export default function Testimonials() {
       <div className="flex flex-col-reverse lg:flex-row items-start justify-center gap-6 md:gap-8 lg:gap-10">
         
         <div className="w-full lg:w-1/2  order-2 lg:order-1">
-          <h3 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-red-700 font-bold leading-tight">
-            What are you waiting for?
+          <h3 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-white font-bold leading-tight">
+            What are  <span className="text-red-700"> you waiting for? </span>
           </h3>
 
           <h4 className="text-white text-2xl md:text-3xl lg:text-4xl font-extrabold pt-8 md:pt-12 lg:pt-20 leading-tight">
@@ -58,21 +60,30 @@ export default function Testimonials() {
             maintain healthy habits for long term results.
           </p>
           <div className="pt-8 md:pt-12 lg:pt-20">
-            <button className="bg-red-700 hidden md:block text-white text-lg md:text-xl lg:text-2xl font-bold p-3 md:p-4 lg:p-5 rounded-full hover:bg-red-800 transition-colors duration-300 w-full sm:w-auto">
+            <button className=" bg-gradient-to-r from-red-800 to-red-600 shadow-lg hidden md:block text-white text-lg md:text-xl  font-semibold p-3 md:p-4 lg:p-5 rounded-full hover:bg-red-800 transition-colors duration-300 w-full sm:w-auto">
               JOIN NOW
             </button>
           </div>
         </div>
 
         <div className="w-full lg:w-1/2  relative order-1 lg:order-2">
-          <video 
-            ref={videoRef}
-            className="h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] xl:h-[700px] 2xl:h-[800px] w-full object-cover rounded-2xl md:rounded-3xl lg:rounded-4xl" 
-            src="/vid1.webm"
-            onPlay={handleVideoPlay}
-            onPause={handleVideoPause}
-            onEnded={handleVideoEnded}
-          />
+          {shouldShowVideo() ? (
+            <video 
+              ref={videoRef}
+              className="h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] xl:h-[700px] 2xl:h-[800px] w-full object-cover rounded-2xl md:rounded-3xl lg:rounded-4xl" 
+              src="/vid1.webm"
+              {...getOptimizedVideoProps()}
+              onPlay={handleVideoPlay}
+              onPause={handleVideoPause}
+              onEnded={handleVideoEnded}
+            />
+          ) : (
+            <img 
+              src="/sport.png"
+              alt="Fitness training"
+              className="h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] xl:h-[700px] 2xl:h-[800px] w-full object-cover rounded-2xl md:rounded-3xl lg:rounded-4xl"
+            />
+          )}
             <div className="pt-8 md:pt-12 lg:pt-20">
             <button className="bg-red-700 block md:hidden text-white text-lg md:text-xl lg:text-2xl font-bold p-3 md:p-4 lg:p-5 rounded-full hover:bg-red-800 transition-colors duration-300 w-full sm:w-auto">
               JOIN NOW

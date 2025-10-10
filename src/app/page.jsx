@@ -7,6 +7,7 @@ import Transformations from "@/app/components/Transformations";
 import Journey from "@/app/components/Journey";
 import FAQs from "@/app/components/FAQs";
 import Pricing from "@/app/components/Pricing";
+import FitnessTools from "@/app/components/FitnessTools";
 
 export default function Home() {
   return (
@@ -26,6 +27,9 @@ export default function Home() {
       </section>
       <section id="pricing">
         <Pricing />
+      </section>
+      <section id="fitness-tools">
+        <FitnessTools />
       </section>
       <section id="transformations">
         <Transformations />

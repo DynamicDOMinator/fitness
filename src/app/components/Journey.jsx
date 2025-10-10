@@ -75,7 +75,7 @@ export default function Journey() {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-8 sm:mb-12 lg:mb-16">
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-red-500 mb-2 sm:mb-4">
-            What To Expect
+            What To  <span className="text-white"> Expect </span>
           </h2>
           <p className="text-sm sm:text-base lg:text-lg text-white max-w-2xl mx-auto px-4">
             Transform your life step by step. Every milestone brings you closer
@@ -157,16 +157,14 @@ export default function Journey() {
                 ${/* Mobile: Left side positioning */ "left-3 top-4 md:left-1/2 md:top-auto md:transform md:-translate-x-1/2"}
               `}>
                 <div
-                  className={`w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full border-2 sm:border-3 md:border-4 border-white shadow-xl transition-all duration-700 flex items-center justify-center ${
+                  className={`w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full  transition-all duration-700 flex items-center justify-center ${
                     visibleSteps.has(index)
-                      ? "bg-gradient-to-r from-red-500 to-red-600 scale-110 md:scale-125 shadow-red-500/50"
+                      ? "bg-gradient-to-r from-red-500 to-red-600 scale-110 md:scale-125 "
                       : "bg-gray-400 scale-100"
                   }`}
                   style={{
                     transitionDelay: `${index * 300 + 150}ms`,
-                    boxShadow: visibleSteps.has(index)
-                      ? "0 0 20px rgba(239, 68, 68, 0.6), 0 0 40px rgba(239, 68, 68, 0.4)"
-                      : "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+                  
                   }}
                 >
                   <span className="text-white font-bold text-xs sm:text-sm drop-shadow-lg">

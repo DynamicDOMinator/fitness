@@ -116,11 +116,11 @@ export default function Transformations() {
         </Swiper>
 
           {/* Custom Navigation Buttons */}
-          <div className="custom-prev hidden  absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-red-500 hover:bg-red-500 text-black w-12 h-12 rounded-full lg:flex items-center justify-center cursor-pointer transition-all duration-300 border-4 border-white shadow-lg hover:scale-110">
-            <FaArrowLeft className="text-lg" />
+          <div className="custom-prev hidden  absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-red-500 hover:bg-red-500 text-black w-12 h-12 rounded-full lg:flex items-center justify-center cursor-pointer transition-all duration-300  shadow-lg hover:scale-110">
+            <FaArrowLeft className="text-lg text-white" />
           </div>
-          <div className="custom-next absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-red-500 hover:bg-red-500 text-w w-12 h-12 rounded-full hidden lg:flex items-center justify-center cursor-pointer transition-all duration-300 border-4 border-white shadow-lg hover:scale-110">
-            <FaArrowRight className="text-lg" />
+          <div className="custom-next absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-red-500 hover:bg-red-500 text-w w-12 h-12 rounded-full hidden lg:flex items-center justify-center cursor-pointer transition-all duration-300 shadow-lg hover:scale-110">
+            <FaArrowRight className="text-lg text-white" />
           </div>
         </div>
 
