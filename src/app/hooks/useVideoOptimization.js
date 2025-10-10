@@ -3,16 +3,19 @@ import { useState, useEffect, useRef } from 'react';
 
 export const useVideoOptimization = () => {
   const [isMobile, setIsMobile] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
   const [isLowBandwidth, setIsLowBandwidth] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const videoRef = useRef(null);
 
   useEffect(() => {
-    // Detect mobile device
+    // Detect mobile device and iOS specifically
     const checkMobile = () => {
       const userAgent = navigator.userAgent || navigator.vendor || window.opera;
       const mobileCheck = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase());
+      const iOSCheck = /iPad|iPhone|iPod/.test(userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
       setIsMobile(mobileCheck);
+      setIsIOS(iOSCheck);
     };
 
     // Detect slow connection
@@ -54,10 +57,23 @@ export const useVideoOptimization = () => {
       onError: (e) => console.error('Video error:', e),
     };
 
+    // iOS-specific optimizations
+    if (isIOS) {
+      return {
+        ...baseProps,
+        preload: "metadata", // iOS Safari needs metadata for proper loading
+        loading: "lazy",
+        "webkit-playsinline": "true", // Additional iOS Safari attribute
+        "x-webkit-airplay": "allow", // Allow AirPlay
+        disablePictureInPicture: false, // Allow picture-in-picture
+        controlsList: "nodownload", // Prevent download on iOS
+      };
+    }
+
     if (isMobile || isLowBandwidth) {
       return {
         ...baseProps,
-        preload: "none", // Don't preload on mobile/slow connections
+        preload: "none", // Don't preload on other mobile/slow connections
         loading: "lazy",
       };
     }
@@ -70,8 +86,19 @@ export const useVideoOptimization = () => {
   };
 
   const shouldShowVideo = () => {
-    // More aggressive fallback for large video files
-    // Don't show video on mobile OR slow connections
+    // Allow videos on iOS devices (iPhone, iPad) as they handle video well
+    if (isIOS) {
+      // Still respect user's data saving preference on iOS
+      if ('connection' in navigator) {
+        const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+        if (connection && connection.saveData) {
+          return false;
+        }
+      }
+      return true;
+    }
+    
+    // More conservative for other mobile devices and slow connections
     if (isMobile || isLowBandwidth) {
       return false;
     }
@@ -89,6 +116,7 @@ export const useVideoOptimization = () => {
 
   return {
     isMobile,
+    isIOS,
     isLowBandwidth,
     videoLoaded,
     videoRef,

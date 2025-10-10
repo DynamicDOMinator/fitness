@@ -17,8 +17,9 @@ export default function OptimizedVideo({
   const [isPlaying, setIsPlaying] = useState(false);
   const [showPlayIcon, setShowPlayIcon] = useState(true);
   const [hasError, setHasError] = useState(false);
+  const [userInteracted, setUserInteracted] = useState(false);
   const videoRef = useRef(null);
-  const { isMobile, shouldShowVideo, getOptimizedVideoProps } = useVideoOptimization();
+  const { isMobile, isIOS, shouldShowVideo, getOptimizedVideoProps } = useVideoOptimization();
   const { elementRef, hasIntersected } = useIntersectionObserver({ threshold: 0.1 });
 
   const handleVideoPlay = () => {
@@ -44,13 +45,35 @@ export default function OptimizedVideo({
     setHasError(true);
   };
 
-  const handlePlayClick = () => {
+  const handlePlayClick = async () => {
     if (videoRef.current) {
+      setUserInteracted(true);
+      
       if (isPlaying) {
         videoRef.current.pause();
       } else {
-        videoRef.current.controls = true;
-        videoRef.current.play();
+        try {
+          // For iOS, we need to ensure the video is properly loaded before playing
+          if (isIOS) {
+            // Load the video if not already loaded
+            if (videoRef.current.readyState < 2) {
+              videoRef.current.load();
+              await new Promise((resolve) => {
+                const onCanPlay = () => {
+                  videoRef.current.removeEventListener('canplay', onCanPlay);
+                  resolve();
+                };
+                videoRef.current.addEventListener('canplay', onCanPlay);
+              });
+            }
+          }
+          
+          videoRef.current.controls = true;
+          await videoRef.current.play();
+        } catch (error) {
+          console.error('Error playing video:', error);
+          setHasError(true);
+        }
       }
     }
   };
@@ -90,15 +113,33 @@ export default function OptimizedVideo({
           className={className}
           src="/vid1.webm"
           {...getOptimizedVideoProps()}
-          controls={showControls || isPlaying}
+          controls={showControls || (isPlaying && userInteracted)}
           onPlay={handleVideoPlay}
           onPause={handleVideoPause}
           onEnded={handleVideoEnded}
           onError={handleVideoError}
           onClick={handleVideoClick}
+          onLoadedMetadata={() => {
+            // iOS Safari specific: ensure video dimensions are set
+            if (isIOS && videoRef.current) {
+              videoRef.current.style.width = '100%';
+              videoRef.current.style.height = 'auto';
+            }
+          }}
+          onTouchStart={(e) => {
+            // iOS Safari: prevent default touch behavior that might interfere
+            if (isIOS) {
+              e.stopPropagation();
+            }
+          }}
           style={{
             ...style,
             filter: isPlaying ? 'none' : 'brightness(0.8) contrast(1.1)',
+            // iOS Safari specific styles
+            ...(isIOS && {
+              WebkitTransform: 'translateZ(0)', // Hardware acceleration
+              transform: 'translateZ(0)',
+            }),
           }}
           {...props}
         />
@@ -144,7 +185,7 @@ export default function OptimizedVideo({
       {/* Mobile performance indicator */}
       {isMobile && (
         <div className="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded">
-          Mobile Optimized
+          {isIOS ? 'iOS Optimized' : 'Mobile Optimized'}
         </div>
       )}
     </div>
