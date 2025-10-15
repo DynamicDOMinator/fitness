@@ -1,6 +1,6 @@
-'use client';
+"use client";
 import Image from "next/image";
-import { useState, useRef } from 'react';
+import { useState, useRef } from "react";
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { TiGroup } from "react-icons/ti";
 import { CgGym } from "react-icons/cg";
@@ -42,16 +42,9 @@ export default function HeroSection() {
 
   return (
     <div>
-      <div
-        className="w-[100vw] md:h-full h-[40%] bg-gradient-to-r from-red-700 to-gray-700
-      opacity-70 absolute md:rounded-br-[100%] rounded-br-[100%] top-0 md:right-40     "
-      ></div>
       <div className="hero relative ">
         <div className="md:pt-50 pt-30 ">
-          {/* <div className="absolute top-[-50px] hidden md:block left-0 rounded-full 2xl:w-[700px] 2xl:h-[450px] w-[500px] h-[300px] bg-[#fd5747] opacity-40 blur-[100px] z-[1] pointer-events-none"></div>
-
-        <div className="absolute top-[50px] right-0 2xl:w-[650px] rounded-full 2xl:h-[450px] w-[500px] h-[300px] bg-[#fd5747] opacity-40 blur-[100px] z-[1] pointer-events-none"></div> */}
-
+    
           <div className="flex items-center justify-center relative z-[10]   ">
             <div className="lg:text-8xl md:text-6xl text-4xl text-center">
               <h1 className="text-white font-bold p-2 md:p-0">
@@ -67,55 +60,62 @@ export default function HeroSection() {
                   results.
                 </span>
               </h2>
-              
+
               <p className="text-white p-3 md:p-0 text-lg md:text-xl lg:text-2xl font-normal mt-6 max-w-4xl mx-auto leading-relaxed">
-                Fitness should improve your quality of life. Our Exercise Programs are tailored to fit your current lifestyle and help you make better choices regarding your health– no crash-diets, no unrealistic 2 hours workouts
+                Fitness should improve your quality of life. Our Exercise
+                Programs are tailored to fit your current lifestyle and help you
+                make better choices regarding your health– no crash-diets, no
+                unrealistic 2 hours workouts
               </p>
             </div>
           </div>
 
-          <div 
-            className="md:w-1/2 mx-10 md:mt-30 mt-10 md:mx-auto relative rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(253,87,71,0.8)]"
+          <div
+            className="md:w-1/3 mx-10 md:mt-30 mt-10 md:mx-auto relative rounded-3xl  shadow-[0_0_50px_rgba(253,87,71,0.8)]"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
             <video
               ref={videoRef}
-              className="w-full  h-[350px] sm:h-[400px] md:h-[500px] lg:h-[600px] xl:h-[700px] object-cover"
+              className="w-full  h-[350px] sm:h-[400px] md:h-[500px] lg:h-[400px] xl:h-[500px] object-cover"
               src="/vid1.webm"
               poster="/sport.png"
               preload="metadata"
               onPlay={handleVideoPlay}
               onPause={handleVideoPause}
               onEnded={handleVideoEnded}
-              onLoadStart={() => console.log('Hero video loading started')}
-              onCanPlay={() => console.log('Hero video can start playing')}
-              onError={(e) => console.error('Hero video error:', e)}
+              onLoadStart={() => console.log("Hero video loading started")}
+              onCanPlay={() => console.log("Hero video can start playing")}
+              onError={(e) => console.error("Hero video error:", e)}
               controls={isPlaying}
               muted
               playsInline
               loading="lazy"
               style={{
-                filter: isPlaying ? 'none' : 'brightness(0.8) contrast(1.1)',
+                filter: isPlaying ? "none" : "brightness(0.8) contrast(1.1)",
               }}
             />
-            
+
             {/* Subtle overlay when not playing - doesn't cover controls area */}
-            <div className={`absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20 transition-opacity duration-500 ${isPlaying ? 'opacity-0' : 'opacity-100'} pointer-events-none`}></div>
-            
+            <div
+              className={`absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20 transition-opacity duration-500 ${
+                isPlaying ? "opacity-0" : "opacity-100"
+              } pointer-events-none`}
+            ></div>
+
             {/* Play button - same as Testimonials */}
             {showPlayIcon && (
-              <div 
+              <div
                 className="absolute inset-0 flex items-center justify-center cursor-pointer transition-all duration-300 pointer-events-auto"
                 onClick={handlePlayClick}
               >
                 <div className="bg-white bg-opacity-95 rounded-full p-2 md:p-3 lg:p-4 hover:bg-opacity-100 hover:scale-110 transition-all duration-300 shadow-2xl border-2 md:border-3 lg:border-4 border-red-700">
-                  <svg 
-                    className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-red-700 ml-1" 
-                    fill="currentColor" 
+                  <svg
+                    className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-red-700 ml-1"
+                    fill="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path d="M8 5v14l11-7z"/>
+                    <path d="M8 5v14l11-7z" />
                   </svg>
                 </div>
               </div>
@@ -123,7 +123,21 @@ export default function HeroSection() {
           </div>
         </div>
 
-        <div className="backdrop-blur-xl bg-gradient-to-br mx-10 from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow rounded-4xl" style={{backgroundSize: '400% 400%'}}>
+<div>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+            <path
+              fill="#f94230"
+              className=""
+              fill-opacity="1"
+              d="M0,128L48,122.7C96,117,192,107,288,101.3C384,96,480,96,576,122.7C672,149,768,203,864,218.7C960,235,1056,213,1152,186.7C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+            ></path>
+          </svg>
+
+</div>
+        <div
+          className="backdrop-blur-xl bg-gradient-to-br mx-10 from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow rounded-4xl"
+          style={{ backgroundSize: "400% 400%" }}
+        >
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 lg:mt-20  mt-10  p-10 ">
             <div className="flex flex-col items-start gap-5 mr-auto md:m-auto">
               <TiGroup className="text-5xl lg:text-6xl text-[#fd5747]" />

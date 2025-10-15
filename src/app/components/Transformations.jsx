@@ -60,6 +60,16 @@ export default function Transformations() {
           modules={[Autoplay, Navigation, Pagination]}
           spaceBetween={30}
           slidesPerView={1}
+          breakpoints={{
+            0: {
+              slidesPerView: 1,
+              spaceBetween: 30,
+            },
+            768: {
+              slidesPerView: 2,
+              spaceBetween: 30,
+            },
+          }}
           loop={true}
           navigation={{
             nextEl: '.custom-next',
@@ -76,24 +86,24 @@ export default function Transformations() {
         >
           {clientReviews.map((item) => (
             <SwiperSlide key={item.id}>
-              <div className="flex lg:px-30 flex-col lg:flex-row items-center  justify-center gap-8 p-8">
-                {/* Text Review Section - 50% width (Left Side) */}
-                <div className="w-full lg:w-1/2 flex flex-col justify-center  pt-10 lg:pt-0">
-                  <div className="text-left p-10 rounded-4xl shadow-2xl relative bg-black/20">
+              <div className="flex lg:px-15 flex-col lg:flex-row items-center justify-center gap-4 p-4">
+                {/* Text Review Section - Full width on mobile, adjusted for desktop */}
+                <div className="w-full flex flex-col justify-center pt-10 lg:pt-0">
+                  <div className="text-left p-6 lg:p-8 rounded-4xl shadow-2xl relative bg-black/20">
                     {/* Decorative Quotation Marks */}
-              <div className='absolute top-4 '>
-                <p className='text-8xl text-white font-bold'>
-                  “
+              <div className='absolute top-2 lg:top-4'>
+                <p className='text-6xl lg:text-8xl text-white font-bold'>
+                  "
                 </p>
               </div>
                     
-                    <p className="text-white text-lg leading-relaxed italic  pt-10 ">
+                    <p className="text-white text-base lg:text-lg leading-relaxed italic pt-8 lg:pt-10">
                       {item.review}
                     </p>
 
                     {/* Reviewer Info Section */}
-                    <div className="flex items-center gap-4 mt-6 pt-4 ">
-                      <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white/30">
+                    <div className="flex items-center gap-3 lg:gap-4 mt-4 lg:mt-6 pt-3 lg:pt-4">
+                      <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-full overflow-hidden border-2 border-white/30">
                         <Image 
                           src={item.image} 
                           alt={item.clientName}
@@ -103,10 +113,10 @@ export default function Transformations() {
                         />
                       </div>
                       <div>
-                        <h4 className="text-white font-semibold text-base">
+                        <h4 className="text-white font-semibold text-sm lg:text-base">
                           {item.clientName}
                         </h4>
-                        <p className="text-white/70 text-sm">
+                        <p className="text-white/70 text-xs lg:text-sm">
                           Verified Client
                         </p>
                       </div>

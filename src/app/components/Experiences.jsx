@@ -315,7 +315,7 @@ export default function Service() {
           <div className="flex items-center justify-center relative">
             {/* Single Video/Image Element - Desktop */}
             <div
-              className="hidden md:block lg:mr-5  2xl:mr-0 rounded-[70px] lg:h-[950px] lg:w-[600px] md:w-full md:h-[600px] w-full h-[400px] relative"
+              className="hidden md:block lg:mr-5  2xl:mr-0 rounded-[70px] lg:h-[650px] lg:w-[600px] md:w-full md:h-[600px] w-full h-[400px] relative"
               style={{
                 boxShadow:
                   "inset 0 -200px 80px -100px rgba(0, 0, 0, 0.3), 40px 40px 40px rgba(220, 38, 38, 0.6)",

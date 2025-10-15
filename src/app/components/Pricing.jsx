@@ -42,6 +42,7 @@ export default function Pricing() {
     "Customized Diet & medical lab Results",
     "Change diet & Exercise plan when needed",
     "30mins onboarding zoom",
+    "Whatsapp weekly support",
     "mohamed personal Whatsapp - 24 hours support",
     "Video Exercise form correction",
     "Exercise sheet to track progress",
