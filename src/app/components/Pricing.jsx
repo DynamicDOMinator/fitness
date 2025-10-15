@@ -1,6 +1,19 @@
 'use client';
 import { useState } from 'react';
 
+// Check and Cross SVG Icons
+const CheckIcon = () => (
+  <svg className="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+  </svg>
+);
+
+const CrossIcon = () => (
+  <svg className="w-5 h-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+    <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+  </svg>
+);
+
 export default function Pricing() {
   // State to track selected period for each plan
   const [selectedPeriods, setSelectedPeriods] = useState({});
@@ -12,30 +25,82 @@ export default function Pricing() {
     { value: 6, label: "6 Months", discount: 0.2 }  // 20% discount
   ];
 
+  // All possible features for comparison
+  const allFeatures = [
+    "Customized Diet & medical lab results",
+    "Result driven and Personalized nutrition plan",
+    "Change diet plan when needed",
+    "30mins onboarding zoom",
+    "Whatsapp weekly support",
+    "Goal-specific workouts",
+    "Result driven and Personalized nutrition & workout plan",
+    "Change diet & Exercise plan when needed",
+    "Exercise sheet to track progress",
+    "Video Exercise form correction",
+    "Whatsapp - 48hours support",
+    "1x45mins zoom check-in / month",
+    "Result Driven personalized programs + zoom meeting with mohamed",
+    "mohamed personal Whatsapp",
+    "24 hours support",
+    "2x 45mins zoom check-in / month",
+    "1 live workout session / month",
+    "Personalized programs + Work Directly with mohamed on your mindset"
+  ];
+
   const plans = [
     {
-      title: "Diet only",
+      title: "Regular - Diet only",
       basePrice: 49,
       period: "/month",
-      description: "Personalized nutrition plan tailored to your goals.",
-      features: [
-        "Custom macro targets and meal timing",
-        "Weekly check-ins",
-        "Messaging support",
-      ],
+      description: "Result driven and Personalized nutrition plan.",
+      features: {
+        "Customized Diet & medical lab results": true,
+        "Result driven and Personalized nutrition plan": true,
+        "Change diet plan when needed": true,
+        "30mins onboarding zoom": true,
+        "Whatsapp weekly support": true,
+        "Goal-specific workouts": false,
+        "Result driven and Personalized nutrition & workout plan": false,
+        "Change diet & Exercise plan when needed": false,
+        "Exercise sheet to track progress": false,
+        "Video Exercise form correction": false,
+        "Whatsapp - 48hours support": false,
+        "1x45mins zoom check-in / month": false,
+        "Result Driven personalized programs + zoom meeting with mohamed": false,
+        "mohamed personal Whatsapp": false,
+        "24 hours support": false,
+        "2x 45mins zoom check-in / month": false,
+        "1 live workout session / month": false,
+        "Personalized programs + Work Directly with mohamed on your mindset": false
+      },
       cta: "Get Started",
       isPopular: false,
     },
     {
-      title: "Elite athlete",
-      basePrice: 89,
+      title: "Regular - Diet & Exercise",
+      basePrice: 69,
       period: "/month",
-      description: "High-performance program for competitive athletes.",
-      features: [
-        "Performance-focused nutrition",
-        "Periodized training guidance",
-        "Recovery optimization",
-      ],
+      description: "Result driven and Personalized nutrition & workout plan.",
+      features: {
+        "Customized Diet & medical lab results": true,
+        "Result driven and Personalized nutrition plan": true,
+        "Change diet plan when needed": true,
+        "30mins onboarding zoom": true,
+        "Whatsapp weekly support": true,
+        "Goal-specific workouts": true,
+        "Result driven and Personalized nutrition & workout plan": true,
+        "Change diet & Exercise plan when needed": true,
+        "Exercise sheet to track progress": true,
+        "Video Exercise form correction": true,
+        "Whatsapp - 48hours support": false,
+        "1x45mins zoom check-in / month": false,
+        "Result Driven personalized programs + zoom meeting with mohamed": false,
+        "mohamed personal Whatsapp": false,
+        "24 hours support": false,
+        "2x 45mins zoom check-in / month": false,
+        "1 live workout session / month": false,
+        "Personalized programs + Work Directly with mohamed on your mindset": false
+      },
       cta: "Get Started",
       isPopular: false,
     },
@@ -43,25 +108,55 @@ export default function Pricing() {
       title: "Advanced coaching",
       basePrice: 129,
       period: "/month",
-      description: "1:1 guidance, accountability, and progress tracking.",
-      features: [
-        "Weekly coaching calls",
-        "Form reviews and feedback",
-        "Adaptive programming",
-      ],
+      description: "Result Driven personalized programs + zoom meeting with mohamed",
+      features: {
+        "Customized Diet & medical lab results": true,
+        "Result driven and Personalized nutrition plan": true,
+        "Change diet plan when needed": true,
+        "30mins onboarding zoom": true,
+        "Whatsapp weekly support": true,
+        "Goal-specific workouts": true,
+        "Result driven and Personalized nutrition & workout plan": true,
+        "Change diet & Exercise plan when needed": true,
+        "Exercise sheet to track progress": true,
+        "Video Exercise form correction": true,
+        "Whatsapp - 48hours support": true,
+        "1x45mins zoom check-in / month": true,
+        "Result Driven personalized programs + zoom meeting with mohamed": true,
+        "mohamed personal Whatsapp": false,
+        "24 hours support": false,
+        "2x 45mins zoom check-in / month": false,
+        "1 live workout session / month": false,
+        "Personalized programs + Work Directly with mohamed on your mindset": false
+      },
       cta: "Get Started",
       isPopular: true,
     },
     {
-      title: "Diet & Exercise",
-      basePrice: 69,
+      title: "Elite athlete",
+      basePrice: 199,
       period: "/month",
-      description: "Complete plan combining workouts and nutrition.",
-      features: [
-        "Goal-specific workouts",
-        "Matched nutrition plan",
-        "Progress tracking dashboard",
-      ],
+      description: "Personalized programs + Work Directly with mohamed on your mindset.",
+      features: {
+        "Customized Diet & medical lab results": true,
+        "Change diet & Exercise plan when needed": true,
+        "30mins onboarding zoom": true,
+        "mohamed personal Whatsapp - 24 hours support": true,
+        "Video Exercise form correction": true,
+        "Goal-specific workouts": true,
+        "Result driven and Personalized nutrition & workout plan": true,
+        "Change diet & Exercise plan when needed": true,
+        "Exercise sheet to track progress": true,
+        "Video Exercise form correction": true,
+        "Whatsapp - 48hours support": true,
+        "1x45mins zoom check-in / month": true,
+        "Result Driven personalized programs + zoom meeting with mohamed": true,
+        "mohamed personal Whatsapp": true,
+        "24 hours support": true,
+        "2x 45mins zoom check-in / month": true,
+        "1 live workout session / month": true,
+        "Personalized programs + Work Directly with mohamed on your mindset": true
+      },
       cta: "Get Started",
       isPopular: false,
     },
@@ -94,7 +189,7 @@ export default function Pricing() {
     <section className="py-16 backdrop-blur-xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-5xl font-extrabold text-center tracking-tight">
-          <span className="text-white">Pricing</span> <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#fd5747] to-red-600">Plans</span>
+          <span className="text-white">Pricing</span> <span className="text-red-500">Plans</span>
         </h2>
 
         <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4 items-stretch">
@@ -111,7 +206,7 @@ export default function Pricing() {
                 }`}
                 style={{
                   backgroundSize: '400% 400%',
-                  height: '580px',
+                  minHeight: '700px',
                 }}
               >
                 {/* Popular badge */}
@@ -176,11 +271,15 @@ export default function Pricing() {
 
               {/* Features */}
               <div className="flex-1 flex flex-col justify-between">
-                <ul className="px-6 py-4 space-y-3 text-gray-200 text-sm">
-                  {plan.features.map((f) => (
-                    <li key={f} className="flex items-center gap-2">
-                      <span className="inline-block h-2 w-2 rounded-full bg-gradient-to-r from-[#fd5747] to-red-600 animate-pulse" />
-                      <span>{f}</span>
+                <ul className="px-6 py-4 space-y-2 text-gray-200 text-xs max-h-96 overflow-y-auto">
+                  {allFeatures.map((feature) => (
+                    <li key={feature} className="flex items-start gap-2">
+                      <span className="flex-shrink-0 mt-0.5">
+                        {plan.features[feature] ? <CheckIcon /> : <CrossIcon />}
+                      </span>
+                      <span className={`${plan.features[feature] ? 'text-gray-200' : 'text-gray-500 line-through'}`}>
+                        {feature}
+                      </span>
                     </li>
                   ))}
                 </ul>

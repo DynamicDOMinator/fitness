@@ -18,26 +18,32 @@ export default function Transformations() {
     {
       id: 1,
       image: '/hamo.png',
-      clientName: 'Ahmed Hassan',
+      clientName: 'Adam el-shabrawy',
       review: 'This fitness program completely changed my life. I lost 30 pounds in 3 months and gained incredible strength. The trainers are amazing and the community is so supportive. I never thought I could achieve these results!'
     },
     {
       id: 2,
       image: '/sport.png',
-      clientName: 'Sarah Johnson',
+      clientName: 'Amr Farh',
       review: 'Best decision I ever made was joining this gym. The personalized training plan helped me reach my goals faster than I imagined. The nutrition guidance was spot on and the results speak for themselves.'
     },
     {
       id: 3,
-      image: '/hamo.png',
-      clientName: 'Mike Rodriguez',
+      image: '/user.jpg',
+      clientName: 'Menna',
       review: 'After years of struggling with my fitness, this program gave me the structure and motivation I needed. The transformation is not just physical but mental too. I feel more confident and energetic than ever.'
     },
     {
       id: 4,
-      image: '/sport.png',
-      clientName: 'Emma Wilson',
+      image: '/hamo.png',
+      clientName: 'Seif Mohamed',
       review: 'The coaches here truly care about your success. They pushed me beyond my limits while keeping me safe. The results exceeded my expectations and I made lifelong friends along the way.'
+    },
+    {
+      id: 5,
+      image: '/sport.png',
+      clientName: 'Andrew Ayman',
+      review: 'Amazing transformation journey! The personalized approach and constant support helped me achieve goals I never thought possible. This place changed not just my body, but my entire mindset towards fitness.'
     }
   ];
 
@@ -73,53 +79,51 @@ export default function Transformations() {
               <div className="flex lg:px-30 flex-col lg:flex-row items-center  justify-center gap-8 p-8">
                 {/* Text Review Section - 50% width (Left Side) */}
                 <div className="w-full lg:w-1/2 flex flex-col justify-center  pt-10 lg:pt-0">
-                  <div className="text-left p-10 rounded-4xl shadow-2xl relative bg-black/20  ">
-                  
-                    <p className="text-white text-lg leading-relaxed italic">
-                      "{item.review}"
+                  <div className="text-left p-10 rounded-4xl shadow-2xl relative bg-black/20">
+                    {/* Decorative Quotation Marks */}
+              <div className='absolute top-4 '>
+                <p className='text-8xl text-white font-bold'>
+                  “
+                </p>
+              </div>
+                    
+                    <p className="text-white text-lg leading-relaxed italic  pt-10 ">
+                      {item.review}
                     </p>
 
-
-<div className='flex items-center  rotate-6 absolute left-0 -top-11'>
-<div className='h-[55px] w-[30px] animated-gradient-bg' style={{clipPath: 'polygon(25% 0%, 73% 0, 50% 100%, 0% 100%)'}}></div>
-<div className='h-[55px] w-[30px] animated-gradient-bg' style={{clipPath: 'polygon(25% 0%, 73% 0, 50% 100%, 0% 100%)'}}></div>
-
-</div>
-
-
+                    {/* Reviewer Info Section */}
+                    <div className="flex items-center gap-4 mt-6 pt-4 ">
+                      <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white/30">
+                        <Image 
+                          src={item.image} 
+                          alt={item.clientName}
+                          width={48}
+                          height={48}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div>
+                        <h4 className="text-white font-semibold text-base">
+                          {item.clientName}
+                        </h4>
+                        <p className="text-white/70 text-sm">
+                          Verified Client
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-
-                {/* Image Section - 50% width (Right Side) */}
-                <div className="w-full lg:w-1/2 flex justify-center">
-                  <div className="relative w-full  max-w-md aspect-square rounded-lg overflow-hidden ">
-                    <Image
-                      src={item.image}
-                      alt={item.clientName}
-                      width={500}
-                      height={500}
-                      className="w-full h-full object-cover"
-                    />
-
-
-<div className='flex items-center  rotate-6 absolute right-0 -bottom-2 pb-5 '>
-<div className='h-[55px] w-[30px] animated-gradient-bg' style={{clipPath: 'polygon(25% 0%, 73% 0, 50% 100%, 0% 100%)'}}></div>
-<div className='h-[55px] w-[30px] animated-gradient-bg' style={{clipPath: 'polygon(25% 0%, 73% 0, 50% 100%, 0% 100%)'}}></div>
-
-</div>
-
-                  </div>
-                </div>
+                
               </div>
             </SwiperSlide>
           ))}
         </Swiper>
 
           {/* Custom Navigation Buttons */}
-          <div className="custom-prev hidden  absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-red-500 hover:bg-red-500 text-black w-12 h-12 rounded-full lg:flex items-center justify-center cursor-pointer transition-all duration-300  shadow-lg hover:scale-110">
+          <div className="custom-prev hidden  absolute left-4 top-1/2 transform -translate-y-1/2 z-1 text-black w-12 h-12 rounded-full lg:flex items-center justify-center cursor-pointer transition-all duration-300  shadow-lg hover:scale-110">
             <FaArrowLeft className="text-lg text-white" />
           </div>
-          <div className="custom-next absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-red-500 hover:bg-red-500 text-w w-12 h-12 rounded-full hidden lg:flex items-center justify-center cursor-pointer transition-all duration-300 shadow-lg hover:scale-110">
+          <div className=" absolute right-4 top-1/2 transform -translate-y-1/2 z-10  text-w w-12 h-12 rounded-full hidden lg:flex items-center justify-center cursor-pointer transition-all duration-300 shadow-lg hover:scale-110">
             <FaArrowRight className="text-lg text-white" />
           </div>
         </div>

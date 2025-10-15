@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import FFMIThermometer from './FFMIThermometer';
 
 export default function FitnessTools() {
   const [activeModal, setActiveModal] = useState(null);
@@ -58,6 +59,90 @@ export default function FitnessTools() {
     };
   };
 
+  const calculateFFMI = (formData) => {
+    const { weight, height, bodyFat } = formData;
+    const heightInMeters = height / 100;
+    const fatFreeWeight = weight * (1 - bodyFat / 100);
+    const ffmi = fatFreeWeight / (heightInMeters * heightInMeters);
+    
+    // Normalize FFMI for height (adjusted FFMI)
+    const adjustedFFMI = ffmi + 6.1 * (1.8 - heightInMeters);
+    
+    let category, percentage, description;
+    
+    if (adjustedFFMI < 16) {
+      category = 'Below Average';
+      percentage = 10;
+      description = 'Below normal muscle mass development';
+    } else if (adjustedFFMI < 17) {
+      category = 'Average';
+      percentage = 25;
+      description = 'Normal muscle mass for general population';
+    } else if (adjustedFFMI < 18) {
+      category = 'Above Average';
+      percentage = 40;
+      description = 'Good muscle development with training';
+    } else if (adjustedFFMI < 20) {
+      category = 'Excellent';
+      percentage = 60;
+      description = 'Excellent muscle development, dedicated training';
+    } else if (adjustedFFMI < 22) {
+      category = 'Genetically Excellent';
+      percentage = 75;
+      description = 'Superior genetics with excellent training';
+    } else if (adjustedFFMI < 25) {
+      category = 'Natural Limit';
+      percentage = 85;
+      description = 'Near maximum natural potential';
+    } else if (adjustedFFMI < 28) {
+      category = '99% Unnatural';
+      percentage = 95;
+      description = 'Likely enhanced performance';
+    } else {
+      category = 'Steroids';
+      percentage = 100;
+      description = 'Almost certainly enhanced';
+    }
+    
+    return { 
+      ffmi: ffmi.toFixed(1), 
+      adjustedFFMI: adjustedFFMI.toFixed(1), 
+      category, 
+      percentage,
+      description,
+      fatFreeWeight: fatFreeWeight.toFixed(1)
+    };
+  };
+
+  const calculateOneRepMax = (formData) => {
+    const { weight, reps, exercise } = formData;
+    
+    // Using Brzycki formula: 1RM = weight / (1.0278 - 0.0278 × reps)
+    let oneRepMax;
+    if (reps === 1) {
+      oneRepMax = weight;
+    } else {
+      oneRepMax = weight / (1.0278 - 0.0278 * reps);
+    }
+    
+    // Calculate percentage ranges for different rep ranges
+    const percentages = {
+      '90%': Math.round(oneRepMax * 0.9),
+      '85%': Math.round(oneRepMax * 0.85),
+      '80%': Math.round(oneRepMax * 0.8),
+      '75%': Math.round(oneRepMax * 0.75),
+      '70%': Math.round(oneRepMax * 0.7),
+      '65%': Math.round(oneRepMax * 0.65),
+      '60%': Math.round(oneRepMax * 0.6)
+    };
+    
+    return {
+      oneRepMax: Math.round(oneRepMax),
+      exercise,
+      percentages
+    };
+  };
+
   const tools = [
     {
       id: 'calories',
@@ -70,12 +155,13 @@ export default function FitnessTools() {
       )
     },
     {
-      id: 'bmi',
-      title: 'BMI Calculator',
-      description: 'Calculate your Body Mass Index and health category',
+      id: 'ffmi',
+      title: 'FFMI Calculator',
+      description: 'Calculate your Fat-Free Mass Index with detailed scale analysis',
       icon: (
         <svg className="w-16 h-16 text-[#fd5747]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
           <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+          <path d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4"/>
           <circle cx="12" cy="12" r="3" fill="currentColor"/>
         </svg>
       )
@@ -91,15 +177,17 @@ export default function FitnessTools() {
       )
     },
     {
-      id: 'goals',
-      title: 'Goal Setting Tool',
-      description: 'Set and track your fitness goals with personalized plans',
+      id: 'onerepmax',
+      title: 'One-Rep Max Calculator',
+      description: 'Calculate your maximum strength for any exercise',
       icon: (
         <svg className="w-16 h-16 text-[#fd5747]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="10"/>
-          <circle cx="12" cy="12" r="6"/>
-          <circle cx="12" cy="12" r="2"/>
-          <path d="M12 6v6l4 2" stroke="currentColor" strokeWidth="2"/>
+          <path d="M6 2v6h.01L6 8a2 2 0 100 4v.01L6 12v6"/>
+          <path d="M18 2v6h.01L18 8a2 2 0 100 4v.01L18 12v6"/>
+          <path d="M6 8h12"/>
+          <circle cx="12" cy="8" r="2"/>
+          <path d="M8 21l8-8"/>
+          <path d="M16 21l-8-8"/>
         </svg>
       )
     }
@@ -120,14 +208,14 @@ export default function FitnessTools() {
       case 'calories':
         result = calculateCalories(formData);
         break;
-      case 'bmi':
-        result = calculateBMI(formData);
+      case 'ffmi':
+        result = calculateFFMI(formData);
         break;
       case 'macros':
         result = calculateMacros(formData);
         break;
-      case 'goals':
-        result = { message: 'Goal set successfully! Track your progress daily.' };
+      case 'onerepmax':
+        result = calculateOneRepMax(formData);
         break;
       default:
         result = {};
@@ -142,7 +230,7 @@ export default function FitnessTools() {
         {/* Header */}
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Fitness <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#fd5747] to-red-600">Tools</span>
+            Fitness <span className=" text-red-500">Tools</span>
           </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
             Use our comprehensive fitness calculators to track your progress and optimize your health journey
@@ -329,6 +417,50 @@ function ModalContent({ toolId, onSubmit, result }) {
           </form>
         );
 
+      case 'ffmi':
+        return (
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-white text-sm font-medium mb-2">Weight (kg)</label>
+              <input
+                type="number"
+                step="0.1"
+                required
+                className="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[#fd5747]/50"
+                onChange={(e) => handleInputChange('weight', parseFloat(e.target.value))}
+              />
+            </div>
+            <div>
+              <label className="block text-white text-sm font-medium mb-2">Height (cm)</label>
+              <input
+                type="number"
+                required
+                className="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[#fd5747]/50"
+                onChange={(e) => handleInputChange('height', parseFloat(e.target.value))}
+              />
+            </div>
+            <div>
+              <label className="block text-white text-sm font-medium mb-2">Body Fat Percentage (%)</label>
+              <input
+                type="number"
+                step="0.1"
+                min="3"
+                max="50"
+                required
+                className="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[#fd5747]/50"
+                onChange={(e) => handleInputChange('bodyFat', parseFloat(e.target.value))}
+              />
+              <p className="text-xs text-gray-400 mt-1">Enter your body fat percentage (3-50%)</p>
+            </div>
+            <button
+              type="submit"
+              className="w-full bg-gradient-to-r from-[#fd5747] to-red-600 text-white py-3 rounded-lg font-medium hover:from-red-600 hover:to-red-700 transition-all duration-300"
+            >
+              Calculate FFMI
+            </button>
+          </form>
+        );
+
       case 'macros':
         return (
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -433,6 +565,56 @@ function ModalContent({ toolId, onSubmit, result }) {
           </form>
         );
 
+      case 'onerepmax':
+        return (
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-white text-sm font-medium mb-2">Exercise</label>
+              <select
+                required
+                className="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[#fd5747]/50"
+                onChange={(e) => handleInputChange('exercise', e.target.value)}
+              >
+                <option value="">Select exercise</option>
+                <option value="Bench Press">Bench Press</option>
+                <option value="Squat">Squat</option>
+                <option value="Deadlift">Deadlift</option>
+                <option value="Overhead Press">Overhead Press</option>
+                <option value="Barbell Row">Barbell Row</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-white text-sm font-medium mb-2">Weight Lifted (kg)</label>
+              <input
+                type="number"
+                step="0.5"
+                required
+                className="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[#fd5747]/50"
+                onChange={(e) => handleInputChange('weight', parseFloat(e.target.value))}
+              />
+            </div>
+            <div>
+              <label className="block text-white text-sm font-medium mb-2">Repetitions Completed</label>
+              <input
+                type="number"
+                min="1"
+                max="20"
+                required
+                className="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[#fd5747]/50"
+                onChange={(e) => handleInputChange('reps', parseInt(e.target.value))}
+              />
+              <p className="text-xs text-gray-400 mt-1">Enter reps performed (1-20 for accuracy)</p>
+            </div>
+            <button
+              type="submit"
+              className="w-full bg-gradient-to-r from-[#fd5747] to-red-600 text-white py-3 rounded-lg font-medium hover:from-red-600 hover:to-red-700 transition-all duration-300"
+            >
+              Calculate 1RM
+            </button>
+          </form>
+        );
+
       default:
         return null;
     }
@@ -450,14 +632,8 @@ function ModalContent({ toolId, onSubmit, result }) {
           </div>
         );
 
-      case 'bmi':
-        return (
-          <div className="mt-6 p-4 bg-blue-500/20 rounded-lg border border-blue-500/30">
-            <h4 className="text-white font-semibold mb-2">Your BMI Results:</h4>
-            <p className="text-2xl font-bold text-blue-400">BMI: {result.bmi}</p>
-            <p className="text-white mt-1">Category: {result.category}</p>
-          </div>
-        );
+      case 'ffmi':
+        return <FFMIThermometer result={result} />;
 
       case 'macros':
         return (
@@ -471,15 +647,32 @@ function ModalContent({ toolId, onSubmit, result }) {
           </div>
         );
 
-      case 'goals':
+      case 'onerepmax':
         return (
-          <div className="mt-6 p-4 bg-purple-500/20 rounded-lg border border-purple-500/30">
-            <h4 className="text-white font-semibold mb-2">Goal Set Successfully! 🎯</h4>
-            <p className="text-white">{result.message}</p>
-            <div className="mt-3 text-sm text-gray-300">
-              <p>• Track your progress daily</p>
-              <p>• Stay consistent with your plan</p>
-              <p>• Adjust as needed based on results</p>
+          <div className="mt-6 p-4 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-lg border border-purple-500/30">
+            <h4 className="text-white font-semibold mb-3">Your One-Rep Max Results:</h4>
+            <div className="text-center mb-4">
+              <p className="text-gray-300 text-sm">{result.exercise}</p>
+              <p className="text-3xl font-bold text-purple-400">{result.oneRepMax} kg</p>
+              <p className="text-gray-400 text-sm">Estimated 1RM</p>
+            </div>
+            
+            <div className="space-y-2">
+              <h5 className="text-white font-medium text-sm mb-2">Training Percentages:</h5>
+              <div className="grid grid-cols-2 gap-2 text-sm">
+                {Object.entries(result.percentages).map(([percentage, weight]) => (
+                  <div key={percentage} className="flex justify-between bg-black/30 rounded px-2 py-1">
+                    <span className="text-gray-300">{percentage}:</span>
+                    <span className="text-white font-semibold">{weight} kg</span>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-3 text-xs text-gray-400">
+                <p>• 90-95%: Max strength (1-3 reps)</p>
+                <p>• 80-85%: Strength training (3-6 reps)</p>
+                <p>• 70-75%: Power/Hypertrophy (6-8 reps)</p>
+                <p>• 60-65%: Hypertrophy (8-12 reps)</p>
+              </div>
             </div>
           </div>
         );

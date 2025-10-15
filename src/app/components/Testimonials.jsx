@@ -1,5 +1,7 @@
-'use client';
-import { useState, useRef } from 'react';
+"use client";
+import { useState, useRef } from "react";
+import { VscPreview } from "react-icons/vsc";
+import Image from "next/image";
 
 export default function Testimonials() {
   const [isPlaying1, setIsPlaying1] = useState(false);
@@ -16,7 +18,8 @@ export default function Testimonials() {
     const videoRef = videoNumber === 1 ? videoRef1 : videoRef2;
     const isPlaying = videoNumber === 1 ? isPlaying1 : isPlaying2;
     const setIsPlaying = videoNumber === 1 ? setIsPlaying1 : setIsPlaying2;
-    const setShowPlayIcon = videoNumber === 1 ? setShowPlayIcon1 : setShowPlayIcon2;
+    const setShowPlayIcon =
+      videoNumber === 1 ? setShowPlayIcon1 : setShowPlayIcon2;
 
     if (videoRef.current) {
       if (isPlaying) {
@@ -36,7 +39,8 @@ export default function Testimonials() {
 
   const handleVideoPlay = (videoNumber) => {
     const setIsPlaying = videoNumber === 1 ? setIsPlaying1 : setIsPlaying2;
-    const setShowPlayIcon = videoNumber === 1 ? setShowPlayIcon1 : setShowPlayIcon2;
+    const setShowPlayIcon =
+      videoNumber === 1 ? setShowPlayIcon1 : setShowPlayIcon2;
     setIsPlaying(true);
     setShowPlayIcon(false);
   };
@@ -44,8 +48,9 @@ export default function Testimonials() {
   const handleVideoPause = (videoNumber) => {
     const videoRef = videoNumber === 1 ? videoRef1 : videoRef2;
     const setIsPlaying = videoNumber === 1 ? setIsPlaying1 : setIsPlaying2;
-    const setShowPlayIcon = videoNumber === 1 ? setShowPlayIcon1 : setShowPlayIcon2;
-    
+    const setShowPlayIcon =
+      videoNumber === 1 ? setShowPlayIcon1 : setShowPlayIcon2;
+
     setIsPlaying(false);
     setShowPlayIcon(true);
     // Keep controls visible when paused
@@ -57,8 +62,9 @@ export default function Testimonials() {
   const handleVideoEnded = (videoNumber) => {
     const videoRef = videoNumber === 1 ? videoRef1 : videoRef2;
     const setIsPlaying = videoNumber === 1 ? setIsPlaying1 : setIsPlaying2;
-    const setShowPlayIcon = videoNumber === 1 ? setShowPlayIcon1 : setShowPlayIcon2;
-    
+    const setShowPlayIcon =
+      videoNumber === 1 ? setShowPlayIcon1 : setShowPlayIcon2;
+
     setIsPlaying(false);
     setShowPlayIcon(true);
     // Keep controls visible when ended
@@ -70,7 +76,7 @@ export default function Testimonials() {
   const handleVideoClick = (videoNumber) => {
     const videoRef = videoNumber === 1 ? videoRef1 : videoRef2;
     const isPlaying = videoNumber === 1 ? isPlaying1 : isPlaying2;
-    
+
     // Allow clicking on video to pause/play, but only if controls are not visible
     if (!videoRef.current?.controls) {
       if (isPlaying) {
@@ -85,236 +91,207 @@ export default function Testimonials() {
     <div className="flex items-center justify-center p-4 md:p-8 lg:p-12 md:mt-96  lg:mt-0">
       <div className="relative max-w-7xl w-full">
         {/* Heading */}
-        <h5 className="text-6xl font-bold text-center mb-12 animated-gradient-text">
-          HEAR IT FROM THEM
+        <h5 className="text-6xl font-bold  text-white text-center ">
+          What Our
         </h5>
-        
+        <h5 className="text-6xl font-bold flex items-center justify-center  text-white text-center mb-12 mt-2 gap-2 ">
+          Clients{" "}
+          <VscPreview className="bg-white text-black p-2 rounded-full" />
+          Say
+        </h5>
         {/* Grid container for 2 videos */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
+        <div className="flex flex-col lg:flex-row items-stretch justify-center gap-6 md:gap-8 lg:gap-12">
           {/* First Video */}
-          <div className="relative">
+          <div className="relative lg:w-1/2 flex">
             {/* Outer decorative frame */}
-            <div className="relative p-6 md:p-8 lg:p-10">
-          {/* Corner frame elements */}
-          <div className="absolute top-0 left-0 w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-600 to-transparent"></div>
-            <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-red-600 to-transparent"></div>
-            <div className="absolute top-2 left-2 w-8 h-8 md:w-10 md:h-10 border-l-2 border-t-2 border-red-500/60 rounded-tl-lg"></div>
-          </div>
-          
-          <div className="absolute top-0 right-0 w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24">
-            <div className="absolute top-0 right-0 w-full h-1 bg-gradient-to-l from-red-600 to-transparent"></div>
-            <div className="absolute top-0 right-0 w-1 h-full bg-gradient-to-b from-red-600 to-transparent"></div>
-            <div className="absolute top-2 right-2 w-8 h-8 md:w-10 md:h-10 border-r-2 border-t-2 border-red-500/60 rounded-tr-lg"></div>
-          </div>
-          
-          <div className="absolute bottom-0 left-0 w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24">
-            <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-red-600 to-transparent"></div>
-            <div className="absolute bottom-0 left-0 w-1 h-full bg-gradient-to-t from-red-600 to-transparent"></div>
-            <div className="absolute bottom-2 left-2 w-8 h-8 md:w-10 md:h-10 border-l-2 border-b-2 border-red-500/60 rounded-bl-lg"></div>
-          </div>
-          
-          <div className="absolute bottom-0 right-0 w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24">
-            <div className="absolute bottom-0 right-0 w-full h-1 bg-gradient-to-l from-red-600 to-transparent"></div>
-            <div className="absolute bottom-0 right-0 w-1 h-full bg-gradient-to-t from-red-600 to-transparent"></div>
-            <div className="absolute bottom-2 right-2 w-8 h-8 md:w-10 md:h-10 border-r-2 border-b-2 border-red-500/60 rounded-br-lg"></div>
-          </div>
+            <div className="relative p-6 md:p-8 lg:p-10 flex-1">
+              {/* Corner frame elements */}
 
-          {/* Inner frame with metallic effect */}
-          <div className="relative">
-            {/* Metallic border effect */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-gray-300 via-gray-100 to-gray-300 rounded-2xl blur-sm opacity-75"></div>
-            <div className="absolute -inset-0.5 bg-gradient-to-r from-gray-400 via-white to-gray-400 rounded-2xl"></div>
-            
-              {/* Main video container */}
-              <div 
-                className="relative bg-black rounded-xl overflow-hidden shadow-2xl transform transition-all duration-500 hover:scale-[1.01]"
-                onMouseEnter={() => setIsHovered1(true)}
-                onMouseLeave={() => setIsHovered1(false)}
+              {/* Inner frame with metallic effect */}
+
+              <div
+                className="rounded-xl backdrop-blur-xl shadow-2xl overflow-hidden relative bg-gradient-to-br from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow p-4 h-full flex flex-col"
+                style={{ backgroundSize: "400% 400%" }}
               >
-                {/* Video element */}
-                <video 
-                  ref={videoRef1}
-                  className="w-full h-[250px] sm:h-[300px] md:h-[350px] lg:h-[400px] xl:h-[450px] object-cover transition-all duration-700"
-                  src="/vid1.webm"
-                  poster="/sport.png"
-                  preload="metadata"
-                  loading="lazy"
-                  muted
-                  playsInline
-                  onPlay={() => handleVideoPlay(1)}
-                  onPause={() => handleVideoPause(1)}
-                  onEnded={() => handleVideoEnded(1)}
-                  onClick={() => handleVideoClick(1)}
-                  onLoadStart={() => console.log('Testimonials video 1 loading started')}
-                  onCanPlay={() => console.log('Testimonials video 1 can start playing')}
-                  onError={(e) => console.error('Testimonials video 1 error:', e)}
-                  style={{
-                    filter: isPlaying1 ? 'none' : 'brightness(0.8) contrast(1.1)',
-                  }}
-                />
-                
-                {/* Subtle overlay when not playing */}
-                <div className={`absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20 transition-opacity duration-500 ${isPlaying1 ? 'opacity-0' : 'opacity-100'} pointer-events-none`}></div>
-                
-                {/* Play button - only show when video hasn't started or when paused without controls */}
-                {showPlayIcon1 && !videoRef1.current?.controls && (
-                  <div 
-                    className="absolute inset-0 flex items-center justify-center cursor-pointer transition-all duration-300"
-                    onClick={() => handlePlayClick(1)}
+                <div className="relative ">
+                  {/* Main video container */}
+                  <div
+                    className="relative rounded-2xl bg-black/30 overflow-hidden shadow-2xl transform transition-all duration-500 hover:scale-[1.01]"
+                    onMouseEnter={() => setIsHovered1(true)}
+                    onMouseLeave={() => setIsHovered1(false)}
                   >
-                    <div className="bg-white bg-opacity-95 rounded-full p-2 md:p-3 lg:p-4 hover:bg-opacity-100 hover:scale-110 transition-all duration-300 shadow-2xl border-2 md:border-3 lg:border-4 border-red-700">
-                      <svg 
-                        className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-red-700 ml-1" 
-                        fill="currentColor" 
-                        viewBox="0 0 24 24"
+                    {/* Video element */}
+                    <video
+                      ref={videoRef1}
+                      className="w-full h-[250px] sm:h-[300px] md:h-[350px] lg:h-[400px] xl:h-[450px] object-cover transition-all duration-700"
+                      src="/vid1.webm"
+                      poster="/sport.png"
+                      preload="metadata"
+                      loading="lazy"
+                      muted
+                      playsInline
+                      onPlay={() => handleVideoPlay(1)}
+                      onPause={() => handleVideoPause(1)}
+                      onEnded={() => handleVideoEnded(1)}
+                      onClick={() => handleVideoClick(1)}
+                      onLoadStart={() =>
+                        console.log("Testimonials video 1 loading started")
+                      }
+                      onCanPlay={() =>
+                        console.log("Testimonials video 1 can start playing")
+                      }
+                      onError={(e) =>
+                        console.error("Testimonials video 1 error:", e)
+                      }
+                      style={{
+                        filter: isPlaying1
+                          ? "none"
+                          : "brightness(0.8) contrast(1.1)",
+                      }}
+                    />
+
+                    {/* Play button - only show when video hasn't started or when paused without controls */}
+                    {showPlayIcon1 && !videoRef1.current?.controls && (
+                      <div
+                        className="absolute  inset-0 w-fit top-10 left-4 cursor-pointer transition-all duration-300"
+                        onClick={() => handlePlayClick(1)}
                       >
-                        <path d="M8 5v14l11-7z"/>
-                      </svg>
-                    </div>
+                        <div className=" bg-white bg-opacity-95 rounded-full p-2 hover:bg-opacity-100 hover:scale-110 transition-all duration-300 shadow-2xl border-2 md:border-3 lg:border-4 border-red-700">
+                          <svg
+                            className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-red-500 ml-1"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                )}
-              
-              {/* Elegant corner accents */}
-              <div className="absolute top-3 left-3 w-6 h-6 border-l border-t border-white/40 rounded-tl-lg pointer-events-none"></div>
-              <div className="absolute top-3 right-3 w-6 h-6 border-r border-t border-white/40 rounded-tr-lg pointer-events-none"></div>
-              <div className="absolute bottom-3 left-3 w-6 h-6 border-l border-b border-white/40 rounded-bl-lg pointer-events-none"></div>
-              <div className="absolute bottom-3 right-3 w-6 h-6 border-r border-b border-white/40 rounded-br-lg pointer-events-none"></div>
-            </div>
-          </div>
+                </div>
 
-              {/* Decorative side elements */}
-              <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-2">
-                <div className="w-1 h-20 bg-gradient-to-b from-transparent via-red-500 to-transparent"></div>
-              </div>
-              <div className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-2">
-                <div className="w-1 h-20 bg-gradient-to-b from-transparent via-red-500 to-transparent"></div>
-              </div>
-            </div>
+                <p className="text-white text-lg md:text-xl font-medium mt-4 p-4 flex-grow">
+                  Just after 2 month , My mother noticed my back has gotten
+                  wider and my waist smaller. Plus, it's become a habit over
+                  time — you wake up knowing you have one hour of training each
+                  day.
+                </p>
 
-            {/* Bottom accent line */}
-            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1/2 h-0.5 bg-gradient-to-r from-transparent via-red-500/60 to-transparent"></div>
-            
-            {/* Testimonial Information */}
-            <div className="mt-6 text-center">
-              <h3 className="text-xl md:text-2xl font-bold text-white mb-2">Seif El-Masry</h3>
-              <p className="text-red-400 text-lg md:text-xl font-medium">Alex, Egypt</p>
+                <div className="mt-auto p-4 flex items-center justify-start gap-2">
+                  <Image
+                    src="/user.jpg"
+                    alt=""
+                    className="w-12 h-12 rounded-full "
+                    height={40}
+                    width={40}
+                  />
+                  <div>
+                    <h3 className="text-xl  font-bold text-white mb-2">
+                      Seif El-Masry
+                    </h3>
+                    <p className="text-sm text-white  font-medium">
+                      Alex, Egypt
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
           {/* Second Video */}
-          <div className="relative">
+          <div className="relative lg:w-1/2 flex">
             {/* Outer decorative frame */}
-            <div className="relative p-6 md:p-8 lg:p-10">
+            <div className="relative p-6 md:p-8 lg:p-10 flex-1">
               {/* Corner frame elements */}
-              <div className="absolute top-0 left-0 w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24">
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-600 to-transparent"></div>
-                <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-red-600 to-transparent"></div>
-                <div className="absolute top-2 left-2 w-8 h-8 md:w-10 md:h-10 border-l-2 border-t-2 border-red-500/60 rounded-tl-lg"></div>
-              </div>
-              
-              <div className="absolute top-0 right-0 w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24">
-                <div className="absolute top-0 right-0 w-full h-1 bg-gradient-to-l from-red-600 to-transparent"></div>
-                <div className="absolute top-0 right-0 w-1 h-full bg-gradient-to-b from-red-600 to-transparent"></div>
-                <div className="absolute top-2 right-2 w-8 h-8 md:w-10 md:h-10 border-r-2 border-t-2 border-red-500/60 rounded-tr-lg"></div>
-              </div>
-              
-              <div className="absolute bottom-0 left-0 w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24">
-                <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-red-600 to-transparent"></div>
-                <div className="absolute bottom-0 left-0 w-1 h-full bg-gradient-to-t from-red-600 to-transparent"></div>
-                <div className="absolute bottom-2 left-2 w-8 h-8 md:w-10 md:h-10 border-l-2 border-b-2 border-red-500/60 rounded-bl-lg"></div>
-              </div>
-              
-              <div className="absolute bottom-0 right-0 w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24">
-                <div className="absolute bottom-0 right-0 w-full h-1 bg-gradient-to-l from-red-600 to-transparent"></div>
-                <div className="absolute bottom-0 right-0 w-1 h-full bg-gradient-to-t from-red-600 to-transparent"></div>
-                <div className="absolute bottom-2 right-2 w-8 h-8 md:w-10 md:h-10 border-r-2 border-b-2 border-red-500/60 rounded-br-lg"></div>
-              </div>
 
               {/* Inner frame with metallic effect */}
-              <div className="relative">
-                {/* Metallic border effect */}
-                <div className="absolute -inset-1 bg-gradient-to-r from-gray-300 via-gray-100 to-gray-300 rounded-2xl blur-sm opacity-75"></div>
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-gray-400 via-white to-gray-400 rounded-2xl"></div>
-                
-                {/* Main video container */}
-                <div 
-                  className="relative bg-black rounded-xl overflow-hidden shadow-2xl transform transition-all duration-500 hover:scale-[1.01]"
-                  onMouseEnter={() => setIsHovered2(true)}
-                  onMouseLeave={() => setIsHovered2(false)}
-                >
-                  {/* Video element */}
-                  <video 
-                    ref={videoRef2}
-                    className="w-full h-[250px] sm:h-[300px] md:h-[350px] lg:h-[400px] xl:h-[450px] object-cover transition-all duration-700"
-                    src="/vid1.webm"
-                    poster="/sport.png"
-                    preload="metadata"
-                    loading="lazy"
-                    muted
-                    playsInline
-                    onPlay={() => handleVideoPlay(2)}
-                    onPause={() => handleVideoPause(2)}
-                    onEnded={() => handleVideoEnded(2)}
-                    onClick={() => handleVideoClick(2)}
-                    onLoadStart={() => console.log('Testimonials video 2 loading started')}
-                    onCanPlay={() => console.log('Testimonials video 2 can start playing')}
-                    onError={(e) => console.error('Testimonials video 2 error:', e)}
-                    style={{
-                      filter: isPlaying2 ? 'none' : 'brightness(0.8) contrast(1.1)',
-                    }}
-                  />
-                  
-                  {/* Subtle overlay when not playing */}
-                  <div className={`absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20 transition-opacity duration-500 ${isPlaying2 ? 'opacity-0' : 'opacity-100'} pointer-events-none`}></div>
-                  
-                  {/* Play button - only show when video hasn't started or when paused without controls */}
-                  {showPlayIcon2 && !videoRef2.current?.controls && (
-                    <div 
-                      className="absolute inset-0 flex items-center justify-center cursor-pointer transition-all duration-300"
-                      onClick={() => handlePlayClick(2)}
-                    >
-                      <div className="bg-white bg-opacity-95 rounded-full p-2 md:p-3 lg:p-4 hover:bg-opacity-100 hover:scale-110 transition-all duration-300 shadow-2xl border-2 md:border-3 lg:border-4 border-red-700">
-                        <svg 
-                          className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-red-700 ml-1" 
-                          fill="currentColor" 
-                          viewBox="0 0 24 24"
-                        >
-                          <path d="M8 5v14l11-7z"/>
-                        </svg>
+
+              <div
+                className="rounded-xl backdrop-blur-xl shadow-2xl overflow-hidden relative bg-gradient-to-br from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow p-4 h-full flex flex-col"
+                style={{ backgroundSize: "400% 400%" }}
+              >
+                <div className="relative ">
+                  {/* Main video container */}
+                  <div
+                    className="relative rounded-2xl bg-black/30 overflow-hidden shadow-2xl transform transition-all duration-500 hover:scale-[1.01]"
+                    onMouseEnter={() => setIsHovered2(true)}
+                    onMouseLeave={() => setIsHovered2(false)}
+                  >
+                    {/* Video element */}
+                    <video
+                      ref={videoRef2}
+                      className="w-full h-[250px] sm:h-[300px] md:h-[350px] lg:h-[400px] xl:h-[450px] object-cover transition-all duration-700"
+                      src="/vid1.webm"
+                      poster="/sport.png"
+                      preload="metadata"
+                      loading="lazy"
+                      muted
+                      playsInline
+                      onPlay={() => handleVideoPlay(2)}
+                      onPause={() => handleVideoPause(2)}
+                      onEnded={() => handleVideoEnded(2)}
+                      onClick={() => handleVideoClick(2)}
+                      onLoadStart={() =>
+                        console.log("Testimonials video 2 loading started")
+                      }
+                      onCanPlay={() =>
+                        console.log("Testimonials video 2 can start playing")
+                      }
+                      onError={(e) =>
+                        console.error("Testimonials video 2 error:", e)
+                      }
+                      style={{
+                        filter: isPlaying2
+                          ? "none"
+                          : "brightness(0.8) contrast(1.1)",
+                      }}
+                    />
+
+                    {/* Play button - only show when video hasn't started or when paused without controls */}
+                    {showPlayIcon2 && !videoRef2.current?.controls && (
+                      <div
+                        className="absolute  inset-0 w-fit top-10 left-4 cursor-pointer transition-all duration-300"
+                        onClick={() => handlePlayClick(2)}
+                      >
+                        <div className=" bg-white bg-opacity-95 rounded-full p-2 hover:bg-opacity-100 hover:scale-110 transition-all duration-300 shadow-2xl border-2 md:border-3 lg:border-4 border-red-700">
+                          <svg
+                            className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-red-500 ml-1"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </div>
                       </div>
-                    </div>
-                  )}
-                  
-                  {/* Elegant corner accents */}
-                  <div className="absolute top-3 left-3 w-6 h-6 border-l border-t border-white/40 rounded-tl-lg pointer-events-none"></div>
-                  <div className="absolute top-3 right-3 w-6 h-6 border-r border-t border-white/40 rounded-tr-lg pointer-events-none"></div>
-                  <div className="absolute bottom-3 left-3 w-6 h-6 border-l border-b border-white/40 rounded-bl-lg pointer-events-none"></div>
-                  <div className="absolute bottom-3 right-3 w-6 h-6 border-r border-b border-white/40 rounded-br-lg pointer-events-none"></div>
+                    )}
+                  </div>
+                </div>
+
+                <p className="text-white text-lg md:text-xl font-medium mt-4 p-4 flex-grow">
+                I would highly recommend anyone to work with you, it's been really rewarding and encouraging
+                </p>
+
+                <div className="mt-auto p-4 flex items-center justify-start gap-2">
+                  <Image
+                    src="/user.jpg"
+                    alt=""
+                    className="w-12 h-12 rounded-full "
+                    height={40}
+                    width={40}
+                  />
+                  <div>
+                    <h3 className="text-xl  font-bold text-white mb-2">
+                      Ahmed Farag
+                    </h3>
+                    <p className="text-sm text-white  font-medium">Texas, US</p>
+                  </div>
                 </div>
               </div>
-
-              {/* Decorative side elements */}
-              <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-2">
-                <div className="w-1 h-20 bg-gradient-to-b from-transparent via-red-500 to-transparent"></div>
-              </div>
-              <div className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-2">
-                <div className="w-1 h-20 bg-gradient-to-b from-transparent via-red-500 to-transparent"></div>
-              </div>
-            </div>
-
-            {/* Bottom accent line */}
-            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1/2 h-0.5 bg-gradient-to-r from-transparent via-red-500/60 to-transparent"></div>
-            
-            {/* Testimonial Information */}
-            <div className="mt-6 text-center">
-              <h3 className="text-xl md:text-2xl font-bold text-white mb-2">Ahmed Farag</h3>
-              <p className="text-red-400 text-lg md:text-xl font-medium">Texas, US</p>
             </div>
           </div>
         </div>
       </div>
-      
+
       {/* Custom styles for animated gradient text */}
       <style jsx>{`
         .animated-gradient-text {

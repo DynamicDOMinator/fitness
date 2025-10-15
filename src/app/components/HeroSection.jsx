@@ -123,12 +123,12 @@ export default function HeroSection() {
           </div>
         </div>
 
-        <div className="backdrop-blur-xl bg-black/20  bg-gradient-to-br from-[#fd5747]/10 to-blue-700/10">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:mt-20  mt-10  p-5 backdrop-blur-2xl">
-            <div className="flex items-center gap-5">
+        <div className="backdrop-blur-xl bg-gradient-to-br mx-10 from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow rounded-4xl" style={{backgroundSize: '400% 400%'}}>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6 lg:mt-20  mt-10  p-10 ">
+            <div className="flex flex-col items-start gap-5 mr-auto md:m-auto">
               <TiGroup className="text-5xl lg:text-6xl text-[#fd5747]" />
 
-              <div className="border-b-4 md:border-b-0 md:border-r-4 border-[#fd5747] pb-6 md:pb-0 md:pr-7">
+              <div className=" pb-6 md:pb-0">
                 <h2 className="lg:text-3xl text-xl text-[#fd5747]">
                   +7 years experience{" "}
                 </h2>
@@ -138,10 +138,10 @@ export default function HeroSection() {
               </div>
             </div>
 
-            <div className="flex items-center gap-5">
-              <CgGym className="text-5xl lg:text-9xl text-[#fd5747]" />
+            <div className="flex flex-col items-start gap-5 mr-auto md:m-auto">
+              <CgGym className="text-5xl lg:text-6xl text-[#fd5747]" />
 
-              <div className="border-b-4 md:border-b-0 md:border-r-4 border-[#fd5747] pb-6 md:pb-0 md:pr-7">
+              <div className=" pb-6 md:pb-0">
                 <h2 className="lg:text-3xl text-xl text-[#fd5747]">
                   Results-Driven Programs{" "}
                 </h2>
@@ -151,13 +151,17 @@ export default function HeroSection() {
               </div>
             </div>
 
-            <div>
-              <h2 className="lg:text-3xl text-xl text-[#fd5747]">
-                Personalized Coaching{" "}
-              </h2>
-              <p className="text-white pt-2 text-sm lg:text-lg">
-                Workouts & nutrition tailored to your lifestyle
-              </p>
+            <div className="flex flex-col items-start gap-5 mr-auto md:m-auto">
+              <TiGroup className="text-5xl lg:text-6xl text-[#fd5747]" />
+
+              <div className=" pb-6 md:pb-0">
+                <h2 className="lg:text-3xl text-xl text-[#fd5747]">
+                  Personalized Coaching{" "}
+                </h2>
+                <p className="text-white pt-2 text-sm lg:text-lg">
+                  Workouts & nutrition tailored to your lifestyle
+                </p>
+              </div>
             </div>
           </div>
         </div>

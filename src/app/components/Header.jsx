@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -51,7 +52,7 @@ export default function Header() {
     { id: 'home', label: 'Home' },
     { id: 'services', label: 'Services' },
     { id: 'testimonials', label: 'Testimonials' },
-    { id: 'experiences', label: 'Experiences' },
+    // { id: 'experiences', label: 'Experiences' },
     { id: 'pricing', label: 'Pricing' },
     { id: 'transformations', label: 'Transformations' },
     { id: 'journey', label: 'Journey' },
@@ -60,13 +61,8 @@ export default function Header() {
 
   return (
     <header 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled 
-          ? 'bg-[#1a1c21]/95 backdrop-blur-md shadow-lg' 
-          : 'bg-transparent'
-      }`}
-    >
-      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
+      className="fixed max-w-[1200px] mx-auto rounded-2xl  top-3 left-0 right-0 z-50 transition-all duration-300 bg-[#1a1c21]/20 backdrop-blur-xl shadow-lg border-b border-white/10" >
+      <div className=" mx-auto px-4 sm:px-6 lg:px-8 ">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <div className="flex-shrink-0">
@@ -74,7 +70,7 @@ export default function Header() {
               onClick={() => scrollToSection('home')}
               className="text-2xl md:text-3xl font-bold text-white hover:text-red-500 transition-colors duration-300"
             >
-              FitNis
+             <Image src="/logo.png" alt="FitNis" width={120} height={120} />
             </button>
           </div>
 

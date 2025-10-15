@@ -22,18 +22,19 @@ export default function Home() {
       <section id="testimonials">
         <Testimonials />
       </section>
-      <section id="experiences">
+      {/* <section id="experiences">
         <Experiences />
-      </section>
+      </section> */}
       <section id="pricing">
         <Pricing />
-      </section>
-      <section id="fitness-tools">
-        <FitnessTools />
       </section>
       <section id="transformations">
         <Transformations />
       </section>
+      <section id="fitness-tools">
+        <FitnessTools />
+      </section>
+
       <section id="journey">
         <Journey />
       </section>
