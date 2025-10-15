@@ -209,14 +209,14 @@ export default function Service() {
             shape, instill healthy habits and mindset to maintain a healthier
             lifestyle.
           </p>
-<p className=" flex items-center gap-2 pt-10  text-center md:text-left  text-gray-300 md:text-xl text-sm">
+<p className=" flex items-center gap-2 pt-10 border-b-2 border-red-500 w-fit  text-center md:text-left  text-gray-300 md:text-xl text-sm">
 
 <IoMdFemale className="text-red-600 md:text-2xl " />
 
 
   There are female coaches in the team
 </p>
- <div className="w-[55%]  h-[2px] bg-red-600 mt-2  "></div>
+
           
           {/* Single Video/Image Element - Mobile */}
           <div

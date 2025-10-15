@@ -44,7 +44,6 @@ export default function HeroSection() {
     <div>
       <div className="hero relative ">
         <div className="md:pt-50 pt-30 ">
-    
           <div className="flex items-center justify-center relative z-[10]   ">
             <div className="lg:text-8xl md:text-6xl text-4xl text-center">
               <h1 className="text-white font-bold p-2 md:p-0">
@@ -54,17 +53,11 @@ export default function HeroSection() {
                 </span>
               </h1>
 
-              <h2 className="text-white font-bold pt-3 p-2 md:p-0">
-                no extremes, just{" "}
-                <span className="bg-gradient-to-r from-[#fd5747] to-blue-700 bg-clip-text text-transparent">
-                  results.
-                </span>
-              </h2>
-
               <p className="text-white p-3 md:p-0 text-lg md:text-xl lg:text-2xl font-normal mt-6 max-w-4xl mx-auto leading-relaxed">
                 Fitness should improve your quality of life. Our Exercise
                 Programs are tailored to fit your current lifestyle and help you
-                make better choices regarding your health– no crash-diets, no
+                make better choices regarding your health no{" "}
+                <span className="text-red-500">crash diets</span>, no
                 unrealistic 2 hours workouts
               </p>
             </div>
@@ -98,7 +91,7 @@ export default function HeroSection() {
 
             {/* Subtle overlay when not playing - doesn't cover controls area */}
             <div
-              className={`absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20 transition-opacity duration-500 ${
+              className={`absolute rounded-3xl inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20 transition-opacity duration-500 ${
                 isPlaying ? "opacity-0" : "opacity-100"
               } pointer-events-none`}
             ></div>
@@ -123,17 +116,15 @@ export default function HeroSection() {
           </div>
         </div>
 
-<div>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-            <path
-              fill="#f94230"
-              className=""
-              fill-opacity="1"
-              d="M0,128L48,122.7C96,117,192,107,288,101.3C384,96,480,96,576,122.7C672,149,768,203,864,218.7C960,235,1056,213,1152,186.7C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
-            ></path>
-          </svg>
+        <div className="flex items-center justify-center pt-10 gap-10">
+          <button className="bg-[#fd5747] text-white text-xl px-6 py-2 rounded-full font-bold hover:bg-[#e64a3a] transition-colors duration-300">
+            Get Fit
+          </button>
 
-</div>
+          <button className=" text-[#fd5747] px-6 py-2 rounded-full font-bold hover:bg-[#f5f5f5] transition-colors duration-300">
+            Free Services
+          </button>
+        </div>
         <div
           className="backdrop-blur-xl bg-gradient-to-br mx-10 from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow rounded-4xl"
           style={{ backgroundSize: "400% 400%" }}
