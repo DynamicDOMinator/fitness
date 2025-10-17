@@ -318,12 +318,25 @@ export default function FitnessTools() {
             <div
               key={tool.id}
               onClick={() => openModal(tool.id)}
-              className="rounded-3xl backdrop-blur-xl shadow-2xl overflow-hidden relative flex flex-col cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-3xl bg-gradient-to-br from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow group"
+              className={`rounded-3xl backdrop-blur-xl shadow-2xl overflow-hidden relative flex flex-col cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-3xl ring-1 animate-gradient-slow group ${
+                tool.id === 'macros' 
+                  ? 'bg-gradient-to-br from-[#fd5747]/20 via-red-600/10 to-[#fd5747]/20 ring-[#fd5747]/30 border-2 border-[#fd5747]/50' 
+                  : 'bg-gradient-to-br from-black/50 via-gray-800/30 to-black/50 ring-white/10'
+              }`}
               style={{
                 backgroundSize: '400% 400%',
                 height: '320px',
               }}
             >
+              {/* Most Popular Badge */}
+              {tool.id === 'macros' && (
+                <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 z-20">
+                  <div className="bg-gradient-to-r from-[#fd5747] to-red-600 text-white text-xs font-bold px-4 py-2 rounded-full shadow-lg animate-pulse">
+                    OUR BEST TOOL
+                  </div>
+                </div>
+              )}
+
               {/* Card Content */}
               <div className="p-6 flex flex-col items-center text-center h-full justify-center">
                 {/* Icon */}
@@ -332,17 +345,25 @@ export default function FitnessTools() {
                 </div>
                 
                 {/* Title */}
-                <h3 className="text-xl font-semibold text-white mb-3">
+                <h3 className={`text-xl font-semibold mb-3 ${
+                  tool.id === 'macros' ? 'text-white' : 'text-white'
+                }`}>
                   {tool.title}
                 </h3>
                 
                 {/* Description */}
-                <p className="text-gray-300 text-sm leading-relaxed">
+                <p className={`text-sm leading-relaxed ${
+                  tool.id === 'macros' ? 'text-gray-200' : 'text-gray-300'
+                }`}>
                   {tool.description}
                 </p>
                 
                 {/* Click indicator */}
-                <div className="mt-4 text-[#fd5747] text-sm font-medium group-hover:text-white transition-colors duration-300">
+                <div className={`mt-4 text-sm font-medium transition-colors duration-300 ${
+                  tool.id === 'macros' 
+                    ? 'text-[#fd5747] group-hover:text-white' 
+                    : 'text-[#fd5747] group-hover:text-white'
+                }`}>
                   Click to calculate →
                 </div>
               </div>
