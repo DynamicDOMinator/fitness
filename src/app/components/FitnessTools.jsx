@@ -60,14 +60,14 @@ export default function FitnessTools() {
   };
 
   const calculateMacroMap = (formData) => {
-    const { weight, height, age, gender, activity, currentWeight, targetWeight, timePeriod } = formData;
+    const { weight, height, age, gender, activity, targetWeight, timePeriod } = formData;
     
     // Calculate BMR using Mifflin-St Jeor Equation
     let bmr;
     if (gender === 'male') {
-      bmr = 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
+      bmr = 10 * weight + 6.25 * height - 5 * age + 5;
     } else {
-      bmr = 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
+      bmr = 10 * weight + 6.25 * height - 5 * age - 161;
     }
     
     // Calculate TDEE (Total Daily Energy Expenditure)
@@ -82,7 +82,7 @@ export default function FitnessTools() {
     const tdee = Math.round(bmr * activityMultipliers[activity]);
     
     // Calculate weight change needed and weekly rate
-    const weightChange = targetWeight - currentWeight;
+    const weightChange = targetWeight - weight;
     const weeksNeeded = timePeriod * 4.33; // Convert months to weeks (average)
     const weeklyWeightChange = Math.abs(weightChange / weeksNeeded);
     
@@ -594,16 +594,7 @@ function ModalContent({ toolId, onSubmit, result }) {
                 <option value="extra">Extra Active (very hard exercise, physical job)</option>
               </select>
             </div>
-            <div>
-              <label className="block text-white text-sm font-medium mb-2">Current Weight (kg)</label>
-              <input
-                type="number"
-                step="0.1"
-                required
-                className="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[#fd5747]/50"
-                onChange={(e) => handleInputChange('currentWeight', parseFloat(e.target.value))}
-              />
-            </div>
+
             <div>
               <label className="block text-white text-sm font-medium mb-2">Target Weight (kg)</label>
               <input
