@@ -8,6 +8,7 @@ import Journey from "@/app/components/Journey";
 import FAQs from "@/app/components/FAQs";
 import Pricing from "@/app/components/Pricing";
 import FitnessTools from "@/app/components/FitnessTools";
+import Contact from "@/app/components/Contact";
 
 export default function Home() {
   return (
@@ -40,6 +41,9 @@ export default function Home() {
       </section>
       <section id="faqs">
         <FAQs />
+      </section>
+      <section id="contact">
+        <Contact />
       </section>
     </div>
   );
