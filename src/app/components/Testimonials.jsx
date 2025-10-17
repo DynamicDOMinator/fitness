@@ -88,16 +88,11 @@ export default function Testimonials() {
   };
 
   return (
-    <div className="flex items-center justify-center p-4 md:p-8 lg:p-12 md:mt-96  lg:mt-0">
-      <div className="relative max-w-7xl w-full">
+    <div className="flex items-center justify-center  md:p-8 lg:p-12 md:mt-96  lg:mt-0">
+      <div className="relative max-w-[1300px] pt-20 md:pt-0 w-full">
         {/* Heading */}
-        <h5 className="text-6xl font-bold  text-white text-center ">
-          What Our
-        </h5>
-        <h5 className="text-6xl font-bold flex items-center justify-center  text-white text-center mb-12 mt-2 gap-2 ">
-          Clients{" "}
-          <VscPreview className="bg-white text-black p-2 rounded-full" />
-          Say
+    <h5 className="lg:text-6xl text-3xl font-bold text-center mb-12 animated-gradient-text">
+          HEAR IT FROM THEM
         </h5>
         {/* Grid container for 2 videos */}
         <div className="flex flex-col lg:flex-row items-stretch justify-center gap-6 md:gap-8 lg:gap-12">

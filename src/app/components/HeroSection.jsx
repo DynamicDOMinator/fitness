@@ -126,7 +126,7 @@ export default function HeroSection() {
           </button>
         </div>
         <div
-          className="backdrop-blur-xl bg-gradient-to-br mx-10 from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow rounded-4xl"
+          className="backdrop-blur-xl bg-gradient-to-br lg:mx-10 mx-4 from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow rounded-4xl"
           style={{ backgroundSize: "400% 400%" }}
         >
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 lg:mt-20  mt-10  p-10 ">
