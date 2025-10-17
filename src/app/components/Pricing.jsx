@@ -26,9 +26,49 @@ const CrossIcon = () => (
   </svg>
 );
 
+// Close Icon for Modal
+const CloseIcon = () => (
+  <svg
+    className="w-6 h-6"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M6 18L18 6M6 6l12 12"
+    />
+  </svg>
+);
+
+// Upload Icon
+const UploadIcon = () => (
+  <svg
+    className="w-8 h-8 text-gray-400"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+    />
+  </svg>
+);
+
 export default function Pricing() {
   // State to track selected period for each plan
   const [selectedPeriods, setSelectedPeriods] = useState({});
+
+  // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState(null);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
+  const [uploadedFile, setUploadedFile] = useState(null);
 
   // Period options with discounts
   const periodOptions = [
@@ -75,682 +115,1003 @@ export default function Pricing() {
     }));
   };
 
+  // Function to handle Get Started button click
+  const handleGetStarted = (planTitle, basePrice) => {
+    const priceInfo = calculatePrice(basePrice, planTitle);
+    setSelectedPlan({
+      title: planTitle,
+      basePrice,
+      ...priceInfo,
+    });
+    setIsModalOpen(true);
+    setSelectedPaymentMethod("");
+    setUploadedFile(null);
+  };
+
+  // Function to handle duration change in modal
+  const handleModalDurationChange = (newPeriod) => {
+    if (selectedPlan) {
+      const priceInfo = calculatePrice(
+        selectedPlan.basePrice,
+        selectedPlan.title
+      );
+      // Update the selected periods state
+      setSelectedPeriods((prev) => ({
+        ...prev,
+        [selectedPlan.title]: parseInt(newPeriod),
+      }));
+
+      // Recalculate price with new period
+      const newPriceInfo = calculatePrice(
+        selectedPlan.basePrice,
+        selectedPlan.title
+      );
+      setSelectedPlan((prev) => ({
+        ...prev,
+        ...newPriceInfo,
+      }));
+    }
+  };
+
+  // Function to handle file upload
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setUploadedFile(file);
+    }
+  };
+
+  // Function to handle form submission
+  const handleSubmit = () => {
+    if (!selectedPaymentMethod) {
+      alert("Please select a payment method");
+      return;
+    }
+    if (!uploadedFile) {
+      alert("Please upload your payment receipt");
+      return;
+    }
+
+    // Here you would typically send the data to your backend
+    alert(
+      `Payment submitted successfully!\nPlan: ${selectedPlan.title}\nAmount: $${selectedPlan.totalPrice}\nMethod: ${selectedPaymentMethod}\nReceipt: ${uploadedFile.name}`
+    );
+    setIsModalOpen(false);
+  };
+
   return (
-    <section className="py-16 backdrop-blur-xl">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-5xl font-extrabold text-center tracking-tight">
-          <span className="text-white">Pricing</span>{" "}
-          <span className="text-red-500">Plans</span>
-        </h2>
-
-        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4 ">
-          {/* Regular - Diet only */}
-          <div
-            className="rounded-3xl backdrop-blur-xl shadow-2xl overflow-hidden relative flex flex-col bg-gradient-to-br from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow"
-            style={{
-              backgroundSize: "400% 400%",
-              minHeight: "700px",
-            }}
-          >
-            {/* Card header */}
-            <div className="px-6 pt-6 flex-shrink-0">
-              <div className="flex items-center justify-between">
-                <h3 className="text-xl font-semibold text-white">
-                  Regular - Diet only
-                </h3>
-              </div>
-
-              {/* Period Selection */}
-              <div className="mt-3">
-                <select
-                  value={selectedPeriods["Regular - Diet only"] || 1}
-                  onChange={(e) =>
-                    handlePeriodChange("Regular - Diet only", e.target.value)
-                  }
-                  className="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#fd5747]/50 focus:border-[#fd5747]/50 backdrop-blur-sm"
-                >
-                  {periodOptions.map((option) => (
-                    <option
-                      key={option.value}
-                      value={option.value}
-                      className="bg-gray-800 text-white"
-                    >
-                      {option.label}{" "}
-                      {option.discount > 0 &&
-                        `(${Math.round(option.discount * 100)}% off)`}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Price */}
-              <div className="mt-3">
-                <div className="flex items-baseline">
-                  <span
-                    className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#fd5747] to-red-600 animate-gradient-x"
-                    style={{ backgroundSize: "200% 200%" }}
-                  >
-                    ${calculatePrice(49, "Regular - Diet only").monthlyPrice}
-                  </span>
-                  <span className="text-gray-400 text-sm ml-1">/month</span>
-                </div>
-                {calculatePrice(49, "Regular - Diet only").period > 1 && (
-                  <div className="mt-1">
-                    <span className="text-sm text-gray-300">
-                      Total: ${calculatePrice(49, "Regular - Diet only").totalPrice} for {calculatePrice(49, "Regular - Diet only").period}{" "}
-                      months
-                    </span>
-                    {calculatePrice(49, "Regular - Diet only").discount > 0 && (
-                      <span className="ml-2 text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded-full">
-                        Save {Math.round(calculatePrice(49, "Regular - Diet only").discount * 100)}%
-                      </span>
-                    )}
-                  </div>
-                )}
-              </div>
-
-              <p className="mt-3 text-gray-300 text-sm">
-                Result driven and Personalized nutrition plan.
-              </p>
-            </div>
-
-            {/* Divider accent */}
-            <div
-              className="mt-6 h-px mx-6 bg-gradient-to-r from-[#fd5747]/50 via-white/10 to-red-600/50 animate-gradient-x"
-              style={{ backgroundSize: "200% 200%" }}
-            />
-
-            {/* Features */}
-            <div className="flex-1 flex flex-col justify-between">
-              <ul className="px-6 pt-4 space-y-2 text-gray-200 text-sm ">
-                <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 mt-0.5">
-                    <CheckIcon />
-                  </span>
-                  <span className="text-gray-200">
-                    Customized Diet & medical lab Results
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 mt-0.5">
-                    <CheckIcon />
-                  </span>
-                  <span className="text-gray-200">
-                    Change diet & Exercise plan when needed
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 mt-0.5">
-                    <CheckIcon />
-                  </span>
-                  <span className="text-gray-200">
-                    30mins onboarding zoom
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 mt-0.5">
-                    <CheckIcon />
-                  </span>
-                  <span className="text-gray-200">
-                    Whatsapp weekly support
-                  </span>
-                </li>
-            
-                <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 mt-0.5">
-                    <CrossIcon />
-                  </span>
-                  <span className="text-gray-500 line-through">
-                    Video Exercise form correction
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 mt-0.5">
-                    <CrossIcon />
-                  </span>
-                  <span className="text-gray-500 line-through">
-                    Exercise sheet to track progress
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 mt-0.5">
-                    <CrossIcon />
-                  </span>
-                  <span className="text-gray-500 line-through">
-                    2x 45mins zoom check-in / month
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 mt-0.5">
-                    <CrossIcon />
-                  </span>
-                  <span className="text-gray-500 line-through">
-                    1 live workout session / month
-                  </span>
-                </li>
-              </ul>
-            </div>
-
-            {/* CTA */}
-            <div className="px-6 pb-6 flex-shrink-0">
+    <>
+      {/* Payment Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-black rounded-3xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto ring-1 ring-white/10">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-6 border-b border-white/10">
+              <h3 className="text-xl font-bold text-white">
+                Complete Your Purchase
+              </h3>
               <button
-                className="w-full rounded-2xl bg-gradient-to-r from-[#fd5747] via-red-500 to-red-700 text-white font-semibold py-2.5 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all duration-300 animate-gradient-x"
-                style={{ backgroundSize: "300% 300%" }}
+                onClick={() => setIsModalOpen(false)}
+                className="text-gray-400 hover:text-white transition-colors"
               >
-                Get Started
+                <CloseIcon />
               </button>
             </div>
 
-            {/* Bottom accent radius strip - now animated */}
-            <div
-              className="h-1 bg-gradient-to-r from-[#fd5747] via-white/10 to-red-600 animate-gradient-x"
-              style={{ backgroundSize: "300% 300%" }}
-            />
-          </div>
+            {/* Modal Content */}
+            <div className="p-6 space-y-6">
+              {/* Plan Details */}
+              <div className="bg-black/30 rounded-2xl p-4 border border-white/10">
+                <h4 className="text-lg font-semibold text-white mb-2">
+                  {selectedPlan?.title}
+                </h4>
 
-          {/* Regular - Diet & Exercise */}
-          <div
-            className="rounded-3xl backdrop-blur-xl shadow-2xl overflow-hidden relative flex flex-col bg-gradient-to-br from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow"
-            style={{
-              backgroundSize: "400% 400%",
-              minHeight: "700px",
-            }}
-          >
-            {/* Card header */}
-            <div className="px-6 pt-6 flex-shrink-0">
-              <div className="flex items-center justify-between">
-                <h3 className="text-xl font-semibold text-white">
-                  Regular - Diet & Exercise
-                </h3>
-              </div>
-
-              {/* Period Selection */}
-              <div className="mt-3">
-                <select
-                  value={selectedPeriods["Regular - Diet & Exercise"] || 1}
-                  onChange={(e) =>
-                    handlePeriodChange("Regular - Diet & Exercise", e.target.value)
-                  }
-                  className="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#fd5747]/50 focus:border-[#fd5747]/50 backdrop-blur-sm"
-                >
-                  {periodOptions.map((option) => (
-                    <option
-                      key={option.value}
-                      value={option.value}
-                      className="bg-gray-800 text-white"
-                    >
-                      {option.label}{" "}
-                      {option.discount > 0 &&
-                        `(${Math.round(option.discount * 100)}% off)`}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Price */}
-              <div className="mt-3">
-                <div className="flex items-baseline">
-                  <span
-                    className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#fd5747] to-red-600 animate-gradient-x"
-                    style={{ backgroundSize: "200% 200%" }}
+                {/* Duration Selection in Modal */}
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Change Duration:
+                  </label>
+                  <select
+                    value={selectedPlan?.period || 1}
+                    onChange={(e) => handleModalDurationChange(e.target.value)}
+                    className="w-full bg-black/50 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#fd5747]/50 focus:border-[#fd5747]/50 backdrop-blur-sm"
                   >
-                    ${calculatePrice(69, "Regular - Diet & Exercise").monthlyPrice}
-                  </span>
-                  <span className="text-gray-400 text-sm ml-1">/month</span>
+                    {periodOptions.map((option) => (
+                      <option
+                        key={option.value}
+                        value={option.value}
+                        className="bg-gray-800 text-white"
+                      >
+                        {option.label}{" "}
+                        {option.discount > 0 &&
+                          `(${Math.round(option.discount * 100)}% off)`}
+                      </option>
+                    ))}
+                  </select>
                 </div>
-                {calculatePrice(69, "Regular - Diet & Exercise").period > 1 && (
-                  <div className="mt-1">
-                    <span className="text-sm text-gray-300">
-                      Total: ${calculatePrice(69, "Regular - Diet & Exercise").totalPrice} for {calculatePrice(69, "Regular - Diet & Exercise").period}{" "}
-                      months
+
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-300">Monthly Price:</span>
+                    <span className="text-white font-semibold">
+                      ${selectedPlan?.monthlyPrice}
                     </span>
-                    {calculatePrice(69, "Regular - Diet & Exercise").discount > 0 && (
-                      <span className="ml-2 text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded-full">
-                        Save {Math.round(calculatePrice(69, "Regular - Diet & Exercise").discount * 100)}%
-                      </span>
-                    )}
                   </div>
-                )}
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-300">Duration:</span>
+                    <span className="text-white font-semibold">
+                      {selectedPlan?.period} month(s)
+                    </span>
+                  </div>
+                  {selectedPlan?.discount > 0 && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-300">Discount:</span>
+                      <span className="text-green-400 font-semibold">
+                        {Math.round(selectedPlan.discount * 100)}% off
+                      </span>
+                    </div>
+                  )}
+                  <div className="border-t border-white/10 pt-2 mt-2">
+                    <div className="flex justify-between text-lg font-bold">
+                      <span className="text-white">Total Amount:</span>
+                      <span className="text-[#fd5747]">
+                        ${selectedPlan?.totalPrice}
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              <p className="mt-3 text-gray-300 text-sm">
-                Result driven and Personalized nutrition & workout plan.
-              </p>
-            </div>
+              {/* Payment Methods */}
+              <div>
+                <h5 className="text-white font-semibold mb-3">
+                  Choose Payment Method
+                </h5>
+                <div className="space-y-3">
+                  <label className="flex items-center space-x-3 cursor-pointer p-3 rounded-lg border border-white/10 hover:border-[#fd5747]/30 transition-colors">
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value="vodafone-cash"
+                      checked={selectedPaymentMethod === "vodafone-cash"}
+                      onChange={(e) => setSelectedPaymentMethod(e.target.value)}
+                      className="w-4 h-4 text-[#fd5747] bg-gray-700 border-gray-600 focus:ring-[#fd5747] focus:ring-2"
+                    />
+                    <img
+                      src="/vodafone.png"
+                      alt="Vodafone Cash"
+                      className="w-10 h-10 object-cover rounded-full"
+                    />
+                    <span className="text-white">Vodafone Cash</span>
+                  </label>
 
-            {/* Divider accent */}
-            <div
-              className="mt-6 h-px mx-6 bg-gradient-to-r from-[#fd5747]/50 via-white/10 to-red-600/50 animate-gradient-x"
-              style={{ backgroundSize: "200% 200%" }}
-            />
+                  <label className="flex items-center space-x-3 cursor-pointer p-3 rounded-lg border border-white/10 hover:border-[#fd5747]/30 transition-colors">
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value="instapay"
+                      checked={selectedPaymentMethod === "instapay"}
+                      onChange={(e) => setSelectedPaymentMethod(e.target.value)}
+                      className="w-4 h-4 text-[#fd5747] bg-gray-700 border-gray-600 focus:ring-[#fd5747] focus:ring-2"
+                    />
+                    <img
+                      src="/instapay.png"
+                      alt="InstaPay"
+                      className="w-10 h-10 object-cover rounded-full"
+                    />
+                    <span className="text-white">InstaPay</span>
+                  </label>
+                </div>
+              </div>
 
-            {/* Features */}
-            <div className="flex-1 flex flex-col justify-between">
-              <ul className="px-6 py-4 space-y-2 text-gray-200 text-sm max-h-96 overflow-y-auto">
-                <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 mt-0.5">
-                    <CheckIcon />
-                  </span>
-                  <span className="text-gray-200">
-                    Customized Diet & medical lab Results
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 mt-0.5">
-                    <CheckIcon />
-                  </span>
-                  <span className="text-gray-200">
-                    Change diet & Exercise plan when needed
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 mt-0.5">
-                    <CheckIcon />
-                  </span>
-                  <span className="text-gray-200">
-                    30mins onboarding zoom
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 mt-0.5">
-                    <CheckIcon />
-                  </span>
-                  <span className="text-gray-200">
-                    Whatsapp weekly support
-                  </span>
-                </li>
-              
-                <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 mt-0.5">
-                    <CheckIcon />
-                  </span>
-                  <span className="text-gray-200">
-                    Video Exercise form correction
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 mt-0.5">
-                    <CheckIcon />
-                  </span>
-                  <span className="text-gray-200">
-                    Exercise sheet to track progress
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 mt-0.5">
-                    <CrossIcon />
-                  </span>
-                  <span className="text-gray-500 line-through">
-                    2x 45mins zoom check-in / month
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 mt-0.5">
-                    <CrossIcon />
-                  </span>
-                  <span className="text-gray-500 line-through">
-                    1 live workout session / month
-                  </span>
-                </li>
-              </ul>
-            </div>
+              {/* Payment Instructions */}
+              {selectedPaymentMethod && (
+                <div className="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-4">
+                  <h6 className="text-blue-400 font-semibold mb-2">
+                    Payment Instructions
+                  </h6>
+                  {selectedPaymentMethod === "vodafone-cash" && (
+                    <div className="text-sm text-gray-300 space-y-1">
+                      <p>
+                        • Send ${selectedPlan?.totalPrice} to:{" "}
+                        <span className="text-white font-semibold">
+                          01018294811{" "}
+                        </span>
+                      </p>
 
-            {/* CTA */}
-            <div className="px-6 pb-6 flex-shrink-0">
+                      <p>• Upload the payment receipt below</p>
+                    </div>
+                  )}
+                  {selectedPaymentMethod === "instapay" && (
+                    <div className="text-sm text-gray-300 space-y-1">
+                      <p>
+                        • Send ${selectedPlan?.totalPrice} to:{" "}
+                        <span className="text-white font-semibold">
+                          moe_2@instapay
+                        </span>
+                      </p>
+
+                      <p>• Upload the payment receipt below</p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* File Upload */}
+              <div>
+                <h5 className="text-white font-semibold mb-3">
+                  Upload Payment Receipt
+                </h5>
+                <div className="border-2 border-dashed border-gray-600 rounded-2xl p-6 text-center hover:border-[#fd5747]/50 transition-colors">
+                  <input
+                    type="file"
+                    id="receipt-upload"
+                    accept="image/*,.pdf"
+                    onChange={handleFileUpload}
+                    className="hidden"
+                  />
+                  <label htmlFor="receipt-upload" className="cursor-pointer">
+                    <UploadIcon />
+                    <p className="mt-2 text-sm text-gray-300">
+                      {uploadedFile ? (
+                        <span className="text-green-400 font-semibold">
+                          {uploadedFile.name}
+                        </span>
+                      ) : (
+                        <>
+                          <span className="text-white font-semibold">
+                            Click to upload
+                          </span>{" "}
+                          or drag and drop
+                          <br />
+                          <span className="text-xs text-gray-400">
+                            PNG, JPG, PDF up to 10MB
+                          </span>
+                        </>
+                      )}
+                    </p>
+                  </label>
+                </div>
+              </div>
+
+              {/* Submit Button */}
               <button
-                className="w-full rounded-2xl bg-gradient-to-r from-[#fd5747] via-red-500 to-red-700 text-white font-semibold py-2.5 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all duration-300 animate-gradient-x"
-                style={{ backgroundSize: "300% 300%" }}
+                onClick={handleSubmit}
+                disabled={!selectedPaymentMethod || !uploadedFile}
+                className="w-full bg-gradient-to-r from-[#fd5747] via-red-500 to-red-700 text-white font-semibold py-3 rounded-2xl hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
               >
-                Get Started
+                Submit Payment
               </button>
             </div>
-
-            {/* Bottom accent radius strip - now animated */}
-            <div
-              className="h-1 bg-gradient-to-r from-[#fd5747] via-white/10 to-red-600 animate-gradient-x"
-              style={{ backgroundSize: "300% 300%" }}
-            />
-          </div>
-
-          {/* Advanced coaching */}
-          <div
-            className="rounded-3xl backdrop-blur-xl shadow-2xl overflow-hidden relative flex flex-col bg-gradient-to-br from-[#fd5747]/25 via-red-500/20 to-red-600/25 ring-2 ring-gradient-to-r ring-[#fd5747]/60 animate-gradient-x"
-            style={{
-              backgroundSize: "400% 400%",
-              minHeight: "700px",
-            }}
-          >
-            {/* Popular badge */}
-            <div className="absolute -top-1  left-1/2 transform -translate-x-1/2 z-10">
-              <span
-                className="bg-gradient-to-r from-[#fd5747] via-red-500 to-red-700 text-white text-xs font-bold px-4 py-1 rounded-full animate-gradient-x shadow-lg"
-                style={{ backgroundSize: "200% 200%" }}
-              >
-                Most Popular
-              </span>
-            </div>
-
-            {/* Card header */}
-            <div className="px-6 pt-6 flex-shrink-0">
-              <div className="flex items-center justify-between">
-                <h3 className="text-xl font-semibold text-white">
-                  Advanced coaching
-                </h3>
-              </div>
-
-              {/* Period Selection */}
-              <div className="mt-3">
-                <select
-                  value={selectedPeriods["Advanced coaching"] || 1}
-                  onChange={(e) =>
-                    handlePeriodChange("Advanced coaching", e.target.value)
-                  }
-                  className="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#fd5747]/50 focus:border-[#fd5747]/50 backdrop-blur-sm"
-                >
-                  {periodOptions.map((option) => (
-                    <option
-                      key={option.value}
-                      value={option.value}
-                      className="bg-gray-800 text-white"
-                    >
-                      {option.label}{" "}
-                      {option.discount > 0 &&
-                        `(${Math.round(option.discount * 100)}% off)`}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Price */}
-              <div className="mt-3">
-                <div className="flex items-baseline">
-                  <span
-                    className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#fd5747] to-red-600 animate-gradient-x"
-                    style={{ backgroundSize: "200% 200%" }}
-                  >
-                    ${calculatePrice(129, "Advanced coaching").monthlyPrice}
-                  </span>
-                  <span className="text-gray-400 text-sm ml-1">/month</span>
-                </div>
-                {calculatePrice(129, "Advanced coaching").period > 1 && (
-                  <div className="mt-1">
-                    <span className="text-sm text-gray-300">
-                      Total: ${calculatePrice(129, "Advanced coaching").totalPrice} for {calculatePrice(129, "Advanced coaching").period}{" "}
-                      months
-                    </span>
-                    {calculatePrice(129, "Advanced coaching").discount > 0 && (
-                      <span className="ml-2 text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded-full">
-                        Save {Math.round(calculatePrice(129, "Advanced coaching").discount * 100)}%
-                      </span>
-                    )}
-                  </div>
-                )}
-              </div>
-
-              <p className="mt-3 text-gray-300 text-sm">
-                Result Driven personalized programs + zoom meeting with mohamed
-              </p>
-            </div>
-
-            {/* Divider accent */}
-            <div
-              className="mt-6 h-px mx-6 bg-gradient-to-r from-[#fd5747]/50 via-white/10 to-red-600/50 animate-gradient-x"
-              style={{ backgroundSize: "200% 200%" }}
-            />
-
-            {/* Features */}
-            <div className="flex-1 flex flex-col justify-between">
-              <ul className="px-6 py-4 space-y-2 text-gray-200 text-sm max-h-96 overflow-y-auto">
-                <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 mt-0.5">
-                    <CheckIcon />
-                  </span>
-                  <span className="text-gray-200">
-                    Customized Diet & medical lab Results
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 mt-0.5">
-                    <CheckIcon />
-                  </span>
-                  <span className="text-gray-200">
-                    Change diet & Exercise plan when needed
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 mt-0.5">
-                    <CheckIcon />
-                  </span>
-                  <span className="text-gray-200">
-                    30mins onboarding zoom
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 mt-0.5">
-                    <CheckIcon />
-                  </span>
-                  <span className="text-gray-200">
-                    Whatsapp weekly support
-                  </span>
-                </li>
-               
-                <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 mt-0.5">
-                    <CheckIcon />
-                  </span>
-                  <span className="text-gray-200">
-                    Video Exercise form correction
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 mt-0.5">
-                    <CheckIcon />
-                  </span>
-                  <span className="text-gray-200">
-                    Exercise sheet to track progress
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 mt-0.5">
-                    <CheckIcon />
-                  </span>
-                  <span className="text-gray-200">
-                   1x45mins zoom check-in / month
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 mt-0.5">
-                    <CrossIcon />
-                  </span>
-                  <span className="text-gray-500 line-through">
-                    1 live workout session / month
-                  </span>
-                </li>
-              </ul>
-            </div>
-
-            {/* CTA */}
-            <div className="px-6 pb-6 flex-shrink-0">
-              <button
-                className="w-full rounded-2xl bg-gradient-to-r from-[#fd5747] via-red-500 to-red-700 text-white font-semibold py-2.5 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all duration-300 animate-gradient-x"
-                style={{ backgroundSize: "300% 300%" }}
-              >
-                Get Started
-              </button>
-            </div>
-
-            {/* Bottom accent radius strip - now animated */}
-            <div
-              className="h-1 bg-gradient-to-r from-[#fd5747] via-white/10 to-red-600 animate-gradient-x"
-              style={{ backgroundSize: "300% 300%" }}
-            />
-          </div>
-
-          {/* Elite athlete */}
-          <div
-            className="rounded-3xl backdrop-blur-xl shadow-2xl overflow-hidden relative flex flex-col bg-gradient-to-br from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow"
-            style={{
-              backgroundSize: "400% 400%",
-              minHeight: "700px",
-            }}
-          >
-            {/* Card header */}
-            <div className="px-6 pt-6 flex-shrink-0">
-              <div className="flex items-center justify-between">
-                <h3 className="text-xl font-semibold text-white">
-                  Elite athlete
-                </h3>
-              </div>
-
-              {/* Period Selection */}
-              <div className="mt-3">
-                <select
-                  value={selectedPeriods["Elite athlete"] || 1}
-                  onChange={(e) =>
-                    handlePeriodChange("Elite athlete", e.target.value)
-                  }
-                  className="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#fd5747]/50 focus:border-[#fd5747]/50 backdrop-blur-sm"
-                >
-                  {periodOptions.map((option) => (
-                    <option
-                      key={option.value}
-                      value={option.value}
-                      className="bg-gray-800 text-white"
-                    >
-                      {option.label}{" "}
-                      {option.discount > 0 &&
-                        `(${Math.round(option.discount * 100)}% off)`}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Price */}
-              <div className="mt-3">
-                <div className="flex items-baseline">
-                  <span
-                    className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#fd5747] to-red-600 animate-gradient-x"
-                    style={{ backgroundSize: "200% 200%" }}
-                  >
-                    ${calculatePrice(199, "Elite athlete").monthlyPrice}
-                  </span>
-                  <span className="text-gray-400 text-sm ml-1">/month</span>
-                </div>
-                {calculatePrice(199, "Elite athlete").period > 1 && (
-                  <div className="mt-1">
-                    <span className="text-sm text-gray-300">
-                      Total: ${calculatePrice(199, "Elite athlete").totalPrice} for {calculatePrice(199, "Elite athlete").period}{" "}
-                      months
-                    </span>
-                    {calculatePrice(199, "Elite athlete").discount > 0 && (
-                      <span className="ml-2 text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded-full">
-                        Save {Math.round(calculatePrice(199, "Elite athlete").discount * 100)}%
-                      </span>
-                    )}
-                  </div>
-                )}
-              </div>
-
-              <p className="mt-3 text-gray-300 text-sm">
-                Personalized programs + Work Directly with mohamed on your mindset.
-              </p>
-            </div>
-
-            {/* Divider accent */}
-            <div
-              className="mt-6 h-px mx-6 bg-gradient-to-r from-[#fd5747]/50 via-white/10 to-red-600/50 animate-gradient-x"
-              style={{ backgroundSize: "200% 200%" }}
-            />
-
-            {/* Features */}
-            <div className="flex-1 flex flex-col justify-between">
-              <ul className="px-6 py-4 space-y-2 text-gray-200 text-sm max-h-96 overflow-y-auto">
-                <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 mt-0.5">
-                    <CheckIcon />
-                  </span>
-                  <span className="text-gray-200">
-                    Customized Diet & medical lab Results
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 mt-0.5">
-                    <CheckIcon />
-                  </span>
-                  <span className="text-gray-200">
-                    Change diet & Exercise plan when needed
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 mt-0.5">
-                    <CheckIcon />
-                  </span>
-                  <span className="text-gray-200">
-                    30mins onboarding zoom
-                  </span>
-                </li>
-               
-                <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 mt-0.5">
-                    <CheckIcon />
-                  </span>
-                  <span className="text-gray-200">
-                    mohamed personal Whatsapp - 24 hours support
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 mt-0.5">
-                    <CheckIcon />
-                  </span>
-                  <span className="text-gray-200">
-                    Video Exercise form correction
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 mt-0.5">
-                    <CheckIcon />
-                  </span>
-                  <span className="text-gray-200">
-                    Exercise sheet to track progress
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 mt-0.5">
-                    <CheckIcon />
-                  </span>
-                  <span className="text-gray-200">
-                    2x 45mins zoom check-in / month
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 mt-0.5">
-                    <CheckIcon />
-                  </span>
-                  <span className="text-gray-200">
-                    1 live workout session / month
-                  </span>
-                </li>
-              </ul>
-            </div>
-
-            {/* CTA */}
-            <div className="px-6 pb-6 flex-shrink-0">
-              <button
-                className="w-full rounded-2xl bg-gradient-to-r from-[#fd5747] via-red-500 to-red-700 text-white font-semibold py-2.5 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all duration-300 animate-gradient-x"
-                style={{ backgroundSize: "300% 300%" }}
-              >
-                Get Started
-              </button>
-            </div>
-
-            {/* Bottom accent radius strip - now animated */}
-            <div
-              className="h-1 bg-gradient-to-r from-[#fd5747] via-white/10 to-red-600 animate-gradient-x"
-              style={{ backgroundSize: "300% 300%" }}
-            />
           </div>
         </div>
-      </div>
-    </section>
+      )}
+
+      <section className="py-16 backdrop-blur-xl">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-5xl font-extrabold text-center tracking-tight">
+            <span className="text-white">Pricing</span>{" "}
+            <span className="text-red-500">Plans</span>
+          </h2>
+
+          <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4 ">
+            {/* Regular - Diet only */}
+            <div
+              className="rounded-3xl backdrop-blur-xl shadow-2xl overflow-hidden relative flex flex-col bg-gradient-to-br from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow"
+              style={{
+                backgroundSize: "400% 400%",
+                minHeight: "700px",
+              }}
+            >
+              {/* Card header */}
+              <div className="px-6 pt-6 flex-shrink-0">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xl font-semibold text-white">
+                    Regular - Diet only
+                  </h3>
+                </div>
+
+                {/* Period Selection */}
+                <div className="mt-3">
+                  <select
+                    value={selectedPeriods["Regular - Diet only"] || 1}
+                    onChange={(e) =>
+                      handlePeriodChange("Regular - Diet only", e.target.value)
+                    }
+                    className="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#fd5747]/50 focus:border-[#fd5747]/50 backdrop-blur-sm"
+                  >
+                    {periodOptions.map((option) => (
+                      <option
+                        key={option.value}
+                        value={option.value}
+                        className="bg-gray-800 text-white"
+                      >
+                        {option.label}{" "}
+                        {option.discount > 0 &&
+                          `(${Math.round(option.discount * 100)}% off)`}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Price */}
+                <div className="mt-3">
+                  <div className="flex items-baseline">
+                    <span
+                      className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#fd5747] to-red-600 animate-gradient-x"
+                      style={{ backgroundSize: "200% 200%" }}
+                    >
+                      ${calculatePrice(49, "Regular - Diet only").monthlyPrice}
+                    </span>
+                    <span className="text-gray-400 text-sm ml-1">/month</span>
+                  </div>
+                  {calculatePrice(49, "Regular - Diet only").period > 1 && (
+                    <div className="mt-1">
+                      <span className="text-sm text-gray-300">
+                        Total: $
+                        {calculatePrice(49, "Regular - Diet only").totalPrice}{" "}
+                        for {calculatePrice(49, "Regular - Diet only").period}{" "}
+                        months
+                      </span>
+                      {calculatePrice(49, "Regular - Diet only").discount >
+                        0 && (
+                        <span className="ml-2 text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded-full">
+                          Save{" "}
+                          {Math.round(
+                            calculatePrice(49, "Regular - Diet only").discount *
+                              100
+                          )}
+                          %
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                <p className="mt-3 text-gray-300 text-sm">
+                  Result driven and Personalized nutrition plan.
+                </p>
+              </div>
+
+              {/* Divider accent */}
+              <div
+                className="mt-6 h-px mx-6 bg-gradient-to-r from-[#fd5747]/50 via-white/10 to-red-600/50 animate-gradient-x"
+                style={{ backgroundSize: "200% 200%" }}
+              />
+
+              {/* Features */}
+              <div className="flex-1 flex flex-col justify-between">
+                <ul className="px-6 pt-4 space-y-2 text-gray-200 text-sm ">
+                  <li className="flex items-start gap-2">
+                    <span className="flex-shrink-0 mt-0.5">
+                      <CheckIcon />
+                    </span>
+                    <span className="text-gray-200">
+                      Customized Diet & medical lab Results
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="flex-shrink-0 mt-0.5">
+                      <CheckIcon />
+                    </span>
+                    <span className="text-gray-200">
+                      Change diet & Exercise plan when needed
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="flex-shrink-0 mt-0.5">
+                      <CheckIcon />
+                    </span>
+                    <span className="text-gray-200">
+                      30mins onboarding zoom
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="flex-shrink-0 mt-0.5">
+                      <CheckIcon />
+                    </span>
+                    <span className="text-gray-200">
+                      Whatsapp weekly support
+                    </span>
+                  </li>
+
+                  <li className="flex items-start gap-2">
+                    <span className="flex-shrink-0 mt-0.5">
+                      <CrossIcon />
+                    </span>
+                    <span className="text-gray-500 line-through">
+                      Video Exercise form correction
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="flex-shrink-0 mt-0.5">
+                      <CrossIcon />
+                    </span>
+                    <span className="text-gray-500 line-through">
+                      Exercise sheet to track progress
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="flex-shrink-0 mt-0.5">
+                      <CrossIcon />
+                    </span>
+                    <span className="text-gray-500 line-through">
+                      2x 45mins zoom check-in / month
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="flex-shrink-0 mt-0.5">
+                      <CrossIcon />
+                    </span>
+                    <span className="text-gray-500 line-through">
+                      1 live workout session / month
+                    </span>
+                  </li>
+                </ul>
+              </div>
+
+              {/* CTA */}
+              <div className="px-6 pb-6 flex-shrink-0">
+                <button
+                  onClick={() => handleGetStarted("Regular - Diet only", 49)}
+                  className="w-full rounded-2xl bg-gradient-to-r from-[#fd5747] via-red-500 to-red-700 text-white font-semibold py-2.5 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all duration-300 animate-gradient-x"
+                  style={{ backgroundSize: "300% 300%" }}
+                >
+                  Get Started
+                </button>
+              </div>
+
+              {/* Bottom accent radius strip - now animated */}
+              <div
+                className="h-1 bg-gradient-to-r from-[#fd5747] via-white/10 to-red-600 animate-gradient-x"
+                style={{ backgroundSize: "300% 300%" }}
+              />
+            </div>
+
+            {/* Regular - Diet & Exercise */}
+            <div
+              className="rounded-3xl backdrop-blur-xl shadow-2xl overflow-hidden relative flex flex-col bg-gradient-to-br from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow"
+              style={{
+                backgroundSize: "400% 400%",
+                minHeight: "700px",
+              }}
+            >
+              {/* Card header */}
+              <div className="px-6 pt-6 flex-shrink-0">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xl font-semibold text-white">
+                    Regular - Diet & Exercise
+                  </h3>
+                </div>
+
+                {/* Period Selection */}
+                <div className="mt-3">
+                  <select
+                    value={selectedPeriods["Regular - Diet & Exercise"] || 1}
+                    onChange={(e) =>
+                      handlePeriodChange(
+                        "Regular - Diet & Exercise",
+                        e.target.value
+                      )
+                    }
+                    className="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#fd5747]/50 focus:border-[#fd5747]/50 backdrop-blur-sm"
+                  >
+                    {periodOptions.map((option) => (
+                      <option
+                        key={option.value}
+                        value={option.value}
+                        className="bg-gray-800 text-white"
+                      >
+                        {option.label}{" "}
+                        {option.discount > 0 &&
+                          `(${Math.round(option.discount * 100)}% off)`}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Price */}
+                <div className="mt-3">
+                  <div className="flex items-baseline">
+                    <span
+                      className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#fd5747] to-red-600 animate-gradient-x"
+                      style={{ backgroundSize: "200% 200%" }}
+                    >
+                      $
+                      {
+                        calculatePrice(69, "Regular - Diet & Exercise")
+                          .monthlyPrice
+                      }
+                    </span>
+                    <span className="text-gray-400 text-sm ml-1">/month</span>
+                  </div>
+                  {calculatePrice(69, "Regular - Diet & Exercise").period >
+                    1 && (
+                    <div className="mt-1">
+                      <span className="text-sm text-gray-300">
+                        Total: $
+                        {
+                          calculatePrice(69, "Regular - Diet & Exercise")
+                            .totalPrice
+                        }{" "}
+                        for{" "}
+                        {calculatePrice(69, "Regular - Diet & Exercise").period}{" "}
+                        months
+                      </span>
+                      {calculatePrice(69, "Regular - Diet & Exercise")
+                        .discount > 0 && (
+                        <span className="ml-2 text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded-full">
+                          Save{" "}
+                          {Math.round(
+                            calculatePrice(69, "Regular - Diet & Exercise")
+                              .discount * 100
+                          )}
+                          %
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                <p className="mt-3 text-gray-300 text-sm">
+                  Result driven and Personalized nutrition & workout plan.
+                </p>
+              </div>
+
+              {/* Divider accent */}
+              <div
+                className="mt-6 h-px mx-6 bg-gradient-to-r from-[#fd5747]/50 via-white/10 to-red-600/50 animate-gradient-x"
+                style={{ backgroundSize: "200% 200%" }}
+              />
+
+              {/* Features */}
+              <div className="flex-1 flex flex-col justify-between">
+                <ul className="px-6 py-4 space-y-2 text-gray-200 text-sm max-h-96 overflow-y-auto">
+                  <li className="flex items-start gap-2">
+                    <span className="flex-shrink-0 mt-0.5">
+                      <CheckIcon />
+                    </span>
+                    <span className="text-gray-200">
+                      Customized Diet & medical lab Results
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="flex-shrink-0 mt-0.5">
+                      <CheckIcon />
+                    </span>
+                    <span className="text-gray-200">
+                      Change diet & Exercise plan when needed
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="flex-shrink-0 mt-0.5">
+                      <CheckIcon />
+                    </span>
+                    <span className="text-gray-200">
+                      30mins onboarding zoom
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="flex-shrink-0 mt-0.5">
+                      <CheckIcon />
+                    </span>
+                    <span className="text-gray-200">
+                      Whatsapp weekly support
+                    </span>
+                  </li>
+
+                  <li className="flex items-start gap-2">
+                    <span className="flex-shrink-0 mt-0.5">
+                      <CheckIcon />
+                    </span>
+                    <span className="text-gray-200">
+                      Video Exercise form correction
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="flex-shrink-0 mt-0.5">
+                      <CheckIcon />
+                    </span>
+                    <span className="text-gray-200">
+                      Exercise sheet to track progress
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="flex-shrink-0 mt-0.5">
+                      <CrossIcon />
+                    </span>
+                    <span className="text-gray-500 line-through">
+                      2x 45mins zoom check-in / month
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="flex-shrink-0 mt-0.5">
+                      <CrossIcon />
+                    </span>
+                    <span className="text-gray-500 line-through">
+                      1 live workout session / month
+                    </span>
+                  </li>
+                </ul>
+              </div>
+
+              {/* CTA */}
+              <div className="px-6 pb-6 flex-shrink-0">
+                <button
+                  onClick={() =>
+                    handleGetStarted("Regular - Diet & Exercise", 69)
+                  }
+                  className="w-full rounded-2xl bg-gradient-to-r from-[#fd5747] via-red-500 to-red-700 text-white font-semibold py-2.5 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all duration-300 animate-gradient-x"
+                  style={{ backgroundSize: "300% 300%" }}
+                >
+                  Get Started
+                </button>
+              </div>
+
+              {/* Bottom accent radius strip - now animated */}
+              <div
+                className="h-1 bg-gradient-to-r from-[#fd5747] via-white/10 to-red-600 animate-gradient-x"
+                style={{ backgroundSize: "300% 300%" }}
+              />
+            </div>
+
+            {/* Advanced coaching */}
+            <div
+              className="rounded-3xl backdrop-blur-xl shadow-2xl overflow-hidden relative flex flex-col bg-gradient-to-br from-[#fd5747]/25 via-red-500/20 to-red-600/25 ring-2 ring-gradient-to-r ring-[#fd5747]/60 animate-gradient-x"
+              style={{
+                backgroundSize: "400% 400%",
+                minHeight: "700px",
+              }}
+            >
+              {/* Popular badge */}
+              <div className="absolute -top-1  left-1/2 transform -translate-x-1/2 z-10">
+                <span
+                  className="bg-gradient-to-r from-[#fd5747] via-red-500 to-red-700 text-white text-xs font-bold px-4 py-1 rounded-full animate-gradient-x shadow-lg"
+                  style={{ backgroundSize: "200% 200%" }}
+                >
+                  Most Popular
+                </span>
+              </div>
+
+              {/* Card header */}
+              <div className="px-6 pt-6 flex-shrink-0">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xl font-semibold text-white">
+                    Advanced coaching
+                  </h3>
+                </div>
+
+                {/* Period Selection */}
+                <div className="mt-3">
+                  <select
+                    value={selectedPeriods["Advanced coaching"] || 1}
+                    onChange={(e) =>
+                      handlePeriodChange("Advanced coaching", e.target.value)
+                    }
+                    className="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#fd5747]/50 focus:border-[#fd5747]/50 backdrop-blur-sm"
+                  >
+                    {periodOptions.map((option) => (
+                      <option
+                        key={option.value}
+                        value={option.value}
+                        className="bg-gray-800 text-white"
+                      >
+                        {option.label}{" "}
+                        {option.discount > 0 &&
+                          `(${Math.round(option.discount * 100)}% off)`}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Price */}
+                <div className="mt-3">
+                  <div className="flex items-baseline">
+                    <span
+                      className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#fd5747] to-red-600 animate-gradient-x"
+                      style={{ backgroundSize: "200% 200%" }}
+                    >
+                      ${calculatePrice(129, "Advanced coaching").monthlyPrice}
+                    </span>
+                    <span className="text-gray-400 text-sm ml-1">/month</span>
+                  </div>
+                  {calculatePrice(129, "Advanced coaching").period > 1 && (
+                    <div className="mt-1">
+                      <span className="text-sm text-gray-300">
+                        Total: $
+                        {calculatePrice(129, "Advanced coaching").totalPrice}{" "}
+                        for {calculatePrice(129, "Advanced coaching").period}{" "}
+                        months
+                      </span>
+                      {calculatePrice(129, "Advanced coaching").discount >
+                        0 && (
+                        <span className="ml-2 text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded-full">
+                          Save{" "}
+                          {Math.round(
+                            calculatePrice(129, "Advanced coaching").discount *
+                              100
+                          )}
+                          %
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                <p className="mt-3 text-gray-300 text-sm">
+                  Result Driven personalized programs + zoom meeting with
+                  mohamed
+                </p>
+              </div>
+
+              {/* Divider accent */}
+              <div
+                className="mt-6 h-px mx-6 bg-gradient-to-r from-[#fd5747]/50 via-white/10 to-red-600/50 animate-gradient-x"
+                style={{ backgroundSize: "200% 200%" }}
+              />
+
+              {/* Features */}
+              <div className="flex-1 flex flex-col justify-between">
+                <ul className="px-6 py-4 space-y-2 text-gray-200 text-sm max-h-96 overflow-y-auto">
+                  <li className="flex items-start gap-2">
+                    <span className="flex-shrink-0 mt-0.5">
+                      <CheckIcon />
+                    </span>
+                    <span className="text-gray-200">
+                      Customized Diet & medical lab Results
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="flex-shrink-0 mt-0.5">
+                      <CheckIcon />
+                    </span>
+                    <span className="text-gray-200">
+                      Change diet & Exercise plan when needed
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="flex-shrink-0 mt-0.5">
+                      <CheckIcon />
+                    </span>
+                    <span className="text-gray-200">
+                      30mins onboarding zoom
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="flex-shrink-0 mt-0.5">
+                      <CheckIcon />
+                    </span>
+                    <span className="text-gray-200">
+                      Whatsapp weekly support
+                    </span>
+                  </li>
+
+                  <li className="flex items-start gap-2">
+                    <span className="flex-shrink-0 mt-0.5">
+                      <CheckIcon />
+                    </span>
+                    <span className="text-gray-200">
+                      Video Exercise form correction
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="flex-shrink-0 mt-0.5">
+                      <CheckIcon />
+                    </span>
+                    <span className="text-gray-200">
+                      Exercise sheet to track progress
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="flex-shrink-0 mt-0.5">
+                      <CheckIcon />
+                    </span>
+                    <span className="text-gray-200">
+                      1x45mins zoom check-in / month
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="flex-shrink-0 mt-0.5">
+                      <CrossIcon />
+                    </span>
+                    <span className="text-gray-500 line-through">
+                      1 live workout session / month
+                    </span>
+                  </li>
+                </ul>
+              </div>
+
+              {/* CTA */}
+              <div className="px-6 pb-6 flex-shrink-0">
+                <button
+                  onClick={() => handleGetStarted("Advanced coaching", 129)}
+                  className="w-full rounded-2xl bg-gradient-to-r from-[#fd5747] via-red-500 to-red-700 text-white font-semibold py-2.5 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all duration-300 animate-gradient-x"
+                  style={{ backgroundSize: "300% 300%" }}
+                >
+                  Get Started
+                </button>
+              </div>
+
+              {/* Bottom accent radius strip - now animated */}
+              <div
+                className="h-1 bg-gradient-to-r from-[#fd5747] via-white/10 to-red-600 animate-gradient-x"
+                style={{ backgroundSize: "300% 300%" }}
+              />
+            </div>
+
+            {/* Elite athlete */}
+            <div
+              className="rounded-3xl backdrop-blur-xl shadow-2xl overflow-hidden relative flex flex-col bg-gradient-to-br from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow"
+              style={{
+                backgroundSize: "400% 400%",
+                minHeight: "700px",
+              }}
+            >
+              {/* Card header */}
+              <div className="px-6 pt-6 flex-shrink-0">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xl font-semibold text-white">
+                    Elite athlete
+                  </h3>
+                </div>
+
+                {/* Period Selection */}
+                <div className="mt-3">
+                  <select
+                    value={selectedPeriods["Elite athlete"] || 1}
+                    onChange={(e) =>
+                      handlePeriodChange("Elite athlete", e.target.value)
+                    }
+                    className="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#fd5747]/50 focus:border-[#fd5747]/50 backdrop-blur-sm"
+                  >
+                    {periodOptions.map((option) => (
+                      <option
+                        key={option.value}
+                        value={option.value}
+                        className="bg-gray-800 text-white"
+                      >
+                        {option.label}{" "}
+                        {option.discount > 0 &&
+                          `(${Math.round(option.discount * 100)}% off)`}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Price */}
+                <div className="mt-3">
+                  <div className="flex items-baseline">
+                    <span
+                      className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#fd5747] to-red-600 animate-gradient-x"
+                      style={{ backgroundSize: "200% 200%" }}
+                    >
+                      ${calculatePrice(199, "Elite athlete").monthlyPrice}
+                    </span>
+                    <span className="text-gray-400 text-sm ml-1">/month</span>
+                  </div>
+                  {calculatePrice(199, "Elite athlete").period > 1 && (
+                    <div className="mt-1">
+                      <span className="text-sm text-gray-300">
+                        Total: $
+                        {calculatePrice(199, "Elite athlete").totalPrice} for{" "}
+                        {calculatePrice(199, "Elite athlete").period} months
+                      </span>
+                      {calculatePrice(199, "Elite athlete").discount > 0 && (
+                        <span className="ml-2 text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded-full">
+                          Save{" "}
+                          {Math.round(
+                            calculatePrice(199, "Elite athlete").discount * 100
+                          )}
+                          %
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                <p className="mt-3 text-gray-300 text-sm">
+                  Personalized programs + Work Directly with mohamed on your
+                  mindset.
+                </p>
+              </div>
+
+              {/* Divider accent */}
+              <div
+                className="mt-6 h-px mx-6 bg-gradient-to-r from-[#fd5747]/50 via-white/10 to-red-600/50 animate-gradient-x"
+                style={{ backgroundSize: "200% 200%" }}
+              />
+
+              {/* Features */}
+              <div className="flex-1 flex flex-col justify-between">
+                <ul className="px-6 py-4 space-y-2 text-gray-200 text-sm max-h-96 overflow-y-auto">
+                  <li className="flex items-start gap-2">
+                    <span className="flex-shrink-0 mt-0.5">
+                      <CheckIcon />
+                    </span>
+                    <span className="text-gray-200">
+                      Customized Diet & medical lab Results
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="flex-shrink-0 mt-0.5">
+                      <CheckIcon />
+                    </span>
+                    <span className="text-gray-200">
+                      Change diet & Exercise plan when needed
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="flex-shrink-0 mt-0.5">
+                      <CheckIcon />
+                    </span>
+                    <span className="text-gray-200">
+                      30mins onboarding zoom
+                    </span>
+                  </li>
+
+                  <li className="flex items-start gap-2">
+                    <span className="flex-shrink-0 mt-0.5">
+                      <CheckIcon />
+                    </span>
+                    <span className="text-gray-200">
+                      mohamed personal Whatsapp - 24 hours support
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="flex-shrink-0 mt-0.5">
+                      <CheckIcon />
+                    </span>
+                    <span className="text-gray-200">
+                      Video Exercise form correction
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="flex-shrink-0 mt-0.5">
+                      <CheckIcon />
+                    </span>
+                    <span className="text-gray-200">
+                      Exercise sheet to track progress
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="flex-shrink-0 mt-0.5">
+                      <CheckIcon />
+                    </span>
+                    <span className="text-gray-200">
+                      2x 45mins zoom check-in / month
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="flex-shrink-0 mt-0.5">
+                      <CheckIcon />
+                    </span>
+                    <span className="text-gray-200">
+                      1 live workout session / month
+                    </span>
+                  </li>
+                </ul>
+              </div>
+
+              {/* CTA */}
+              <div className="px-6 pb-6 flex-shrink-0">
+                <button
+                  onClick={() => handleGetStarted("Elite athlete", 199)}
+                  className="w-full rounded-2xl bg-gradient-to-r from-[#fd5747] via-red-500 to-red-700 text-white font-semibold py-2.5 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all duration-300 animate-gradient-x"
+                  style={{ backgroundSize: "300% 300%" }}
+                >
+                  Get Started
+                </button>
+              </div>
+
+              {/* Bottom accent radius strip - now animated */}
+              <div
+                className="h-1 bg-gradient-to-r from-[#fd5747] via-white/10 to-red-600 animate-gradient-x"
+                style={{ backgroundSize: "300% 300%" }}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
