@@ -8,37 +8,37 @@ export default function Journey() {
   const journeySteps = [
     {
       id: 1,
-      title: "Start Your Fitness Journey",
+      title: "Sign up",
       description:
-        "Begin with setting clear goals and understanding your current fitness level. Every great transformation starts with a single step.",
+        "After your subscription is processed.Within 24 hours our team will contact you to start.",
       side: "left",
     },
     {
       id: 2,
-      title: "Build Healthy Habits",
+      title: "OnBoarding",
       description:
-        "Develop consistent workout routines and nutrition habits. Small daily actions compound into remarkable results over time.",
+        "A 30 minute zoom meeting & questions form will help us personalize coaching plan for you.",
       side: "right",
     },
     {
       id: 3,
-      title: "Track Your Progress",
+      title: "Begin journey",
       description:
-        "Monitor your improvements through measurements, photos, and performance metrics. Celebrate every milestone along the way.",
+        "Within 24 hours your personalized plan will be sent to you..",
       side: "left",
     },
     {
       id: 4,
-      title: "Overcome Challenges",
+      title: "Journey Details",
       description:
-        "Push through plateaus and setbacks with determination. Every obstacle is an opportunity to grow stronger mentally and physically.",
+        "Our team will reply to any questions you have through whatsapp and make sure you are following the diet & workout plans.",
       side: "right",
     },
     {
       id: 5,
-      title: "Achieve Your Goals",
+      title: "Achieve your best look",
       description:
-        "Reach your fitness targets and set new ones. Your journey doesn't end here - it evolves into a lifestyle of health and wellness.",
+        "As you stick to your customized plans you will notice improvement not only if your physical appearance but also your mentality and lifestyle.",
       side: "left",
     },
   ];
@@ -75,7 +75,7 @@ export default function Journey() {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-8 sm:mb-12 lg:mb-16">
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-red-500 mb-2 sm:mb-4">
-            What To  <span className="text-white"> Expect </span>
+            What To <span className="text-white"> Expect </span>
           </h2>
           <p className="text-sm sm:text-base lg:text-lg text-white max-w-2xl mx-auto px-4">
             Transform your life step by step. Every milestone brings you closer
@@ -119,13 +119,21 @@ export default function Journey() {
               className={`relative mb-8 sm:mb-12 lg:mb-16 
                 ${/* Mobile: Always left-aligned */ ""}
                 md:flex md:items-center 
-                ${/* Desktop: Alternating sides */ step.side === "left" ? "md:flex-row" : "md:flex-row-reverse"}`}
+                ${
+                  /* Desktop: Alternating sides */ step.side === "left"
+                    ? "md:flex-row"
+                    : "md:flex-row-reverse"
+                }`}
             >
               {/* Content Card */}
               <div
                 className={`
-                  ${/* Mobile: Full width with left padding for timeline */ "pl-16 md:pl-0"}
-                  ${/* Desktop: Half width with appropriate padding */ "md:w-5/12"} 
+                  ${
+                    /* Mobile: Full width with left padding for timeline */ "pl-16 md:pl-0"
+                  }
+                  ${
+                    /* Desktop: Half width with appropriate padding */ "md:w-5/12"
+                  } 
                   ${step.side === "left" ? "md:pr-8" : "md:pl-8"}
                 `}
               >
@@ -153,9 +161,13 @@ export default function Journey() {
               </div>
 
               {/* Timeline Circle */}
-              <div className={`absolute z-10 
-                ${/* Mobile: Left side positioning */ "left-3 top-4 md:left-1/2 md:top-auto md:transform md:-translate-x-1/2"}
-              `}>
+              <div
+                className={`absolute z-10 
+                ${
+                  /* Mobile: Left side positioning */ "left-3 top-4 md:left-1/2 md:top-auto md:transform md:-translate-x-1/2"
+                }
+              `}
+              >
                 <div
                   className={`w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full  transition-all duration-700 flex items-center justify-center ${
                     visibleSteps.has(index)
@@ -164,7 +176,6 @@ export default function Journey() {
                   }`}
                   style={{
                     transitionDelay: `${index * 300 + 150}ms`,
-                  
                   }}
                 >
                   <span className="text-white font-bold text-xs sm:text-sm drop-shadow-lg">
@@ -181,13 +192,19 @@ export default function Journey() {
           {/* Final Achievement Badge */}
           <div className="text-center mt-8 sm:mt-12 lg:mt-16">
             <div
-              className={`inline-block bg-gradient-to-r from-red-600 to-red-900 text-white px-4 sm:px-6 lg:px-8 py-3 sm:py-4 rounded-full shadow-lg transform transition-all duration-700 ${
+              className={`inline-block bg-gradient-to-r from-red-600 to-red-900 text-white px-4 sm:px-6 lg:px-8 py-3 sm:py-4 rounded-full shadow-lg transform transition-all duration-700 cursor-pointer hover:scale-105 ${
                 visibleSteps.has(journeySteps.length - 1)
                   ? "scale-100 opacity-100"
                   : "scale-75 opacity-0"
               }`}
               style={{
                 transitionDelay: `${journeySteps.length * 300 + 500}ms`,
+              }}
+              onClick={() => {
+                document.getElementById('pricing')?.scrollIntoView({ 
+                  behavior: 'smooth',
+                  block: 'start'
+                });
               }}
             >
               <span className="text-sm sm:text-base lg:text-lg font-semibold drop-shadow-lg">

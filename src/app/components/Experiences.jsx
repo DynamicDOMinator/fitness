@@ -1,5 +1,13 @@
 "use client";
 import { FaArrowRight } from "react-icons/fa";
+import {
+  FaFacebookF,
+  FaInstagram,
+  FaLinkedinIn,
+  FaYoutube,
+  FaTiktok,
+} from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { IoMdFemale } from "react-icons/io";
@@ -36,15 +44,28 @@ export default function Service() {
         currentVideo.muted = false;
         currentVideo.volume = 1.0;
         setIsAutoPlaying(false);
-        
+
         // Wait a moment for the properties to be set
         setTimeout(() => {
-          console.log("Manual play - muted:", currentVideo.muted, "volume:", currentVideo.volume);
-          currentVideo.play().then(() => {
-            console.log("Video playing with sound - final check - muted:", currentVideo.muted, "volume:", currentVideo.volume);
-          }).catch(error => {
-            console.log("Manual play failed:", error);
-          });
+          console.log(
+            "Manual play - muted:",
+            currentVideo.muted,
+            "volume:",
+            currentVideo.volume
+          );
+          currentVideo
+            .play()
+            .then(() => {
+              console.log(
+                "Video playing with sound - final check - muted:",
+                currentVideo.muted,
+                "volume:",
+                currentVideo.volume
+              );
+            })
+            .catch((error) => {
+              console.log("Manual play failed:", error);
+            });
         }, 100);
       }
     }
@@ -58,7 +79,12 @@ export default function Service() {
     if (currentVideo && !isAutoPlaying) {
       currentVideo.muted = false;
       currentVideo.volume = 1.0;
-      console.log("Video started playing - ensuring unmuted:", currentVideo.muted, "volume:", currentVideo.volume);
+      console.log(
+        "Video started playing - ensuring unmuted:",
+        currentVideo.muted,
+        "volume:",
+        currentVideo.volume
+      );
     }
   };
 
@@ -83,10 +109,10 @@ export default function Service() {
           currentVideo.muted = true;
           currentVideo.playsInline = true;
           setIsAutoPlaying(true);
-          
+
           // Wait a bit for the video to be ready
-          await new Promise(resolve => setTimeout(resolve, 100));
-          
+          await new Promise((resolve) => setTimeout(resolve, 100));
+
           await currentVideo.play();
           setHasAutoPlayed(true);
           console.log("Auto-play successful");
@@ -120,30 +146,40 @@ export default function Service() {
     const initializeVideos = () => {
       const mobileVideo = videoRef.current;
       const desktopVideo = videoRef2.current;
-      
+
       // Initialize mobile video
       if (mobileVideo) {
         mobileVideo.volume = 1.0;
         mobileVideo.muted = true; // Start muted for auto-play compliance
         mobileVideo.playsInline = true;
-        console.log("Mobile video initialized - volume:", mobileVideo.volume, "muted:", mobileVideo.muted);
+        console.log(
+          "Mobile video initialized - volume:",
+          mobileVideo.volume,
+          "muted:",
+          mobileVideo.muted
+        );
       }
-      
+
       // Initialize desktop video
       if (desktopVideo) {
         desktopVideo.volume = 1.0;
         desktopVideo.muted = true; // Start muted for auto-play compliance
         desktopVideo.playsInline = true;
-        console.log("Desktop video initialized - volume:", desktopVideo.volume, "muted:", desktopVideo.muted);
+        console.log(
+          "Desktop video initialized - volume:",
+          desktopVideo.volume,
+          "muted:",
+          desktopVideo.muted
+        );
       }
     };
 
     // Initialize immediately if videos are ready
     initializeVideos();
-    
+
     // Also initialize after a short delay to ensure videos are fully loaded
     const timer = setTimeout(initializeVideos, 100);
-    
+
     return () => clearTimeout(timer);
   }, [isDesktop]);
 
@@ -188,8 +224,11 @@ export default function Service() {
   }, [hasAutoPlayed, videoError, isDesktop]);
 
   return (
-    <div ref={sectionRef} className="  mt-20  md:mx-10 rounded-4xl px-10 lg:overflow-hidden">
-      <div className="lg:flex block items-center justify-center relative">
+    <div
+      ref={sectionRef}
+      className="  mt-20  md:mx-10 rounded-4xl px-10 lg:overflow-hidden"
+    >
+      <div className="xl:flex gap-20 block items-center justify-center relative">
         <div className="lg:w-[60%]  md:py-55 ">
           <h3 className="font-semibold text-red-600 md:text-3xl text-2xl  text-start ">
             ABOUT US
@@ -203,21 +242,57 @@ export default function Service() {
             <div className="w-[30%] h-[2px] bg-red-600 mt-2"></div>
           </div>
 
-          <p className="pt-10 md:pr-60 pr-10 text-left text-white md:text-2xl text-lg">
+          <p className="pt-10 md:pr-10 pr-10 text-left text-white md:text-2xl text-lg">
             A Team with combined experience of 20+ years in Sports,Nutrition and
             lab-medical field. Our goal is to guide you to reach Your best body
             shape, instill healthy habits and mindset to maintain a healthier
             lifestyle.
           </p>
-<p className=" flex items-center gap-2 pt-10 border-b-2 border-red-500 w-fit  text-center md:text-left  text-gray-300 md:text-xl text-sm">
+          <p className=" flex items-center gap-2 pt-10 border-b-2 border-red-500 w-fit  text-center md:text-left  text-gray-300 md:text-xl text-sm">
+            <IoMdFemale className="text-red-600 md:text-2xl " />
+            There are female coaches in the team
+          </p>
 
-<IoMdFemale className="text-red-600 md:text-2xl " />
+          {/* Social Media Icons */}
+          <div className="flex items-center gap-4 pt-6 pb-4">
+            <a
+              href="#"
+              className="text-gray-400 hover:text-red-500 transition-colors duration-300"
+            >
+              <FaFacebookF className="md:text-xl text-lg" />
+            </a>
+            <a
+              href="#"
+              className="text-gray-400 hover:text-red-500 transition-colors duration-300"
+            >
+              <FaXTwitter className="md:text-xl text-lg" />
+            </a>
+            <a
+              href="#"
+              className="text-gray-400 hover:text-red-500 transition-colors duration-300"
+            >
+              <FaInstagram className="md:text-xl text-lg" />
+            </a>
+            <a
+              href="#"
+              className="text-gray-400 hover:text-red-500 transition-colors duration-300"
+            >
+              <FaLinkedinIn className="md:text-xl text-lg" />
+            </a>
+            <a
+              href="#"
+              className="text-gray-400 hover:text-red-500 transition-colors duration-300"
+            >
+              <FaYoutube className="md:text-xl text-lg" />
+            </a>
+            <a
+              href="#"
+              className="text-gray-400 hover:text-red-500 transition-colors duration-300"
+            >
+              <FaTiktok className="md:text-xl text-lg" />
+            </a>
+          </div>
 
-
-  There are female coaches in the team
-</p>
-
-          
           {/* Single Video/Image Element - Mobile */}
           <div
             className="bg-[#4c4c4c] md:hidden mx-auto mt-10 lg:mr-5 2xl:mr-0 rounded-[70px] lg:h-[800px] lg:w-[600px] md:w-[300px] md:h-[500px] w-full h-[400px] relative"
@@ -301,17 +376,9 @@ export default function Service() {
               />
             )}
           </div>
-
-          <div className="px-5 ">
-            <button className="mt-20 w-full md:w-auto  md:mr-auto flex items-center justify-center
-              text-white bg-gradient-to-r from-red-600 to-red-800 md:text-2xl text-xl p-4 rounded-full shadow-lg hover:scale-110 cursor-pointer transition-all duration-300 gap-2 ">
-              More Trainers
-              <FaArrowRight className="text-2xl bg-red-600 w-10 h-10 p-2 rounded-full text-white" />
-            </button>
-          </div>
         </div>
 
-        <div className=" lg:pr-10 mt-30 lg:mt-20 lg:pb-20">
+        <div className=" lg:pr-10  xl:mt-20 lg:pb-20">
           <div className="flex items-center justify-center relative">
             {/* Single Video/Image Element - Desktop */}
             <div
