@@ -83,7 +83,7 @@ export default function Pricing() {
           <span className="text-red-500">Plans</span>
         </h2>
 
-        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4 items-stretch">
+        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4 ">
           {/* Regular - Diet only */}
           <div
             className="rounded-3xl backdrop-blur-xl shadow-2xl overflow-hidden relative flex flex-col bg-gradient-to-br from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow"
@@ -162,7 +162,7 @@ export default function Pricing() {
 
             {/* Features */}
             <div className="flex-1 flex flex-col justify-between">
-              <ul className="px-6 py-4 space-y-2 text-gray-200 text-xs max-h-96 overflow-y-auto">
+              <ul className="px-6 pt-4 space-y-2 text-gray-200 text-sm ">
                 <li className="flex items-start gap-2">
                   <span className="flex-shrink-0 mt-0.5">
                     <CheckIcon />
@@ -326,7 +326,7 @@ export default function Pricing() {
 
             {/* Features */}
             <div className="flex-1 flex flex-col justify-between">
-              <ul className="px-6 py-4 space-y-2 text-gray-200 text-xs max-h-96 overflow-y-auto">
+              <ul className="px-6 py-4 space-y-2 text-gray-200 text-sm max-h-96 overflow-y-auto">
                 <li className="flex items-start gap-2">
                   <span className="flex-shrink-0 mt-0.5">
                     <CheckIcon />
@@ -500,7 +500,7 @@ export default function Pricing() {
 
             {/* Features */}
             <div className="flex-1 flex flex-col justify-between">
-              <ul className="px-6 py-4 space-y-2 text-gray-200 text-xs max-h-96 overflow-y-auto">
+              <ul className="px-6 py-4 space-y-2 text-gray-200 text-sm max-h-96 overflow-y-auto">
                 <li className="flex items-start gap-2">
                   <span className="flex-shrink-0 mt-0.5">
                     <CheckIcon />
@@ -664,7 +664,7 @@ export default function Pricing() {
 
             {/* Features */}
             <div className="flex-1 flex flex-col justify-between">
-              <ul className="px-6 py-4 space-y-2 text-gray-200 text-xs max-h-96 overflow-y-auto">
+              <ul className="px-6 py-4 space-y-2 text-gray-200 text-sm max-h-96 overflow-y-auto">
                 <li className="flex items-start gap-2">
                   <span className="flex-shrink-0 mt-0.5">
                     <CheckIcon />
