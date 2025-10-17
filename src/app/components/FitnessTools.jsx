@@ -59,6 +59,81 @@ export default function FitnessTools() {
     };
   };
 
+  const calculateMacroMap = (formData) => {
+    const { weight, height, age, gender, activity, currentWeight, targetWeight, timePeriod } = formData;
+    
+    // Calculate BMR using Mifflin-St Jeor Equation
+    let bmr;
+    if (gender === 'male') {
+      bmr = 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
+    } else {
+      bmr = 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
+    }
+    
+    // Calculate TDEE (Total Daily Energy Expenditure)
+    const activityMultipliers = {
+      sedentary: 1.2,
+      light: 1.375,
+      moderate: 1.55,
+      active: 1.725,
+      extra: 1.9
+    };
+    
+    const tdee = Math.round(bmr * activityMultipliers[activity]);
+    
+    // Calculate weight change needed and weekly rate
+    const weightChange = targetWeight - currentWeight;
+    const weeksNeeded = timePeriod * 4.33; // Convert months to weeks (average)
+    const weeklyWeightChange = Math.abs(weightChange / weeksNeeded);
+    
+    // Check for unsafe rates and generate warnings
+    let warnings = [];
+    if (weightChange > 0 && weeklyWeightChange > 0.5) {
+      warnings.push("It is not advised to aim for more than 0.5kg of weight gain per week if your focus is to gain lean muscle mass");
+    }
+    if (weightChange < 0 && weeklyWeightChange > 1) {
+      warnings.push("It is not advised to aim for more than 1kg of weight loss per week if your goal is to preserve muscle mass");
+    }
+    
+    // Calculate daily calorie adjustment needed
+    // 1kg of body weight ≈ 7700 calories
+    const totalCalorieChange = weightChange * 7700;
+    const dailyCalorieAdjustment = Math.round(totalCalorieChange / (weeksNeeded * 7));
+    const targetCalories = tdee + dailyCalorieAdjustment;
+    
+    // Determine macro ratios based on goal
+    let macroRatios;
+    if (weightChange < 0) {
+      // Weight loss - higher protein to preserve muscle
+      macroRatios = { protein: 0.35, carbs: 0.25, fat: 0.40 };
+    } else if (weightChange > 0) {
+      // Weight gain - balanced for muscle building
+      macroRatios = { protein: 0.30, carbs: 0.45, fat: 0.25 };
+    } else {
+      // Maintenance
+      macroRatios = { protein: 0.25, carbs: 0.45, fat: 0.30 };
+    }
+    
+    // Calculate macros
+    const macros = {
+      protein: Math.round((targetCalories * macroRatios.protein) / 4),
+      carbs: Math.round((targetCalories * macroRatios.carbs) / 4),
+      fat: Math.round((targetCalories * macroRatios.fat) / 9)
+    };
+    
+    return {
+      bmr: Math.round(bmr),
+      tdee,
+      targetCalories,
+      macros,
+      weightChange,
+      weeklyWeightChange: Math.round(weeklyWeightChange * 100) / 100,
+      timePeriod,
+      warnings,
+      goalType: weightChange > 0 ? 'gain' : weightChange < 0 ? 'loss' : 'maintenance'
+    };
+  };
+
   const calculateFFMI = (formData) => {
     const { weight, height, bodyFat } = formData;
     const heightInMeters = height / 100;
@@ -146,7 +221,7 @@ export default function FitnessTools() {
   const tools = [
     {
       id: 'calories',
-      title: 'Calorie Calculator',
+      title: 'BMR Calculator',
       description: 'Calculate your daily caloric needs based on your goals',
       icon: (
         <svg className="w-16 h-16 text-[#fd5747]" fill="currentColor" viewBox="0 0 24 24">
@@ -168,8 +243,8 @@ export default function FitnessTools() {
     },
     {
       id: 'macros',
-      title: 'Macro Calculator',
-      description: 'Calculate your daily macronutrient breakdown',
+      title: 'MacroMap',
+      description: 'A roadmap from your current weight to your goal — with macros that make sense',
       icon: (
         <svg className="w-16 h-16 text-[#fd5747]" fill="currentColor" viewBox="0 0 24 24">
           <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
@@ -212,7 +287,7 @@ export default function FitnessTools() {
         result = calculateFFMI(formData);
         break;
       case 'macros':
-        result = calculateMacros(formData);
+        result = calculateMacroMap(formData);
         break;
       case 'onerepmax':
         result = calculateOneRepMax(formData);
@@ -465,32 +540,102 @@ function ModalContent({ toolId, onSubmit, result }) {
         return (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-white text-sm font-medium mb-2">Daily Calories</label>
+              <label className="block text-white text-sm font-medium mb-2">Weight (kg)</label>
+              <input
+                type="number"
+                step="0.1"
+                required
+                className="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[#fd5747]/50"
+                onChange={(e) => handleInputChange('weight', parseFloat(e.target.value))}
+              />
+            </div>
+            <div>
+              <label className="block text-white text-sm font-medium mb-2">Height (cm)</label>
               <input
                 type="number"
                 required
                 className="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[#fd5747]/50"
-                onChange={(e) => handleInputChange('calories', parseFloat(e.target.value))}
+                onChange={(e) => handleInputChange('height', parseFloat(e.target.value))}
               />
             </div>
             <div>
-              <label className="block text-white text-sm font-medium mb-2">Goal</label>
+              <label className="block text-white text-sm font-medium mb-2">Age</label>
+              <input
+                type="number"
+                required
+                className="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[#fd5747]/50"
+                onChange={(e) => handleInputChange('age', parseFloat(e.target.value))}
+              />
+            </div>
+            <div>
+              <label className="block text-white text-sm font-medium mb-2">Gender</label>
               <select
                 required
                 className="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[#fd5747]/50"
-                onChange={(e) => handleInputChange('goal', e.target.value)}
+                onChange={(e) => handleInputChange('gender', e.target.value)}
               >
-                <option value="">Select your goal</option>
-                <option value="weight_loss">Weight Loss</option>
-                <option value="muscle_gain">Muscle Gain</option>
-                <option value="maintenance">Maintenance</option>
+                <option value="">Select gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-white text-sm font-medium mb-2">Activity Level</label>
+              <select
+                required
+                className="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[#fd5747]/50"
+                onChange={(e) => handleInputChange('activity', e.target.value)}
+              >
+                <option value="">Select activity level</option>
+                <option value="sedentary">Sedentary (little/no exercise)</option>
+                <option value="light">Light (light exercise 1-3 days/week)</option>
+                <option value="moderate">Moderate (moderate exercise 3-5 days/week)</option>
+                <option value="active">Active (hard exercise 6-7 days/week)</option>
+                <option value="extra">Extra Active (very hard exercise, physical job)</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-white text-sm font-medium mb-2">Current Weight (kg)</label>
+              <input
+                type="number"
+                step="0.1"
+                required
+                className="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[#fd5747]/50"
+                onChange={(e) => handleInputChange('currentWeight', parseFloat(e.target.value))}
+              />
+            </div>
+            <div>
+              <label className="block text-white text-sm font-medium mb-2">Target Weight (kg)</label>
+              <input
+                type="number"
+                step="0.1"
+                required
+                className="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[#fd5747]/50"
+                onChange={(e) => handleInputChange('targetWeight', parseFloat(e.target.value))}
+              />
+            </div>
+            <div>
+              <label className="block text-white text-sm font-medium mb-2">Time Period (months)</label>
+              <select
+                required
+                className="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[#fd5747]/50"
+                onChange={(e) => handleInputChange('timePeriod', parseFloat(e.target.value))}
+              >
+                <option value="">Select time period</option>
+                <option value="1">1 month</option>
+                <option value="2">2 months</option>
+                <option value="3">3 months</option>
+                <option value="4">4 months</option>
+                <option value="6">6 months</option>
+                <option value="9">9 months</option>
+                <option value="12">12 months</option>
               </select>
             </div>
             <button
               type="submit"
               className="w-full bg-gradient-to-r from-[#fd5747] to-red-600 text-white py-3 rounded-lg font-medium hover:from-red-600 hover:to-red-700 transition-all duration-300"
             >
-              Calculate Macros
+              Calculate MacroMap
             </button>
           </form>
         );
@@ -623,58 +768,192 @@ function ModalContent({ toolId, onSubmit, result }) {
   const renderResult = () => {
     if (!result) return null;
 
+    const DietPlanPromo = () => (
+      <div className="mt-6 p-6 bg-gradient-to-br from-[#fd5747]/20 to-red-600/20 rounded-lg border border-[#fd5747]/30">
+        <div className="text-center">
+          <h4 className="text-white font-bold text-lg mb-3">🍽️ Get a Customized Diet Plan</h4>
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <span className="text-gray-400 line-through text-lg">300 EGP</span>
+            <span className="text-2xl font-bold text-[#fd5747]">149 EGP</span>
+          </div>
+          <a
+            href="https://wa.me/+201234567890?text=I want a customized diet plan"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105"
+          >
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.787"/>
+            </svg>
+             WhatsApp
+          </a>
+        </div>
+      </div>
+    );
+
     switch (toolId) {
       case 'calories':
         return (
-          <div className="mt-6 p-4 bg-green-500/20 rounded-lg border border-green-500/30">
-            <h4 className="text-white font-semibold mb-2">Your Daily Calorie Needs:</h4>
-            <p className="text-2xl font-bold text-green-400">{result} calories/day</p>
-          </div>
+          <>
+            <div className="mt-6 p-4 bg-green-500/20 rounded-lg border border-green-500/30">
+              <h4 className="text-white font-semibold mb-2">Your Daily Calorie Needs:</h4>
+              <p className="text-2xl font-bold text-green-400">{result} calories/day</p>
+            </div>
+            <DietPlanPromo />
+          </>
         );
 
       case 'ffmi':
-        return <FFMIThermometer result={result} />;
+        return (
+          <>
+            <FFMIThermometer result={result} />
+            <DietPlanPromo />
+          </>
+        );
 
       case 'macros':
         return (
-          <div className="mt-6 p-4 bg-green-500/20 rounded-lg border border-green-500/30">
-            <h4 className="text-white font-semibold mb-2">Your Daily Macros:</h4>
-            <div className="space-y-1">
-              <p className="text-white">Protein: <span className="font-bold text-green-400">{result.protein}g</span></p>
-              <p className="text-white">Carbs: <span className="font-bold text-green-400">{result.carbs}g</span></p>
-              <p className="text-white">Fat: <span className="font-bold text-green-400">{result.fat}g</span></p>
+          <>
+            {/* Warnings */}
+            {result.warnings && result.warnings.length > 0 && (
+              <div className="mt-6 p-4 bg-yellow-500/20 rounded-lg border border-yellow-500/30">
+                <h4 className="text-yellow-400 font-semibold mb-2 flex items-center">
+                  <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                  </svg>
+                  Important Warnings
+                </h4>
+                {result.warnings.map((warning, index) => (
+                  <p key={index} className="text-yellow-300 text-sm mb-1">• {warning}</p>
+                ))}
+              </div>
+            )}
+
+            {/* BMR and TDEE Information */}
+            <div className="mt-6 p-4 bg-blue-500/20 rounded-lg border border-blue-500/30">
+              <h4 className="text-blue-400 font-semibold mb-2">Your Metabolic Information</h4>
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <p className="text-gray-300">BMR (Base Metabolic Rate)</p>
+                  <p className="text-white font-bold">{result.bmr} calories/day</p>
+                </div>
+                <div>
+                  <p className="text-gray-300">TDEE (Total Daily Energy)</p>
+                  <p className="text-white font-bold">{result.tdee} calories/day</p>
+                </div>
+              </div>
             </div>
-          </div>
+
+            {/* Goal Information */}
+            <div className="mt-6 p-4 bg-purple-500/20 rounded-lg border border-purple-500/30">
+              <h4 className="text-purple-400 font-semibold mb-2">Your Goal Roadmap</h4>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-gray-300">Weight Change:</span>
+                  <span className={`font-bold ${result.weightChange > 0 ? 'text-green-400' : result.weightChange < 0 ? 'text-red-400' : 'text-gray-400'}`}>
+                    {result.weightChange > 0 ? '+' : ''}{result.weightChange} kg
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-300">Weekly Rate:</span>
+                  <span className="text-white font-bold">{result.weeklyWeightChange} kg/week</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-300">Timeline:</span>
+                  <span className="text-white font-bold">{result.timePeriod} months</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-300">Goal Type:</span>
+                  <span className="text-white font-bold capitalize">{result.goalType}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Daily Targets */}
+            <div className="mt-6 p-4 bg-green-500/20 rounded-lg border border-green-500/30">
+              <h4 className="text-green-400 font-semibold mb-3">Your Daily Targets</h4>
+              
+              {/* Calories */}
+              <div className="mb-4 text-center">
+                <p className="text-gray-300 text-sm">Daily Calories</p>
+                <p className="text-3xl font-bold text-green-400">{result.targetCalories}</p>
+                <p className="text-gray-400 text-xs">calories per day</p>
+              </div>
+
+              {/* Macros */}
+              <div className="space-y-3">
+                <h5 className="text-white font-medium text-sm">Macronutrient Breakdown:</h5>
+                
+                {/* Protein */}
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center">
+                    <div className="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
+                    <span className="text-gray-300 text-sm">Protein</span>
+                  </div>
+                  <span className="text-white font-bold">{result.macros.protein}g</span>
+                </div>
+
+                {/* Carbs */}
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center">
+                    <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
+                    <span className="text-gray-300 text-sm">Carbohydrates</span>
+                  </div>
+                  <span className="text-white font-bold">{result.macros.carbs}g</span>
+                </div>
+
+                {/* Fat */}
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center">
+                    <div className="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
+                    <span className="text-gray-300 text-sm">Fat</span>
+                  </div>
+                  <span className="text-white font-bold">{result.macros.fat}g</span>
+                </div>
+              </div>
+
+              {/* Macro Percentages */}
+              <div className="mt-4 text-xs text-gray-400">
+                <p>• Protein: {Math.round((result.macros.protein * 4 / result.targetCalories) * 100)}% of calories</p>
+                <p>• Carbs: {Math.round((result.macros.carbs * 4 / result.targetCalories) * 100)}% of calories</p>
+                <p>• Fat: {Math.round((result.macros.fat * 9 / result.targetCalories) * 100)}% of calories</p>
+              </div>
+            </div>
+            <DietPlanPromo />
+          </>
         );
 
       case 'onerepmax':
         return (
-          <div className="mt-6 p-4 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-lg border border-purple-500/30">
-            <h4 className="text-white font-semibold mb-3">Your One-Rep Max Results:</h4>
-            <div className="text-center mb-4">
-              <p className="text-gray-300 text-sm">{result.exercise}</p>
-              <p className="text-3xl font-bold text-purple-400">{result.oneRepMax} kg</p>
-              <p className="text-gray-400 text-sm">Estimated 1RM</p>
-            </div>
-            
-            <div className="space-y-2">
-              <h5 className="text-white font-medium text-sm mb-2">Training Percentages:</h5>
-              <div className="grid grid-cols-2 gap-2 text-sm">
-                {Object.entries(result.percentages).map(([percentage, weight]) => (
-                  <div key={percentage} className="flex justify-between bg-black/30 rounded px-2 py-1">
-                    <span className="text-gray-300">{percentage}:</span>
-                    <span className="text-white font-semibold">{weight} kg</span>
-                  </div>
-                ))}
+          <>
+            <div className="mt-6 p-4 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-lg border border-purple-500/30">
+              <h4 className="text-white font-semibold mb-3">Your One-Rep Max Results:</h4>
+              <div className="text-center mb-4">
+                <p className="text-gray-300 text-sm">{result.exercise}</p>
+                <p className="text-3xl font-bold text-purple-400">{result.oneRepMax} kg</p>
+                <p className="text-gray-400 text-sm">Estimated 1RM</p>
               </div>
-              <div className="mt-3 text-xs text-gray-400">
-                <p>• 90-95%: Max strength (1-3 reps)</p>
-                <p>• 80-85%: Strength training (3-6 reps)</p>
-                <p>• 70-75%: Power/Hypertrophy (6-8 reps)</p>
-                <p>• 60-65%: Hypertrophy (8-12 reps)</p>
+              
+              <div className="space-y-2">
+                <h5 className="text-white font-medium text-sm mb-2">Training Percentages:</h5>
+                <div className="grid grid-cols-2 gap-2 text-sm">
+                  {Object.entries(result.percentages).map(([percentage, weight]) => (
+                    <div key={percentage} className="flex justify-between bg-black/30 rounded px-2 py-1">
+                      <span className="text-gray-300">{percentage}:</span>
+                      <span className="text-white font-semibold">{weight} kg</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-3 text-xs text-gray-400">
+                  <p>• 90-95%: Max strength (1-3 reps)</p>
+                  <p>• 80-85%: Strength training (3-6 reps)</p>
+                  <p>• 70-75%: Power/Hypertrophy (6-8 reps)</p>
+                  <p>• 60-65%: Hypertrophy (8-12 reps)</p>
+                </div>
               </div>
             </div>
-          </div>
+            <DietPlanPromo />
+          </>
         );
 
       default:
