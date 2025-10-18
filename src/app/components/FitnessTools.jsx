@@ -1,10 +1,11 @@
 'use client';
 import { useState } from 'react';
 import FFMIThermometer from './FFMIThermometer';
-
+import { useLanguage } from '../contexts/LanguageContext';
 export default function FitnessTools() {
   const [activeModal, setActiveModal] = useState(null);
   const [calculatorResults, setCalculatorResults] = useState({});
+  const { isArabic } = useLanguage();
 
   // Calculator functions
   const calculateCalories = (formData) => {
@@ -304,11 +305,14 @@ export default function FitnessTools() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Fitness <span className=" text-red-500">Tools</span>
+          <h2 className={`flex items-center gap-2 justify-center ${isArabic ? "flex-row font-arabic" : ""} text-4xl md:text-5xl font-bold text-white mb-6`}>
+          {isArabic ? "المساعدة" : "Fitness" } <span className=" text-red-500"> {isArabic ? "الادوات " : " Tools"}</span>
           </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Use our comprehensive fitness calculators to track your progress and optimize your health journey
+          <p className={`text-xl text-gray-300 max-w-3xl mx-auto ${isArabic ? 'font-arabic text-center' : ''}`}>
+            {isArabic 
+              ? 'استخدم حاسباتنا الشاملة للياقة البدنية لتتبع تقدمك وتحسين رحلتك الصحية'
+              : 'Use our comprehensive fitness calculators to track your progress and optimize your health journey'
+            }
           </p>
         </div>
 

@@ -2,8 +2,10 @@
 import { useState, useRef } from "react";
 import { VscPreview } from "react-icons/vsc";
 import Image from "next/image";
+import { useLanguage } from '../contexts/LanguageContext';
 
 export default function Testimonials() {
+  const { isArabic } = useLanguage();
   const [isPlaying1, setIsPlaying1] = useState(false);
   const [showPlayIcon1, setShowPlayIcon1] = useState(true);
   const [isHovered1, setIsHovered1] = useState(false);
@@ -91,8 +93,8 @@ export default function Testimonials() {
     <div className="flex items-center justify-center  md:p-8 lg:p-12 md:mt-96  lg:mt-0">
       <div className="relative max-w-[1300px] pt-20 md:pt-0 w-full">
         {/* Heading */}
-    <h5 className="lg:text-6xl text-3xl font-bold text-center mb-12 animated-gradient-text">
-          HEAR IT FROM THEM
+    <h5 className={`lg:text-6xl ${isArabic ?  "font-arabic pb-10" : "" }  text-3xl font-bold text-center mb-12 animated-gradient-text`}>
+          {isArabic ? 'اسمعها منهم' : 'HEAR IT FROM THEM'}
         </h5>
         {/* Grid container for 2 videos */}
         <div className="flex flex-col lg:flex-row items-stretch justify-center gap-6 md:gap-8 lg:gap-12">
@@ -165,14 +167,14 @@ export default function Testimonials() {
                   </div>
                 </div>
 
-                <p className="text-white text-lg md:text-xl font-medium mt-4 p-4 flex-grow">
-                  Just after 2 month , My mother noticed my back has gotten
-                  wider and my waist smaller. Plus, it's become a habit over
-                  time — you wake up knowing you have one hour of training each
-                  day.
+                <p className={`${isArabic ? "font-arabic text-right" : " text-left"} text-white text-lg md:text-xl font-medium mt-4 p-4 flex-grow`}>
+                  {isArabic 
+                    ? "بعد شهرين فقط، لاحظت والدتي أن ظهري أصبح أعرض وخصري أصغر. بالإضافة إلى ذلك، أصبح عادة بمرور الوقت - تستيقظ وأنت تعلم أن لديك ساعة واحدة من التدريب كل يوم."
+                    : "Just after 2 month , My mother noticed my back has gotten wider and my waist smaller. Plus, it's become a habit over time — you wake up knowing you have one hour of training each day."
+                  }
                 </p>
 
-                <div className="mt-auto p-4 flex items-center justify-start gap-2">
+                <div dir={isArabic ? "rtl" : "ltr"} className="mt-auto p-4 flex items-center justify-start gap-2">
                   <Image
                     src="/user.jpg"
                     alt=""
@@ -262,11 +264,14 @@ export default function Testimonials() {
                   </div>
                 </div>
 
-                <p className="text-white text-lg md:text-xl font-medium mt-4 p-4 flex-grow">
-                I would highly recommend anyone to work with you, it's been really rewarding and encouraging
+                <p className={`${isArabic ? "font-arabic text-right" : " text-left"} text-white text-lg md:text-xl font-medium mt-4 p-4 flex-grow`}>
+                  {isArabic 
+                    ? "أنصح بشدة أي شخص بالعمل معك، لقد كان الأمر مجزياً ومشجعاً حقاً"
+                    : "I would highly recommend anyone to work with you, it's been really rewarding and encouraging"
+                  }
                 </p>
 
-                <div className="mt-auto p-4 flex items-center justify-start gap-2">
+                <div dir={isArabic ? "rtl" : "ltr"} className="mt-auto p-4 flex items-center justify-start gap-2">
                   <Image
                     src="/user.jpg"
                     alt=""

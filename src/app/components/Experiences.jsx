@@ -11,9 +11,10 @@ import { FaXTwitter } from "react-icons/fa6";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { IoMdFemale } from "react-icons/io";
-
+import { useLanguage } from '../contexts/LanguageContext';
 export default function Service() {
   // Single trainer data
+  const { isArabic } = useLanguage();
   const trainer = {
     id: 1,
     name: "John Smith",
@@ -228,33 +229,33 @@ export default function Service() {
       ref={sectionRef}
       className="  mt-20  md:mx-10 rounded-4xl px-10 lg:overflow-hidden"
     >
-      <div className="xl:flex gap-20 block items-center justify-center relative">
+      <div className={` ${isArabic ? 'flex-row-reverse' : ''} xl:flex gap-20 block items-center justify-center relative`}>
         <div className="lg:w-[60%]  md:py-55 ">
-          <h3 className="font-semibold text-red-600 md:text-3xl text-2xl  text-start ">
-            ABOUT US
+          <h3 className={`font-semibold text-red-600 md:text-3xl text-2xl  text-${isArabic ? 'end' : 'start'} ${isArabic ? 'font-arabic' : ''}`}>
+            {isArabic ? 'ماذا عنا' : 'ABOUT US'}
           </h3>
 
           <div className="pt-1 relative">
-            <h4 className="text-white md:text-6xl text-2xl font-semibold">
-              WHO ARE <span className="text-red-600">WE</span>
+            <h4 className={`text-white md:text-6xl text-2xl font-semibold text-${isArabic ? 'end' : 'start'} ${isArabic ? 'font-arabic' : ''}`}>
+              {isArabic ? 'من نحن' : 'WHO ARE WE'}
             </h4>
 
-            <div className="w-[30%] h-[2px] bg-red-600 mt-2"></div>
+            <div className={`w-[30%] h-[2px] bg-red-600 mt-4 ${isArabic ? 'ml-auto' : 'mr-auto'}`}></div>
           </div>
 
-          <p className="pt-10 md:pr-10 pr-10 text-left text-white md:text-2xl text-lg">
-            A Team with combined experience of 20+ years in Sports,Nutrition and
-            lab-medical field. Our goal is to guide you to reach Your best body
-            shape, instill healthy habits and mindset to maintain a healthier
-            lifestyle.
+          <p className={`pt-10  ${isArabic ? 'text-end font-arabic' : 'text-start md:pr-10 pr-10'} text-white md:text-2xl text-lg`}>
+            {isArabic 
+              ? 'فريق بخبرة مجمعة تزيد عن 20 عاماً في الرياضة والتغذية والمجال الطبي المخبري. هدفنا هو إرشادك للوصول إلى أفضل شكل لجسمك، وغرس العادات الصحية والعقلية للحفاظ على نمط حياة أكثر صحة.'
+              : 'A Team with combined experience of 20+ years in Sports,Nutrition and lab-medical field. Our goal is to guide you to reach Your best body shape, instill healthy habits and mindset to maintain a healthier lifestyle.'
+            }
           </p>
-          <p className=" flex items-center gap-2 pt-10 border-b-2 border-red-500 w-fit  text-center md:text-left  text-gray-300 md:text-xl text-sm">
+          <p dir={isArabic ? 'rtl' : 'ltr'} className={`flex ${isArabic ? 'ml-auto font-arabic' : ''} items-center gap-2 pt-10 border-b-2 border-red-500 w-fit  text-center md:text-left  text-gray-300 md:text-xl text-sm`}>
             <IoMdFemale className="text-red-600 md:text-2xl " />
-            There are female coaches in the team
+            {isArabic ? 'يوجد فريق من المدربين الإناث في الفريق' : 'There are female coaches in the team'}
           </p>
 
           {/* Social Media Icons */}
-          <div className="flex items-center gap-4 pt-6 pb-4">
+          <div dir={isArabic ? 'rtl' : 'ltr'} className={`flex items-center gap-4 pt-6 pb-4 ${isArabic ? 'ml-auto' : ''}`}>
             <a
               href="#"
               className="text-gray-400 hover:text-red-500 transition-colors duration-300"

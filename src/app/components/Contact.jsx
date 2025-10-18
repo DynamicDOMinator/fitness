@@ -1,28 +1,30 @@
+"use client"
 import { IoMailOutline, IoCallOutline } from "react-icons/io5";
-
+import { useLanguage } from "../contexts/LanguageContext";
 export default function Contact() {
+  const { isArabic } = useLanguage();
   return (
     <div className="px-4 sm:px-6 lg:px-8 pb-10">
       {/* Animated Contact Us Header */}
       <div className="text-center mb-12 sm:mb-16 lg:mb-20 mt-10 sm:mt-16 lg:mt-20">
         <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6">
-          <span className="bg-gradient-to-r from-[#fd5747] via-red-500 to-orange-700 bg-clip-text text-transparent animate-gradient-x" style={{ backgroundSize: "300% 300%" }}>
-            Contact Us
+          <span className={`bg-gradient-to-r from-[#fd5747] via-red-500 to-orange-700 bg-clip-text text-transparent animate-gradient-x ${isArabic ? 'font-arabic' : ''}`} style={{ backgroundSize: "300% 300%" }}>
+            {isArabic ? "تواصل معنا" : "Contact Us"}
           </span>
         </h2>
         <p className="text-white/80 text-lg sm:text-xl lg:text-2xl mt-4 sm:mt-6 max-w-2xl mx-auto leading-relaxed">
-          Ready to transform your life? Let's start your fitness journey together.
+       {isArabic? "جاهز للتحول؟ دعونا نبدأ رحلتك في التدريب معنا" : " Ready to transform your life? Let's start your fitness journey together."   }   
         </p>
       </div>
 
-      <div className="flex flex-col lg:flex-row items-start justify-center max-w-[1100px] mx-auto gap-8 lg:gap-0">
+      <div dir={isArabic ? 'rtl' : 'ltr'} className="flex flex-col lg:flex-row items-start justify-center max-w-[1100px] mx-auto gap-8 lg:gap-20">
         <div className="w-full lg:w-1/2 lg:pr-8">
-          <h6 className="text-white text-2xl sm:text-3xl lg:text-4xl font-bold">
-            Get in touch
+          <h6 className={`text-white text-2xl sm:text-3xl lg:text-4xl font-bold ${isArabic ? 'font-arabic' : ''}`}>
+            {isArabic? "تواصل معنا" : "Get in touch"}
           </h6>
 
-          <p className="text-white pt-3 sm:pt-5 text-sm sm:text-base">
-            have a question or ready for transformation?
+          <p className={`text-white pt-3 sm:pt-5 text-sm sm:text-base ${isArabic ? 'font-arabic' : ''}`}>
+            {isArabic? "هل لديك سؤال أو جاهز للتحول؟ دعونا نبدأ رحلتك في التدريب معنا" : "Have a question or ready for transformation? Let's start your fitness journey together."   }   
           </p>
 
           <div className="flex flex-col items-start gap-4 pt-6 sm:pt-8 lg:pt-10">

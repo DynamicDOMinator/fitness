@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
-
+import { useLanguage } from "../contexts/LanguageContext";
 // Check and Cross SVG Icons
+
 const CheckIcon = () => (
   <svg
     className="w-5 h-5 text-green-400"
@@ -61,6 +62,8 @@ const UploadIcon = () => (
 );
 
 export default function Pricing() {
+  const { isArabic } = useLanguage();
+
   // State to track selected period for each plan
   const [selectedPeriods, setSelectedPeriods] = useState({});
 
@@ -72,11 +75,10 @@ export default function Pricing() {
 
   // Period options with discounts
   const periodOptions = [
-    { value: 1, label: "1 Month", discount: 0 },
-    { value: 3, label: "3 Months", discount: 0.1 }, // 10% discount
-    { value: 6, label: "6 Months", discount: 0.2 }, // 20% discount
+    { value: 1, label: isArabic ? "شهر واحد" : "1 Month", discount: 0 },
+    { value: 3, label: isArabic ? "3 أشهر" : "3 Months", discount: 0.1 }, // 10% discount
+    { value: 6, label: isArabic ? "6 أشهر" : "6 Months", discount: 0.2 }, // 20% discount
   ];
-
   // All possible features for comparison
   const allFeatures = [
     "Customized Diet & medical lab Results",
@@ -89,6 +91,23 @@ export default function Pricing() {
     "2x 45mins zoom check-in / month",
     "1 live workout session / month",
   ];
+
+  // Arabic translations for features
+  const featureTranslations = {
+    "Customized Diet & medical lab Results":
+      "نظام غذائي مخصص ونتائج التحاليل الطبية",
+    "Change diet & Exercise plan when needed":
+      "تغيير النظام الغذائي وخطة التمارين عند الحاجة",
+    "30mins onboarding zoom": "جلسة تعريفية 30 دقيقة عبر زووم",
+    "Whatsapp weekly support": "دعم أسبوعي عبر واتساب",
+    "mohamed personal Whatsapp - 24 hours support":
+      "واتساب محمد الشخصي - دعم 24 ساعة",
+    "Video Exercise form correction": "تصحيح شكل التمارين بالفيديو",
+    "Exercise sheet to track progress": "ورقة تمارين لتتبع التقدم",
+    "2x 45mins zoom check-in / month": "جلستين متابعة 45 دقيقة شهرياً عبر زووم",
+    "1 live workout session / month": "جلسة تمارين مباشرة واحدة شهرياً",
+    "1x45mins zoom check-in / month": "جلسة متابعة 45 دقيقة شهرياً عبر زووم",
+  };
 
   // Function to calculate price based on selected period
   const calculatePrice = (basePrice, planTitle) => {
@@ -132,7 +151,7 @@ export default function Pricing() {
   const handleModalDurationChange = (newPeriod) => {
     if (selectedPlan) {
       const newPeriodInt = parseInt(newPeriod);
-      
+
       // Update the selected periods state
       setSelectedPeriods((prev) => ({
         ...prev,
@@ -143,7 +162,8 @@ export default function Pricing() {
       const periodOption = periodOptions.find(
         (option) => option.value === newPeriodInt
       );
-      const discountedPrice = selectedPlan.basePrice * (1 - periodOption.discount);
+      const discountedPrice =
+        selectedPlan.basePrice * (1 - periodOption.discount);
       const totalPrice = discountedPrice * newPeriodInt;
 
       const newPriceInfo = {
@@ -195,7 +215,7 @@ export default function Pricing() {
             {/* Modal Header */}
             <div className="flex items-center justify-between p-6 border-b border-white/10">
               <h3 className="text-xl font-bold text-white">
-                Complete Your Purchase
+                {isArabic ? "أكمل عملية الشراء" : "Complete Your Purchase"}
               </h3>
               <button
                 onClick={() => setIsModalOpen(false)}
@@ -216,7 +236,7 @@ export default function Pricing() {
                 {/* Duration Selection in Modal */}
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Change Duration:
+                    {isArabic ? "تغيير المدة:" : "Change Duration:"}
                   </label>
                   <select
                     value={selectedPlan?.period || 1}
@@ -231,7 +251,9 @@ export default function Pricing() {
                       >
                         {option.label}{" "}
                         {option.discount > 0 &&
-                          `(${Math.round(option.discount * 100)}% off)`}
+                          `(${Math.round(option.discount * 100)}% ${
+                            isArabic ? "خصم" : "off"
+                          })`}
                       </option>
                     ))}
                   </select>
@@ -239,28 +261,37 @@ export default function Pricing() {
 
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-300">Monthly Price:</span>
+                    <span className="text-gray-300">
+                      {isArabic ? "السعر الشهري:" : "Monthly Price:"}
+                    </span>
                     <span className="text-white font-semibold">
                       ${selectedPlan?.monthlyPrice}
                     </span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-300">Duration:</span>
+                    <span className="text-gray-300">
+                      {isArabic ? "المدة:" : "Duration:"}
+                    </span>
                     <span className="text-white font-semibold">
-                      {selectedPlan?.period} month(s)
+                      {selectedPlan?.period} {isArabic ? "شهر" : "month(s)"}
                     </span>
                   </div>
                   {selectedPlan?.discount > 0 && (
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-300">Discount:</span>
+                      <span className="text-gray-300">
+                        {isArabic ? "الخصم:" : "Discount:"}
+                      </span>
                       <span className="text-green-400 font-semibold">
-                        {Math.round(selectedPlan.discount * 100)}% off
+                        {Math.round(selectedPlan.discount * 100)}%{" "}
+                        {isArabic ? "خصم" : "off"}
                       </span>
                     </div>
                   )}
                   <div className="border-t border-white/10 pt-2 mt-2">
                     <div className="flex justify-between text-lg font-bold">
-                      <span className="text-white">Total Amount:</span>
+                      <span className="text-white">
+                        {isArabic ? "المبلغ الإجمالي:" : "Total Amount:"}
+                      </span>
                       <span className="text-[#fd5747]">
                         ${selectedPlan?.totalPrice}
                       </span>
@@ -272,7 +303,7 @@ export default function Pricing() {
               {/* Payment Methods */}
               <div>
                 <h5 className="text-white font-semibold mb-3">
-                  Choose Payment Method
+                  {isArabic ? "اختر طريقة الدفع" : "Choose Payment Method"}
                 </h5>
                 <div className="space-y-3">
                   <label className="flex items-center space-x-3 cursor-pointer p-3 rounded-lg border border-white/10 hover:border-[#fd5747]/30 transition-colors">
@@ -315,30 +346,46 @@ export default function Pricing() {
               {selectedPaymentMethod && (
                 <div className="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-4">
                   <h6 className="text-blue-400 font-semibold mb-2">
-                    Payment Instructions
+                    {isArabic ? "تعليمات الدفع" : "Payment Instructions"}
                   </h6>
                   {selectedPaymentMethod === "vodafone-cash" && (
                     <div className="text-sm text-gray-300 space-y-1">
                       <p>
-                        • Send ${selectedPlan?.totalPrice} to:{" "}
+                        •{" "}
+                        {isArabic
+                          ? `أرسل $${selectedPlan?.totalPrice} إلى:`
+                          : `Send $${selectedPlan?.totalPrice} to:`}{" "}
                         <span className="text-white font-semibold">
                           01018294811{" "}
                         </span>
                       </p>
 
-                      <p>• Upload the payment receipt below</p>
+                      <p>
+                        •{" "}
+                        {isArabic
+                          ? "ارفع إيصال الدفع أدناه"
+                          : "Upload the payment receipt below"}
+                      </p>
                     </div>
                   )}
                   {selectedPaymentMethod === "instapay" && (
                     <div className="text-sm text-gray-300 space-y-1">
                       <p>
-                        • Send ${selectedPlan?.totalPrice} to:{" "}
+                        •{" "}
+                        {isArabic
+                          ? `أرسل $${selectedPlan?.totalPrice} إلى:`
+                          : `Send $${selectedPlan?.totalPrice} to:`}{" "}
                         <span className="text-white font-semibold">
                           moe_2@instapay
                         </span>
                       </p>
 
-                      <p>• Upload the payment receipt below</p>
+                      <p>
+                        •{" "}
+                        {isArabic
+                          ? "ارفع إيصال الدفع أدناه"
+                          : "Upload the payment receipt below"}
+                      </p>
                     </div>
                   )}
                 </div>
@@ -347,7 +394,7 @@ export default function Pricing() {
               {/* File Upload */}
               <div>
                 <h5 className="text-white font-semibold mb-3">
-                  Upload Payment Receipt
+                  {isArabic ? "ارفع إيصال الدفع" : "Upload Payment Receipt"}
                 </h5>
                 <div className="border-2 border-dashed border-gray-600 rounded-2xl p-6 text-center hover:border-[#fd5747]/50 transition-colors">
                   <input
@@ -367,12 +414,14 @@ export default function Pricing() {
                       ) : (
                         <>
                           <span className="text-white font-semibold">
-                            Click to upload
+                            {isArabic ? "اضغط للرفع" : "Click to upload"}
                           </span>{" "}
-                          or drag and drop
+                          {isArabic ? "أو اسحب وأفلت" : "or drag and drop"}
                           <br />
                           <span className="text-xs text-gray-400">
-                            PNG, JPG, PDF up to 10MB
+                            {isArabic
+                              ? "PNG, JPG, PDF حتى 10 ميجابايت"
+                              : "PNG, JPG, PDF up to 10MB"}
                           </span>
                         </>
                       )}
@@ -387,7 +436,7 @@ export default function Pricing() {
                 disabled={!selectedPaymentMethod || !uploadedFile}
                 className="w-full bg-gradient-to-r from-[#fd5747] via-red-500 to-red-700 text-white font-semibold py-3 rounded-2xl hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
               >
-                Submit Payment
+                {isArabic ? "إرسال الدفع" : "Submit Payment"}
               </button>
             </div>
           </div>
@@ -397,8 +446,14 @@ export default function Pricing() {
       <section className="py-16 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-5xl font-extrabold text-center tracking-tight">
-            <span className="text-white">Pricing</span>{" "}
-            <span className="text-red-500">Plans</span>
+            <span className={`text-white ${isArabic? 'font-bold font-arabic' : 'font-bold'}`}>
+              {" "}
+              {isArabic ? "خطط " : "Pricing"}{" "}
+            </span>{" "}
+            <span className={`text-red-500 ${isArabic? 'font-bold font-arabic' : 'font-bold'}`}>
+              {" "}
+              {isArabic ? "الأسعار" : "Plans"}{" "}
+            </span>
           </h2>
 
           <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4 ">
@@ -421,6 +476,7 @@ export default function Pricing() {
                 {/* Period Selection */}
                 <div className="mt-3">
                   <select
+                    dir={isArabic ? "rtl" : "ltr"}
                     value={selectedPeriods["Regular - Diet only"] || 1}
                     onChange={(e) =>
                       handlePeriodChange("Regular - Diet only", e.target.value)
@@ -443,14 +499,19 @@ export default function Pricing() {
 
                 {/* Price */}
                 <div className="mt-3">
-                  <div className="flex items-baseline">
+                  <div
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-baseline"
+                  >
                     <span
                       className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#fd5747] to-red-600 animate-gradient-x"
                       style={{ backgroundSize: "200% 200%" }}
                     >
                       ${calculatePrice(49, "Regular - Diet only").monthlyPrice}
                     </span>
-                    <span className="text-gray-400 text-sm ml-1">/month</span>
+                    <span className="text-gray-400 text-sm ml-1">
+                      {isArabic ? "/شهر" : "/month"}
+                    </span>
                   </div>
                   {calculatePrice(49, "Regular - Diet only").period > 1 && (
                     <div className="mt-1">
@@ -475,8 +536,13 @@ export default function Pricing() {
                   )}
                 </div>
 
-                <p className="mt-3 text-gray-300 text-sm">
-                  Result driven and Personalized nutrition plan.
+                <p
+                  dir={isArabic ? "rtl" : "ltr"}
+                  className="mt-3 text-gray-300 text-sm"
+                >
+                  {isArabic
+                    ? "خطة تغذية شخصية ومدروسة لتحقيق النتائج."
+                    : "Result driven and Personalized nutrition plan."}
                 </p>
               </div>
 
@@ -489,69 +555,115 @@ export default function Pricing() {
               {/* Features */}
               <div className="flex-1 flex flex-col justify-between">
                 <ul className="px-6 pt-4 space-y-2 text-gray-200 text-sm ">
-                  <li className="flex items-start gap-2">
+                  <li
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-start gap-2"
+                  >
                     <span className="flex-shrink-0 mt-0.5">
                       <CheckIcon />
                     </span>
                     <span className="text-gray-200">
-                      Customized Diet & medical lab Results
+                      {isArabic
+                        ? featureTranslations[
+                            "Customized Diet & medical lab Results"
+                          ]
+                        : "Customized Diet & medical lab Results"}
                     </span>
                   </li>
-                  <li className="flex items-start gap-2">
+                  <li
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-start gap-2"
+                  >
                     <span className="flex-shrink-0 mt-0.5">
                       <CheckIcon />
                     </span>
                     <span className="text-gray-200">
-                      Change diet & Exercise plan when needed
+                      {isArabic
+                        ? featureTranslations[
+                            "Change diet & Exercise plan when needed"
+                          ]
+                        : "Change diet & Exercise plan when needed"}
                     </span>
                   </li>
-                  <li className="flex items-start gap-2">
+                  <li
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-start gap-2"
+                  >
                     <span className="flex-shrink-0 mt-0.5">
                       <CheckIcon />
                     </span>
                     <span className="text-gray-200">
-                      30mins onboarding zoom
+                      {isArabic
+                        ? featureTranslations["30mins onboarding zoom"]
+                        : "30mins onboarding zoom"}
                     </span>
                   </li>
-                  <li className="flex items-start gap-2">
+                  <li
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-start gap-2"
+                  >
                     <span className="flex-shrink-0 mt-0.5">
                       <CheckIcon />
                     </span>
                     <span className="text-gray-200">
-                      Whatsapp weekly support
+                      {isArabic
+                        ? featureTranslations["Whatsapp weekly support"]
+                        : "Whatsapp weekly support"}
                     </span>
                   </li>
 
-                  <li className="flex items-start gap-2">
+                  <li
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-start gap-2"
+                  >
                     <span className="flex-shrink-0 mt-0.5">
                       <CrossIcon />
                     </span>
                     <span className="text-gray-500 line-through">
-                      Video Exercise form correction
+                      {isArabic
+                        ? featureTranslations["Video Exercise form correction"]
+                        : "Video Exercise form correction"}
                     </span>
                   </li>
-                  <li className="flex items-start gap-2">
+                  <li
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-start gap-2"
+                  >
                     <span className="flex-shrink-0 mt-0.5">
                       <CrossIcon />
                     </span>
                     <span className="text-gray-500 line-through">
-                      Exercise sheet to track progress
+                      {isArabic
+                        ? featureTranslations[
+                            "Exercise sheet to track progress"
+                          ]
+                        : "Exercise sheet to track progress"}
                     </span>
                   </li>
-                  <li className="flex items-start gap-2">
+                  <li
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-start gap-2"
+                  >
                     <span className="flex-shrink-0 mt-0.5">
                       <CrossIcon />
                     </span>
                     <span className="text-gray-500 line-through">
-                      2x 45mins zoom check-in / month
+                      {isArabic
+                        ? featureTranslations["2x 45mins zoom check-in / month"]
+                        : "2x 45mins zoom check-in / month"}
                     </span>
                   </li>
-                  <li className="flex items-start gap-2">
+                  <li
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-start gap-2"
+                  >
                     <span className="flex-shrink-0 mt-0.5">
                       <CrossIcon />
                     </span>
                     <span className="text-gray-500 line-through">
-                      1 live workout session / month
+                      {isArabic
+                        ? featureTranslations["1 live workout session / month"]
+                        : "1 live workout session / month"}
                     </span>
                   </li>
                 </ul>
@@ -564,7 +676,7 @@ export default function Pricing() {
                   className="w-full rounded-2xl bg-gradient-to-r from-[#fd5747] via-red-500 to-red-700 text-white font-semibold py-2.5 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all duration-300 animate-gradient-x"
                   style={{ backgroundSize: "300% 300%" }}
                 >
-                  Get Started
+                  {isArabic ? "ابدأ الآن" : "Get Started"}
                 </button>
               </div>
 
@@ -594,6 +706,7 @@ export default function Pricing() {
                 {/* Period Selection */}
                 <div className="mt-3">
                   <select
+                    dir={isArabic ? "rtl" : "ltr"}
                     value={selectedPeriods["Regular - Diet & Exercise"] || 1}
                     onChange={(e) =>
                       handlePeriodChange(
@@ -619,7 +732,10 @@ export default function Pricing() {
 
                 {/* Price */}
                 <div className="mt-3">
-                  <div className="flex items-baseline">
+                  <div
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-baseline"
+                  >
                     <span
                       className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#fd5747] to-red-600 animate-gradient-x"
                       style={{ backgroundSize: "200% 200%" }}
@@ -630,7 +746,9 @@ export default function Pricing() {
                           .monthlyPrice
                       }
                     </span>
-                    <span className="text-gray-400 text-sm ml-1">/month</span>
+                    <span className="text-gray-400 text-sm ml-1">
+                      {isArabic ? "/شهر" : "/month"}
+                    </span>
                   </div>
                   {calculatePrice(69, "Regular - Diet & Exercise").period >
                     1 && (
@@ -660,8 +778,13 @@ export default function Pricing() {
                   )}
                 </div>
 
-                <p className="mt-3 text-gray-300 text-sm">
-                  Result driven and Personalized nutrition & workout plan.
+                <p
+                  dir={isArabic ? "rtl" : "ltr"}
+                  className="mt-3 text-gray-300 text-sm"
+                >
+                  {isArabic
+                    ? "برامج تغذية وتمارين شخصية ومدروسة لتحقيق النتائج."
+                    : "Result driven and Personalized nutrition & workout plan."}
                 </p>
               </div>
 
@@ -674,64 +797,106 @@ export default function Pricing() {
               {/* Features */}
               <div className="flex-1 flex flex-col justify-between">
                 <ul className="px-6 py-4 space-y-2 text-gray-200 text-sm max-h-96 overflow-y-auto">
-                  <li className="flex items-start gap-2">
+                  <li
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-start gap-2"
+                  >
                     <span className="flex-shrink-0 mt-0.5">
                       <CheckIcon />
                     </span>
                     <span className="text-gray-200">
-                      Customized Diet & medical lab Results
+                      {isArabic
+                        ? featureTranslations[
+                            "Customized Diet & medical lab Results"
+                          ]
+                        : "Customized Diet & medical lab Results"}
                     </span>
                   </li>
-                  <li className="flex items-start gap-2">
+                  <li
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-start gap-2"
+                  >
                     <span className="flex-shrink-0 mt-0.5">
                       <CheckIcon />
                     </span>
                     <span className="text-gray-200">
-                      Change diet & Exercise plan when needed
+                      {isArabic
+                        ? featureTranslations[
+                            "Change diet & Exercise plan when needed"
+                          ]
+                        : "Change diet & Exercise plan when needed"}
                     </span>
                   </li>
-                  <li className="flex items-start gap-2">
+                  <li
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-start gap-2"
+                  >
                     <span className="flex-shrink-0 mt-0.5">
                       <CheckIcon />
                     </span>
                     <span className="text-gray-200">
-                      30mins onboarding zoom
+                      {isArabic
+                        ? featureTranslations["30mins onboarding zoom"]
+                        : "30mins onboarding zoom"}
                     </span>
                   </li>
-                  <li className="flex items-start gap-2">
+                  <li
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-start gap-2"
+                  >
                     <span className="flex-shrink-0 mt-0.5">
                       <CheckIcon />
                     </span>
                     <span className="text-gray-200">
-                      Whatsapp weekly support
+                      {isArabic
+                        ? featureTranslations["Whatsapp weekly support"]
+                        : "Whatsapp weekly support"}
                     </span>
                   </li>
 
-                  <li className="flex items-start gap-2">
+                  <li
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-start gap-2"
+                  >
                     <span className="flex-shrink-0 mt-0.5">
                       <CheckIcon />
                     </span>
                     <span className="text-gray-200">
-                      Video Exercise form correction
+                      {isArabic
+                        ? featureTranslations["Video Exercise form correction"]
+                        : "Video Exercise form correction"}
                     </span>
                   </li>
-                  <li className="flex items-start gap-2">
+                  <li
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-start gap-2"
+                  >
                     <span className="flex-shrink-0 mt-0.5">
                       <CheckIcon />
                     </span>
                     <span className="text-gray-200">
-                      Exercise sheet to track progress
+                      {isArabic
+                        ? featureTranslations[
+                            "Exercise sheet to track progress"
+                          ]
+                        : "Exercise sheet to track progress"}
                     </span>
                   </li>
-                  <li className="flex items-start gap-2">
+                  <li
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-start gap-2"
+                  >
                     <span className="flex-shrink-0 mt-0.5">
-                      <CrossIcon />
+                      <CheckIcon />
                     </span>
-                    <span className="text-gray-500 line-through">
-                      2x 45mins zoom check-in / month
+                    <span className="text-gray-200">
+                      1x45mins zoom check-in / month
                     </span>
                   </li>
-                  <li className="flex items-start gap-2">
+                  <li
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-start gap-2"
+                  >
                     <span className="flex-shrink-0 mt-0.5">
                       <CrossIcon />
                     </span>
@@ -791,6 +956,7 @@ export default function Pricing() {
                 {/* Period Selection */}
                 <div className="mt-3">
                   <select
+                    dir={isArabic ? "rtl" : "ltr"}
                     value={selectedPeriods["Advanced coaching"] || 1}
                     onChange={(e) =>
                       handlePeriodChange("Advanced coaching", e.target.value)
@@ -813,14 +979,19 @@ export default function Pricing() {
 
                 {/* Price */}
                 <div className="mt-3">
-                  <div className="flex items-baseline">
+                  <div
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-baseline"
+                  >
                     <span
                       className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#fd5747] to-red-600 animate-gradient-x"
                       style={{ backgroundSize: "200% 200%" }}
                     >
                       ${calculatePrice(129, "Advanced coaching").monthlyPrice}
                     </span>
-                    <span className="text-gray-400 text-sm ml-1">/month</span>
+                    <span className="text-gray-400 text-sm ml-1">
+                      {isArabic ? "/شهر" : "/month"}
+                    </span>
                   </div>
                   {calculatePrice(129, "Advanced coaching").period > 1 && (
                     <div className="mt-1">
@@ -845,9 +1016,13 @@ export default function Pricing() {
                   )}
                 </div>
 
-                <p className="mt-3 text-gray-300 text-sm">
-                  Result Driven personalized programs + zoom meeting with
-                  mohamed
+                <p
+                  dir={isArabic ? "rtl" : "ltr"}
+                  className="mt-3 text-gray-300 text-sm"
+                >
+                  {isArabic
+                    ? "برامج شخصية مدروسة + اجتماع زووم مع محمد"
+                    : "Result Driven personalized programs + zoom meeting with mohamed"}
                 </p>
               </div>
 
@@ -860,64 +1035,108 @@ export default function Pricing() {
               {/* Features */}
               <div className="flex-1 flex flex-col justify-between">
                 <ul className="px-6 py-4 space-y-2 text-gray-200 text-sm max-h-96 overflow-y-auto">
-                  <li className="flex items-start gap-2">
+                  <li
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-start gap-2"
+                  >
                     <span className="flex-shrink-0 mt-0.5">
                       <CheckIcon />
                     </span>
                     <span className="text-gray-200">
-                      Customized Diet & medical lab Results
+                      {isArabic
+                        ? featureTranslations[
+                            "Customized Diet & medical lab Results"
+                          ]
+                        : "Customized Diet & medical lab Results"}
                     </span>
                   </li>
-                  <li className="flex items-start gap-2">
+                  <li
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-start gap-2"
+                  >
                     <span className="flex-shrink-0 mt-0.5">
                       <CheckIcon />
                     </span>
                     <span className="text-gray-200">
-                      Change diet & Exercise plan when needed
+                      {isArabic
+                        ? featureTranslations[
+                            "Change diet & Exercise plan when needed"
+                          ]
+                        : "Change diet & Exercise plan when needed"}
                     </span>
                   </li>
-                  <li className="flex items-start gap-2">
+                  <li
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-start gap-2"
+                  >
                     <span className="flex-shrink-0 mt-0.5">
                       <CheckIcon />
                     </span>
                     <span className="text-gray-200">
-                      30mins onboarding zoom
+                      {isArabic
+                        ? featureTranslations["30mins onboarding zoom"]
+                        : "30mins onboarding zoom"}
                     </span>
                   </li>
-                  <li className="flex items-start gap-2">
+                  <li
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-start gap-2"
+                  >
                     <span className="flex-shrink-0 mt-0.5">
                       <CheckIcon />
                     </span>
                     <span className="text-gray-200">
-                      Whatsapp weekly support
+                      {isArabic
+                        ? featureTranslations["Whatsapp weekly support"]
+                        : "Whatsapp weekly support"}
                     </span>
                   </li>
 
-                  <li className="flex items-start gap-2">
+                  <li
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-start gap-2"
+                  >
                     <span className="flex-shrink-0 mt-0.5">
                       <CheckIcon />
                     </span>
                     <span className="text-gray-200">
-                      Video Exercise form correction
+                      {isArabic
+                        ? featureTranslations["Video Exercise form correction"]
+                        : "Video Exercise form correction"}
                     </span>
                   </li>
-                  <li className="flex items-start gap-2">
+                  <li
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-start gap-2"
+                  >
                     <span className="flex-shrink-0 mt-0.5">
                       <CheckIcon />
                     </span>
                     <span className="text-gray-200">
-                      Exercise sheet to track progress
+                      {isArabic
+                        ? featureTranslations[
+                            "Exercise sheet to track progress"
+                          ]
+                        : "Exercise sheet to track progress"}
                     </span>
                   </li>
-                  <li className="flex items-start gap-2">
+                  <li
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-start gap-2"
+                  >
                     <span className="flex-shrink-0 mt-0.5">
                       <CheckIcon />
                     </span>
                     <span className="text-gray-200">
-                      1x45mins zoom check-in / month
+                      {isArabic
+                        ? featureTranslations["1x45mins zoom check-in / month"]
+                        : "1x45mins zoom check-in / month"}
                     </span>
                   </li>
-                  <li className="flex items-start gap-2">
+                  <li
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-start gap-2"
+                  >
                     <span className="flex-shrink-0 mt-0.5">
                       <CrossIcon />
                     </span>
@@ -965,6 +1184,7 @@ export default function Pricing() {
                 {/* Period Selection */}
                 <div className="mt-3">
                   <select
+                    dir={isArabic ? "rtl" : "ltr"}
                     value={selectedPeriods["Elite athlete"] || 1}
                     onChange={(e) =>
                       handlePeriodChange("Elite athlete", e.target.value)
@@ -987,14 +1207,19 @@ export default function Pricing() {
 
                 {/* Price */}
                 <div className="mt-3">
-                  <div className="flex items-baseline">
+                  <div
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-baseline"
+                  >
                     <span
                       className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#fd5747] to-red-600 animate-gradient-x"
                       style={{ backgroundSize: "200% 200%" }}
                     >
                       ${calculatePrice(199, "Elite athlete").monthlyPrice}
                     </span>
-                    <span className="text-gray-400 text-sm ml-1">/month</span>
+                    <span className="text-gray-400 text-sm ml-1">
+                      {isArabic ? "/شهر" : "/month"}
+                    </span>
                   </div>
                   {calculatePrice(199, "Elite athlete").period > 1 && (
                     <div className="mt-1">
@@ -1016,9 +1241,13 @@ export default function Pricing() {
                   )}
                 </div>
 
-                <p className="mt-3 text-gray-300 text-sm">
-                  Personalized programs + Work Directly with mohamed on your
-                  mindset.
+                <p
+                  dir={isArabic ? "rtl" : "ltr"}
+                  className="mt-3 text-gray-300 text-sm"
+                >
+                  {isArabic
+                    ? "برامج شخصية + العمل مباشرة مع محمد على عقليتك."
+                    : "Personalized programs + Work Directly with mohamed on your mindset."}
                 </p>
               </div>
 
@@ -1031,69 +1260,117 @@ export default function Pricing() {
               {/* Features */}
               <div className="flex-1 flex flex-col justify-between">
                 <ul className="px-6 py-4 space-y-2 text-gray-200 text-sm max-h-96 overflow-y-auto">
-                  <li className="flex items-start gap-2">
+                  <li
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-start gap-2"
+                  >
                     <span className="flex-shrink-0 mt-0.5">
                       <CheckIcon />
                     </span>
                     <span className="text-gray-200">
-                      Customized Diet & medical lab Results
+                      {isArabic
+                        ? featureTranslations[
+                            "Customized Diet & medical lab Results"
+                          ]
+                        : "Customized Diet & medical lab Results"}
                     </span>
                   </li>
-                  <li className="flex items-start gap-2">
+                  <li
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-start gap-2"
+                  >
                     <span className="flex-shrink-0 mt-0.5">
                       <CheckIcon />
                     </span>
                     <span className="text-gray-200">
-                      Change diet & Exercise plan when needed
+                      {isArabic
+                        ? featureTranslations[
+                            "Change diet & Exercise plan when needed"
+                          ]
+                        : "Change diet & Exercise plan when needed"}
                     </span>
                   </li>
-                  <li className="flex items-start gap-2">
+                  <li
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-start gap-2"
+                  >
                     <span className="flex-shrink-0 mt-0.5">
                       <CheckIcon />
                     </span>
                     <span className="text-gray-200">
-                      30mins onboarding zoom
+                      {isArabic
+                        ? featureTranslations["30mins onboarding zoom"]
+                        : "30mins onboarding zoom"}
                     </span>
                   </li>
 
-                  <li className="flex items-start gap-2">
+                  <li
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-start gap-2"
+                  >
                     <span className="flex-shrink-0 mt-0.5">
                       <CheckIcon />
                     </span>
                     <span className="text-gray-200">
-                      mohamed personal Whatsapp - 24 hours support
+                      {isArabic
+                        ? featureTranslations[
+                            "mohamed personal Whatsapp - 24 hours support"
+                          ]
+                        : "Whatsapp - mohamed personal Whatsapp - 24 hours support"}
                     </span>
                   </li>
-                  <li className="flex items-start gap-2">
+                  <li
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-start gap-2"
+                  >
                     <span className="flex-shrink-0 mt-0.5">
                       <CheckIcon />
                     </span>
                     <span className="text-gray-200">
-                      Video Exercise form correction
+                      {isArabic
+                        ? featureTranslations["Video Exercise form correction"]
+                        : "Video Exercise form correction"}
                     </span>
                   </li>
-                  <li className="flex items-start gap-2">
+                  <li
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-start gap-2"
+                  >
                     <span className="flex-shrink-0 mt-0.5">
                       <CheckIcon />
                     </span>
                     <span className="text-gray-200">
-                      Exercise sheet to track progress
+                      {isArabic
+                        ? featureTranslations[
+                            "Exercise sheet to track progress"
+                          ]
+                        : "Exercise sheet to track progress"}
                     </span>
                   </li>
-                  <li className="flex items-start gap-2">
+                  <li
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-start gap-2"
+                  >
                     <span className="flex-shrink-0 mt-0.5">
                       <CheckIcon />
                     </span>
                     <span className="text-gray-200">
-                      2x 45mins zoom check-in / month
+                      {isArabic
+                        ? featureTranslations["2x 45mins zoom check-in / month"]
+                        : "2x 45mins zoom check-in / month"}
                     </span>
                   </li>
-                  <li className="flex items-start gap-2">
+                  <li
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className="flex items-start gap-2"
+                  >
                     <span className="flex-shrink-0 mt-0.5">
                       <CheckIcon />
                     </span>
                     <span className="text-gray-200">
-                      1 live workout session / month
+                      {isArabic
+                        ? featureTranslations["1 live workout session / month"]
+                        : "1 live workout session / month"}
                     </span>
                   </li>
                 </ul>

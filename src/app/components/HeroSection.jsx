@@ -4,12 +4,14 @@ import { useState, useRef } from "react";
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { TiGroup } from "react-icons/ti";
 import { CgGym } from "react-icons/cg";
+import { useLanguage } from '../contexts/LanguageContext';
 
 export default function HeroSection() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [showPlayIcon, setShowPlayIcon] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
   const videoRef = useRef(null);
+  const { isArabic } = useLanguage();
 
   const handlePlayClick = () => {
     if (videoRef.current) {
@@ -39,26 +41,25 @@ export default function HeroSection() {
   const handleVideoClick = () => {
     handlePlayClick();
   };
-
+// bg-gradient-to-r from-[#fd5747] to-blue-700 bg-clip-text text-transparent
   return (
     <div>
       <div className="hero relative ">
         <div className="md:pt-50 pt-30 ">
           <div className="flex items-center justify-center relative z-[10]   ">
             <div className="lg:text-8xl md:text-6xl text-4xl text-center">
-              <h1 className="text-white font-bold p-2 md:p-0">
-                Real fitness for{" "}
+              <h1 className={`text-white font-bold p-2 md:p-0 ${isArabic ? 'font-arabic' : ''}`}>
+                {isArabic ? ' لياقة حقيقية  ' : 'Real fitness for '}
                 <span className="bg-gradient-to-r from-[#fd5747] to-blue-700 bg-clip-text text-transparent">
-                  real life
+                  {isArabic ? ' للحياة الحقيقية' : ' Real life'}
                 </span>
               </h1>
 
-              <p className="text-white p-3 md:p-0 text-lg md:text-xl lg:text-2xl font-normal mt-6 max-w-4xl mx-auto leading-relaxed">
-                Fitness should improve your quality of life. Our Exercise
-                Programs are tailored to fit your current lifestyle and help you
-                make better choices regarding your health no{" "}
-                <span className="text-red-500">crash diets</span>, no
-                unrealistic 2 hours workouts
+              <p className={`text-white p-3 md:p-0 text-lg md:text-xl lg:text-2xl font-normal mt-6 max-w-4xl mx-auto leading-relaxed ${isArabic ? 'font-arabic' : ''}`}>
+                {isArabic 
+                  ? 'اكتشف برامج اللياقة البدنية المصممة خصيصاً لأسلوب حياتك. احصل على نتائج حقيقية مع التدريب الشخصي والتوجيه المهني.'
+                  : 'Discover fitness programs tailored to your lifestyle. Get real results with personalized training and expert guidance.'
+                }
               </p>
             </div>
           </div>
@@ -117,12 +118,12 @@ export default function HeroSection() {
         </div>
 
         <div className="flex items-center justify-center pt-10 gap-10">
-          <button className="bg-[#fd5747] text-white text-xl px-6 py-2 rounded-full font-bold hover:bg-[#e64a3a] transition-colors duration-300">
-            Get Fit
+          <button className={`bg-[#fd5747] text-white text-xl px-6 py-2 rounded-full font-bold hover:bg-[#e64a3a] transition-colors duration-300 ${isArabic ? 'font-arabic' : ''}`}>
+            {isArabic ? 'احصل على اللياقة' : 'Get Fit'}
           </button>
 
-          <button className=" text-[#fd5747] px-6 py-2 rounded-full font-bold hover:bg-[#f5f5f5] transition-colors duration-300">
-            Free Services
+          <button className={`text-[#fd5747] px-6 py-2 rounded-full font-bold hover:bg-[#f5f5f5] transition-colors duration-300 ${isArabic ? 'font-arabic' : ''}`}>
+            {isArabic ? 'خدمات مجانية' : 'Free Services'}
           </button>
         </div>
         <div
@@ -134,11 +135,11 @@ export default function HeroSection() {
               <TiGroup className="text-5xl lg:text-6xl text-[#fd5747]" />
 
               <div className=" pb-6 md:pb-0">
-                <h2 className="lg:text-3xl text-xl text-[#fd5747]">
-                  +7 years experience{" "}
+                <h2 className={`lg:text-3xl text-xl text-[#fd5747] ${isArabic ? 'font-arabic' : ''}`}>
+                  {isArabic ? 'عملاء سعداء' : 'Happy Clients'}{" "}
                 </h2>
-                <p className="text-white pt-2  text-sm lg:text-lg">
-                  Served people in 6 differenet countries
+                <p className={`text-white pt-2  text-sm lg:text-lg ${isArabic ? 'font-arabic' : ''}`}>
+                  {isArabic ? '+7 سنوات خبرة' : '+7 years experience'}
                 </p>
               </div>
             </div>
@@ -147,11 +148,11 @@ export default function HeroSection() {
               <CgGym className="text-5xl lg:text-6xl text-[#fd5747]" />
 
               <div className=" pb-6 md:pb-0">
-                <h2 className="lg:text-3xl text-xl text-[#fd5747]">
-                  Results-Driven Programs{" "}
+                <h2 className={`lg:text-3xl text-xl text-[#fd5747] ${isArabic ? 'font-arabic' : ''}`}>
+                  {isArabic ? 'برامج موجهة للنتائج' : 'Results-Driven Programs'}{" "}
                 </h2>
-                <p className="text-white pt-2  text-sm lg:text-lg">
-                  Designed to help you see progress from week one.
+                <p className={`text-white pt-2  text-sm lg:text-lg ${isArabic ? 'font-arabic' : ''}`}>
+                  {isArabic ? 'تدريب شخصي' : 'Personalized Coaching'}
                 </p>
               </div>
             </div>
@@ -160,11 +161,11 @@ export default function HeroSection() {
               <TiGroup className="text-5xl lg:text-6xl text-[#fd5747]" />
 
               <div className=" pb-6 md:pb-0">
-                <h2 className="lg:text-3xl text-xl text-[#fd5747]">
-                  Personalized Coaching{" "}
+                <h2 className={`lg:text-3xl text-xl text-[#fd5747] ${isArabic ? 'font-arabic' : ''}`}>
+                  {isArabic ? 'خدمنا أشخاص في 6 دول مختلفة' : 'Served people in 6 different countries'}{" "}
                 </h2>
-                <p className="text-white pt-2 text-sm lg:text-lg">
-                  Workouts & nutrition tailored to your lifestyle
+                <p className={`text-white pt-2 text-sm lg:text-lg ${isArabic ? 'font-arabic' : ''}`}>
+                  {isArabic ? 'نتائج مضمونة' : 'Guaranteed Results'}
                 </p>
               </div>
             </div>

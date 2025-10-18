@@ -9,8 +9,10 @@ import "swiper/css/pagination";
 import Image from "next/image";
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
 import { useState, useRef } from "react";
+import { useLanguage } from '../contexts/LanguageContext';
 
 export default function Transformations() {
+  const { isArabic } = useLanguage();
   const [activeSlide, setActiveSlide] = useState(0);
   const swiperRef = useRef(null);
   // Client reviews data
@@ -19,44 +21,54 @@ export default function Transformations() {
       id: 1,
       image: "/hamo.png",
       clientName: "Adam el-shabrawy",
-      review:
-        "This fitness program completely changed my life. I lost 30 pounds in 3 months and gained incredible strength. The trainers are amazing and the community is so supportive. I never thought I could achieve these results!",
+      review: {
+        en: "This fitness program completely changed my life. I lost 30 pounds in 3 months and gained incredible strength. The trainers are amazing and the community is so supportive. I never thought I could achieve these results!",
+        ar: "هذا البرنامج الرياضي غير حياتي تماماً. فقدت 30 رطلاً في 3 أشهر واكتسبت قوة لا تصدق. المدربون رائعون والمجتمع داعم جداً. لم أعتقد أبداً أنني يمكنني تحقيق هذه النتائج!"
+      },
     },
     {
       id: 2,
       image: "/sport.png",
       clientName: "Amr Farh",
-      review:
-        "Best decision I ever made was joining this gym. The personalized training plan helped me reach my goals faster than I imagined. The nutrition guidance was spot on and the results speak for themselves.",
+      review: {
+        en: "Best decision I ever made was joining this gym. The personalized training plan helped me reach my goals faster than I imagined. The nutrition guidance was spot on and the results speak for themselves.",
+        ar: "أفضل قرار اتخذته في حياتي هو الانضمام لهذا الجيم. خطة التدريب الشخصية ساعدتني في الوصول لأهدافي أسرع مما تخيلت. الإرشادات الغذائية كانت مثالية والنتائج تتحدث عن نفسها."
+      },
     },
     {
       id: 3,
       image: "/user.jpg",
       clientName: "Menna",
-      review:
-        "After years of struggling with my fitness, this program gave me the structure and motivation I needed. The transformation is not just physical but mental too. I feel more confident and energetic than ever.",
+      review: {
+        en: "After years of struggling with my fitness, this program gave me the structure and motivation I needed. The transformation is not just physical but mental too. I feel more confident and energetic than ever.",
+        ar: "بعد سنوات من الصراع مع اللياقة البدنية، أعطاني هذا البرنامج الهيكل والدافع الذي احتجته. التحول ليس جسدياً فقط بل عقلياً أيضاً. أشعر بثقة وطاقة أكثر من أي وقت مضى."
+      },
     },
     {
       id: 4,
       image: "/hamo.png",
       clientName: "Seif Mohamed",
-      review:
-        "The coaches here truly care about your success. They pushed me beyond my limits while keeping me safe. The results exceeded my expectations and I made lifelong friends along the way.",
+      review: {
+        en: "The coaches here truly care about your success. They pushed me beyond my limits while keeping me safe. The results exceeded my expectations and I made lifelong friends along the way.",
+        ar: "المدربون هنا يهتمون حقاً بنجاحك. دفعوني إلى ما وراء حدودي مع الحفاظ على سلامتي. النتائج فاقت توقعاتي وكونت صداقات مدى الحياة في الطريق."
+      },
     },
     {
       id: 5,
       image: "/sport.png",
       clientName: "Andrew Ayman",
-      review:
-        "Amazing transformation journey! The personalized approach and constant support helped me achieve goals I never thought possible. This place changed not just my body, but my entire mindset towards fitness.",
+      review: {
+        en: "Amazing transformation journey! The personalized approach and constant support helped me achieve goals I never thought possible. This place changed not just my body, but my entire mindset towards fitness.",
+        ar: "رحلة تحول مذهلة! النهج الشخصي والدعم المستمر ساعدني في تحقيق أهداف لم أعتقد أنها ممكنة. هذا المكان لم يغير جسدي فقط، بل عقليتي بالكامل تجاه اللياقة البدنية."
+      },
     },
   ];
 
   return (
     <div className="w-full py-16 bg-transparent">
       <div className="container mx-auto px-4">
-        <h5 className="text-6xl font-bold text-center mb-12 animated-gradient-text">
-          HEAR IT FROM THEM
+        <h5 className={`text-6xl ${isArabic ? 'font-bold font-arabic pb-10 text-center mb-12 animated-gradient-text' : 'font-bold text-center mb-12 animated-gradient-text'}`}>
+          {isArabic ? 'اسمعها منهم' : 'HEAR IT FROM THEM'}
         </h5>
 
         <div className="relative">
@@ -102,12 +114,12 @@ export default function Transformations() {
                         </p>
                       </div>
 
-                      <p className="text-white text-base lg:text-lg leading-relaxed italic pt-8 lg:pt-10">
-                        {item.review}
+                      <p className={`text-white text-base lg:text-lg leading-relaxed italic pt-8 lg:pt-10 ${isArabic ? 'text-right font-arabic' : ''}`}>
+                        {isArabic ? item.review.ar : item.review.en}
                       </p>
 
                       {/* Reviewer Info Section */}
-                      <div className="flex items-center gap-3 lg:gap-4 mt-4 lg:mt-6 pt-3 lg:pt-4">
+                      <div className={`flex ${isArabic ? 'flex-row-reverse' : 'flex-row'} items-center gap-3 lg:gap-4 mt-4 lg:mt-6 pt-3 lg:pt-4`}>
                         <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-full overflow-hidden border-2 border-white/30">
                           <Image
                             src={item.image}
@@ -118,11 +130,11 @@ export default function Transformations() {
                           />
                         </div>
                         <div>
-                          <h4 className="text-white font-semibold text-sm lg:text-base">
+                          <h4 className={`text-white font-semibold text-sm lg:text-base ${isArabic ? 'text-right' : ''}`}>
                             {item.clientName}
                           </h4>
-                          <p className="text-white/70 text-xs lg:text-sm">
-                            Verified Client
+                          <p className={`text-white/70 text-xs lg:text-sm ${isArabic ? 'font-bold font-arabic text-right' : 'font-bold'}`}>
+                            {isArabic ? 'عميل موثق' : 'Verified Client'}
                           </p>
                         </div>
                       </div>

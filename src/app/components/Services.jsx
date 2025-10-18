@@ -1,8 +1,10 @@
 'use client';
 import { useState, useRef } from 'react';
 import { useVideoOptimization } from '../hooks/useVideoOptimization';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export default function Testimonials() {
+  const { isArabic } = useLanguage();
   const [isPlaying, setIsPlaying] = useState(false);
   const [showPlayIcon, setShowPlayIcon] = useState(true);
   const videoRef = useRef(null);
@@ -37,31 +39,31 @@ export default function Testimonials() {
       <div className="flex flex-col-reverse lg:flex-row items-start justify-center gap-6 md:gap-8 lg:gap-10">
         
         <div className="w-full lg:w-1/2  order-2 lg:order-1">
-          <h3 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-white font-bold leading-tight">
-            What are  <span className="text-red-700"> you waiting for? </span>
+          <h2 className="text-4xl md:text-6xl font-bold text-white mb-8 text-center">
+            {isArabic ? 'ماذا تنتظر؟' : 'What are you waiting for?'}
+          </h2>
+          <h3 className="text-2xl md:text-3xl font-semibold text-red-500 mb-4 text-center">
+            {isArabic ? 'لا تستطيع الحفاظ على الوزن؟' : "Can't keep the weight off?"}
           </h3>
-
-          <h4 className="text-white text-2xl md:text-3xl lg:text-4xl font-extrabold pt-8 md:pt-12 lg:pt-20 leading-tight">
-            Can't keep the weight off?
-          </h4>
-          <p className="text-white pt-4 md:pt-6 lg:pt-10 text-base md:text-lg lg:text-xl xl:text-2xl leading-relaxed">
-            Both Diet and workout plans are tailored to your individual needs;
-            ensuring you always progress, no crash-diets , no unrealistic 2
-            hours workouts Whether you're exercising from home, outdoors or the
-            gym.{" "}
+          <p className="text-lg text-gray-300 mb-8 text-center max-w-3xl mx-auto">
+            {isArabic 
+              ? 'هل تشعر بالإحباط من الأنظمة الغذائية القاسية والتمارين غير الواقعية؟ نحن نقدم نهجاً مختلفاً - برامج مستدامة تناسب حياتك.'
+              : 'Tired of crash diets and unrealistic workouts? We offer a different approach - sustainable programs that fit your life.'
+            }
           </p>
-
-          <h4 className="text-white text-2xl md:text-3xl lg:text-4xl font-extrabold pt-8 md:pt-12 lg:pt-20 leading-tight">
-            Got a Busy Life?
-          </h4>
-          <p className="text-white pt-4 md:pt-6 lg:pt-10 text-base md:text-lg lg:text-xl xl:text-2xl leading-relaxed">
-            Leading a healthy lifestyle through nutrition & Exercise should not
-            stop you from enjoying your life, our holistic approach helps you
-            maintain healthy habits for long term results.
+          
+          <h3 className="text-2xl md:text-3xl font-semibold text-red-500 mb-4 text-center">
+            {isArabic ? 'حياة مشغولة؟' : 'Got a Busy Life?'}
+          </h3>
+          <p className="text-lg text-gray-300 mb-12 text-center max-w-3xl mx-auto">
+            {isArabic 
+              ? 'لا وقت للصالة الرياضية؟ لا مشكلة. برامجنا مصممة للأشخاص المشغولين الذين يريدون نتائج حقيقية دون التضحية بحياتهم.'
+              : "No time for the gym? No problem. Our programs are designed for busy people who want real results without sacrificing their life."
+            }
           </p>
           <div className="pt-8 md:pt-12 lg:pt-20">
             <button className=" bg-gradient-to-r from-red-800 to-red-600 shadow-lg hidden md:block text-white text-lg md:text-xl  font-semibold p-3 md:p-4 lg:p-5 rounded-full hover:bg-red-800 transition-colors duration-300 w-full sm:w-auto">
-              JOIN NOW
+              {isArabic ? 'انضم الآن' : 'JOIN NOW'}
             </button>
           </div>
         </div>
@@ -86,7 +88,7 @@ export default function Testimonials() {
           )}
             <div className="pt-8 md:pt-12 lg:pt-20">
             <button className="bg-red-700 block md:hidden text-white text-lg md:text-xl lg:text-2xl font-bold p-3 md:p-4 lg:p-5 rounded-full hover:bg-red-800 transition-colors duration-300 w-full sm:w-auto">
-              JOIN NOW
+              {isArabic ? 'انضم الآن' : 'JOIN NOW'}
             </button>
           </div>
           {showPlayIcon && (

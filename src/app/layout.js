@@ -1,16 +1,13 @@
-// import { Geist, Geist_Mono } from "next/font/google";
+import { Cairo } from "next/font/google";
 import "./globals.css";
 import WhatsAppButton from "./components/WhatsAppButton";
+import { LanguageProvider } from "./contexts/LanguageContext";
 
-// const geistSans = Geist({
-//   variable: "--font-geist-sans",
-//   subsets: ["latin"],
-// });
-
-// const geistMono = Geist_Mono({
-//   variable: "--font-geist-mono",
-//   subsets: ["latin"],
-// });
+const cairo = Cairo({
+  variable: "--font-cairo",
+  subsets: ["arabic", "latin"],
+  weight: ["200", "300", "400", "500", "600", "700", "800", "900"],
+});
 
 export const metadata = {
   title: "BettrFitness",
@@ -23,11 +20,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className="
-      bg-[#1a1c21] max-w-[1600px] mx-auto"
+        className={`
+      bg-[#1a1c21] max-w-[1600px] mx-auto ${cairo.variable}`}
       >
-        {children}
-        <WhatsAppButton />
+        <LanguageProvider>
+          {children}
+          <WhatsAppButton />
+        </LanguageProvider>
       </body>
     </html>
   );

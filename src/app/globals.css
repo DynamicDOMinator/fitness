@@ -6,6 +6,11 @@ html {
   scroll-padding-top: 80px; /* Offset for fixed header */
 }
 
+/* Arabic font family */
+.font-arabic {
+  font-family: var(--font-cairo), sans-serif;
+}
+
 /* Custom scrollbar styling */
 ::-webkit-scrollbar {
   width: 8px;

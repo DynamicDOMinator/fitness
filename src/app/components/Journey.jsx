@@ -1,44 +1,60 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-
+import { useLanguage } from "../contexts/LanguageContext";
 export default function Journey() {
   const [visibleSteps, setVisibleSteps] = useState(new Set());
   const stepRefs = useRef([]);
+  const { isArabic } = useLanguage();
 
   const journeySteps = [
     {
       id: 1,
       title: "Sign up",
+      titleAr: "التسجيل",
       description:
         "After your subscription is processed.Within 24 hours our team will contact you to start.",
+      descriptionAr:
+        "بعد معالجة اشتراكك، سيتواصل معك فريقنا خلال 24 ساعة لبدء رحلتك.",
       side: "left",
     },
     {
       id: 2,
       title: "OnBoarding",
+      titleAr: "التأهيل",
       description:
         "A 30 minute zoom meeting & questions form will help us personalize coaching plan for you.",
+      descriptionAr:
+        "اجتماع زوم لمدة 30 دقيقة ونموذج أسئلة سيساعدنا في تخصيص خطة التدريب المناسبة لك.",
       side: "right",
     },
     {
       id: 3,
       title: "Begin journey",
+      titleAr: "بداية الرحلة",
       description:
         "Within 24 hours your personalized plan will be sent to you..",
+      descriptionAr:
+        "خلال 24 ساعة سيتم إرسال خطتك الشخصية المخصصة لك.",
       side: "left",
     },
     {
       id: 4,
       title: "Journey Details",
+      titleAr: "تفاصيل الرحلة",
       description:
         "Our team will reply to any questions you have through whatsapp and make sure you are following the diet & workout plans.",
+      descriptionAr:
+        "سيرد فريقنا على أي أسئلة لديك عبر الواتساب ويتأكد من اتباعك لخطط النظام الغذائي والتمارين.",
       side: "right",
     },
     {
       id: 5,
       title: "Achieve your best look",
+      titleAr: "حقق أفضل مظهر لك",
       description:
         "As you stick to your customized plans you will notice improvement not only if your physical appearance but also your mentality and lifestyle.",
+      descriptionAr:
+        "عندما تلتزم بخططك المخصصة ستلاحظ تحسناً ليس فقط في مظهرك الجسدي ولكن أيضاً في عقليتك ونمط حياتك.",
       side: "left",
     },
   ];
@@ -74,16 +90,19 @@ export default function Journey() {
     <div className="py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-red-500 mb-2 sm:mb-4">
-            What To <span className="text-white"> Expect </span>
+          <h2 className={`text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2 sm:mb-4 ${isArabic ? 'font-arabic text-center' : ''}`}>
+            {isArabic ? "ما الذي  " : "What To  "}
+            <span className="text-red-500"> {isArabic ? "  تنتظره" : " Expect "}</span>
           </h2>
-          <p className="text-sm sm:text-base lg:text-lg text-white max-w-2xl mx-auto px-4">
-            Transform your life step by step. Every milestone brings you closer
-            to your best self.
+          <p className={`text-sm sm:text-base lg:text-lg text-white max-w-2xl mx-auto px-4 ${isArabic ? 'font-arabic text-center' : ''}`}>
+            {isArabic 
+              ? 'غيّر حياتك خطوة بخطوة. كل إنجاز يُقرّبك من أفضل ما فيك'
+              : 'Transform your life step by step. Every milestone brings you closer to your best self.'
+            }
           </p>
         </div>
 
-        <div className="relative">
+        <div dir={isArabic ? 'rtl' : 'ltr'} className="relative">
           {/* Animated Timeline Line - Hidden on mobile, visible on larger screens */}
           <div
             className="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-1 bg-gradient-to-b from-red-400 to-red-600 transition-all duration-1000 ease-out origin-top"
@@ -151,11 +170,11 @@ export default function Journey() {
                       "0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.1)",
                   }}
                 >
-                  <h3 className="text-lg sm:text-xl font-semibold text-white mb-2 sm:mb-3 drop-shadow-lg">
-                    {step.title}
+                  <h3 className={`text-lg sm:text-xl font-semibold text-white mb-2 sm:mb-3 drop-shadow-lg ${isArabic ? 'font-arabic' : ''}`}>
+                    {isArabic ? step.titleAr : step.title}
                   </h3>
-                  <p className="text-sm sm:text-base text-gray-200 leading-relaxed drop-shadow-md">
-                    {step.description}
+                  <p className={`text-sm sm:text-base text-gray-200 leading-relaxed drop-shadow-md ${isArabic ? 'font-arabic' : ''}`}>
+                    {isArabic ? step.descriptionAr : step.description}
                   </p>
                 </div>
               </div>
@@ -207,8 +226,8 @@ export default function Journey() {
                 });
               }}
             >
-              <span className="text-sm sm:text-base lg:text-lg font-semibold drop-shadow-lg">
-                🎉 START YOUR JOURNEY 🎉
+              <span className={`text-sm sm:text-base lg:text-lg font-semibold drop-shadow-lg ${isArabic ? 'font-arabic' : ''}`}>
+                {isArabic ? "🎉 ابدأ رحلتك 🎉" : "🎉 START YOUR JOURNEY 🎉"}
               </span>
             </div>
           </div>

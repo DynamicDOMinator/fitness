@@ -1,10 +1,12 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const { isArabic, toggleLanguage } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,14 +51,14 @@ export default function Header() {
   };
 
   const navItems = [
-    { id: 'home', label: 'Home' },
-    { id: 'services', label: 'Services' },
-    { id: 'testimonials', label: 'Testimonials' },
+    { id: 'home', label: isArabic ? 'الرئيسية' : 'Home' },
+    { id: 'services', label: isArabic ? 'الخدمات' : 'Services' },
+    { id: 'testimonials', label: isArabic ? 'الشهادات' : 'Testimonials' },
     // { id: 'experiences', label: 'Experiences' },
-    { id: 'pricing', label: 'Pricing' },
-    { id: 'transformations', label: 'Transformations' },
-    { id: 'journey', label: 'Journey' },
-    { id: 'faqs', label: 'FAQs' },
+    { id: 'pricing', label: isArabic ? 'الأسعار' : 'Pricing' },
+    { id: 'transformations', label: isArabic ? 'التحولات' : 'Transformations' },
+    { id: 'journey', label: isArabic ? 'الرحلة' : 'Journey' },
+    { id: 'faqs', label: isArabic ? 'الأسئلة الشائعة' : 'FAQs' },
   ];
 
   return (
@@ -75,7 +77,7 @@ export default function Header() {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8">
+          <nav className={`hidden md:flex ${isArabic ? "flex-row-reverse" : "flex-row"} space-x-8 lg:pr-10 items-center`}>
             {navItems.map((item) => (
               <button
                 key={item.id}
@@ -101,10 +103,30 @@ export default function Header() {
                 />
               </button>
             ))}
+            
+            {/* Language Toggle Button */}
+<div className={`absolute top-1/2 -translate-y-1/2 ${isArabic ? "right-4" : "right-4"}`}>
+    <button
+              onClick={toggleLanguage}
+              className="ml-4 px-3 py-1.5 text-sm font-medium text-white bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 hover:border-red-500/50 rounded-lg transition-all duration-300 hover:scale-105"
+            >
+              {isArabic ? 'EN' : 'AR'}
+            </button>
+</div>
+
+          
           </nav>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center space-x-3">
+            {/* Mobile Language Toggle Button */}
+            <button
+              onClick={toggleLanguage}
+              className="px-2 py-1 text-xs font-medium text-white bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 hover:border-red-500/50 rounded-md transition-all duration-300"
+            >
+              {isArabic ? 'EN' : 'AR'}
+            </button>
+            
             <button
               className="text-white hover:text-red-500 transition-colors duration-300"
               onClick={() => {
