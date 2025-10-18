@@ -44,7 +44,7 @@ export default function HeroSection() {
 // bg-gradient-to-r from-[#fd5747] to-blue-700 bg-clip-text text-transparent
   return (
     <div className="w-full">
-      <div className="hero relative bg-cover bg-center bg-no-repeat w-full min-h-screen" style={{backgroundImage: 'url(/map.jpg)'}}>
+      <div className="hero relative w-full " >
         <div className="md:pt-50 pt-30 ">
           <div className="flex items-center justify-center relative z-[10]   ">
             <div className="lg:text-8xl md:text-6xl text-4xl text-center">
@@ -117,7 +117,7 @@ export default function HeroSection() {
           </div>
         </div>
 
-        <div className="flex items-center justify-center pt-10 gap-10">
+        <div className="flex items-center justify-center pt-10 gap-10 " >
           <button className={`bg-[#fd5747] text-white text-xl px-6 py-2 rounded-full font-bold hover:bg-[#e64a3a] transition-colors duration-300 ${isArabic ? 'font-arabic' : ''}`}>
             {isArabic ? 'احصل على اللياقة' : 'Get Fit'}
           </button>
@@ -127,10 +127,15 @@ export default function HeroSection() {
           </button>
         </div>
         <div
-          className="backdrop-blur-xl bg-gradient-to-br lg:mx-10 mx-4 from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow rounded-4xl"
-          style={{ backgroundSize: "400% 400%" }}
+          className="bg-cover relative bg-center bg-no-repeat w-full h-[900px]" 
+          style={{ 
+        
+            backgroundImage: 'url(/map.jpg)'
+          }}
         >
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6 lg:mt-20  mt-10  p-10 ">
+         <div className="bg-black/40 absolute lg:translate-y-1/2 lg:top-40 top-20 w-full p-10 lg:rounded-full rounded-2xl  ">
+
+ <div className="flex flex-col md:flex-row items-center justify-between gap-6    ">
             <div className="flex flex-col items-start gap-5 mr-auto md:m-auto">
               <TiGroup className="text-5xl lg:text-6xl text-[#fd5747]" />
 
@@ -170,6 +175,8 @@ export default function HeroSection() {
               </div>
             </div>
           </div>
+
+         </div>
         </div>
       </div>
     </div>
