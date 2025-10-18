@@ -131,21 +131,28 @@ export default function Pricing() {
   // Function to handle duration change in modal
   const handleModalDurationChange = (newPeriod) => {
     if (selectedPlan) {
-      const priceInfo = calculatePrice(
-        selectedPlan.basePrice,
-        selectedPlan.title
-      );
+      const newPeriodInt = parseInt(newPeriod);
+      
       // Update the selected periods state
       setSelectedPeriods((prev) => ({
         ...prev,
-        [selectedPlan.title]: parseInt(newPeriod),
+        [selectedPlan.title]: newPeriodInt,
       }));
 
-      // Recalculate price with new period
-      const newPriceInfo = calculatePrice(
-        selectedPlan.basePrice,
-        selectedPlan.title
+      // Calculate price with the new period directly
+      const periodOption = periodOptions.find(
+        (option) => option.value === newPeriodInt
       );
+      const discountedPrice = selectedPlan.basePrice * (1 - periodOption.discount);
+      const totalPrice = discountedPrice * newPeriodInt;
+
+      const newPriceInfo = {
+        monthlyPrice: Math.round(discountedPrice),
+        totalPrice: Math.round(totalPrice),
+        period: newPeriodInt,
+        discount: periodOption.discount,
+      };
+
       setSelectedPlan((prev) => ({
         ...prev,
         ...newPriceInfo,
