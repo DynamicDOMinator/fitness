@@ -90,7 +90,7 @@ export default function FAQs() {
               className="p-6 cursor-pointer flex items-center justify-between"
               onClick={() => toggleFAQ(faq.id)}
             >
-              <h6 className={`text-white text-lg font-bold pr-4 ${isArabic ? 'font-arabic text-right' : 'text-left'}`}>
+              <h6 className={`text-white text-lg font-bold pr-4 ${isArabic ? 'font-arabic text-right' : 'text-left font-poppins'}`}>
                 {faq.question}
               </h6>
               <button className="flex-shrink-0 w-8 h-8 rounded-full border-2 border-white flex items-center justify-center text-white font-bold text-xl transition-all duration-300">
@@ -106,7 +106,7 @@ export default function FAQs() {
             >
               <div className="px-6 pb-6">
                 <div className="border-t border-red-500/30 pt-4">
-                  <p className={`text-white text-base leading-relaxed ${isArabic ? 'font-arabic text-right' : 'text-left'}`}>
+                  <p className={`text-white text-base leading-relaxed ${isArabic ? 'font-arabic text-right' : 'text-left font-poppins'}`}>
                     {faq.answer}
                   </p>
                 </div>

@@ -114,7 +114,7 @@ export default function Transformations() {
                         </p>
                       </div>
 
-                      <p className={`text-white text-base lg:text-lg leading-relaxed italic pt-8 lg:pt-10 ${isArabic ? 'text-right font-arabic' : ''}`}>
+                      <p className={`text-white text-base lg:text-lg leading-relaxed italic pt-8 lg:pt-10 ${isArabic ? 'text-right font-arabic' : 'font-poppins'}`}>
                         {isArabic ? item.review.ar : item.review.en}
                       </p>
 

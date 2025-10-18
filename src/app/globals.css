@@ -16,6 +16,11 @@ html {
   font-family: var(--font-bebas-neue), sans-serif;
 }
 
+/* Poppins font family */
+.font-poppins {
+  font-family: var(--font-poppins), sans-serif;
+}
+
 /* Custom scrollbar styling */
 ::-webkit-scrollbar {
   width: 8px;

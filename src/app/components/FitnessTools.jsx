@@ -308,7 +308,7 @@ export default function FitnessTools() {
           <h2 className={`flex items-center gap-2 justify-center ${isArabic ? "flex-row font-arabic" : "font-bebas"} text-4xl md:text-5xl font-bold text-white mb-6`}>
           {isArabic ? "المساعدة" : "Fitness" } <span className=" text-red-500"> {isArabic ? "الادوات " : " Tools"}</span>
           </h2>
-          <p className={`text-xl text-gray-300 max-w-3xl mx-auto ${isArabic ? 'font-arabic text-center' : ''}`}>
+          <p className={`text-xl text-gray-300 max-w-3xl mx-auto ${isArabic ? 'font-arabic text-center' : 'font-poppins'}`}>
             {isArabic 
               ? 'استخدم حاسباتنا الشاملة للياقة البدنية لتتبع تقدمك وتحسين رحلتك الصحية'
               : 'Use our comprehensive fitness calculators to track your progress and optimize your health journey'
@@ -317,7 +317,7 @@ export default function FitnessTools() {
         </div>
 
         {/* Tools Grid */}
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4 items-stretch">
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4 items-stretch font-poppins">
           {tools.map((tool) => (
             <div
               key={tool.id}

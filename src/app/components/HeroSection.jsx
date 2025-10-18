@@ -55,9 +55,9 @@ export default function HeroSection() {
               >
                 {isArabic ? " لياقة حقيقية  " : "Real fitness for "}
                 <span
-                  className={`bg-gradient-to-r from-[#fd5747] ${
+                  className={`text-red-500 ${
                     isArabic ? "font-arabic" : "font-bebas"
-                  } to-blue-700 bg-clip-text text-transparent`}
+                  } `}
                 >
                   {isArabic ? " للحياة الحقيقية" : " Real life"}
                 </span>
@@ -65,12 +65,12 @@ export default function HeroSection() {
 
               <p
                 className={`text-white p-3 md:p-0 text-lg md:text-xl lg:text-2xl ${
-                  isArabic ? "font-arabic" : ""
+                  isArabic ? "font-arabic" : "font-poppins"
                 } font-normal mt-6 max-w-4xl mx-auto leading-relaxed`}
               >
                 {isArabic
-                  ? "اكتشف برامج اللياقة البدنية المصممة خصيصاً لأسلوب حياتك. احصل على نتائج حقيقية مع التدريب الشخصي والتوجيه المهني."
-                  : "Discover fitness programs tailored to your lifestyle. Get real results with personalized training and expert guidance."}
+                  ? "اكتشف برامج اللياقة البدنية المصممة خصيصاً لأسلوب حياتك. احصل على نتائج حقيقية مع التدريب الشخصي والتوجيه المهني. نحن نؤمن بأن اللياقة البدنية يجب أن تحسن من جودة حياتك، وبرامج التمرين لدينا مصممة لتناسب نمط حياتك الحالي وتساعدك على اتخاذ خيارات أفضل بشأن صحتك - بدون حميات قاسية أو تمارين غير واقعية لمدة ساعتين."
+                  : "Fitness should improve your quality of life, Our Exercise Programs are tailored to fit your current lifestyle and help you make better choices regarding your health– no crash-diets , no unrealistic 2 hours workouts"}
               </p>
             </div>
           </div>
@@ -141,7 +141,9 @@ export default function HeroSection() {
           className="backdrop-blur-xl bg-gradient-to-br lg:mx-10 mx-4 from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow rounded-4xl"
           style={{ backgroundSize: "400% 400%" }}
         >
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6 lg:mt-20  mt-10  p-10 ">
+          <div className={`flex flex-col ${
+                  isArabic ? "font-arabic" : "font-poppins"
+                } md:flex-row items-center justify-between gap-6 lg:mt-20  mt-10  p-10 `}>
             <div className="flex flex-col items-start gap-5 mr-auto md:m-auto">
               <TiGroup className="text-5xl lg:text-6xl text-[#fd5747]" />
 

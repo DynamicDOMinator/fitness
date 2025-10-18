@@ -94,7 +94,7 @@ export default function Journey() {
             {isArabic ? "ما الذي  " : "What To  "}
             <span className="text-red-500"> {isArabic ? "  تنتظره" : " Expect "}</span>
           </h2>
-          <p className={`text-sm sm:text-base lg:text-lg text-white max-w-2xl mx-auto px-4 ${isArabic ? 'font-arabic text-center' : ''}`}>
+          <p className={`text-sm sm:text-base lg:text-lg text-white max-w-2xl mx-auto px-4 ${isArabic ? 'font-arabic text-center' : 'font-poppins'}`}>
             {isArabic 
               ? 'غيّر حياتك خطوة بخطوة. كل إنجاز يُقرّبك من أفضل ما فيك'
               : 'Transform your life step by step. Every milestone brings you closer to your best self.'
@@ -170,10 +170,10 @@ export default function Journey() {
                       "0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.1)",
                   }}
                 >
-                  <h3 className={`text-lg sm:text-xl font-semibold text-white mb-2 sm:mb-3 drop-shadow-lg ${isArabic ? 'font-arabic' : ''}`}>
+                  <h3 className={`text-lg sm:text-xl font-semibold text-white mb-2 sm:mb-3 drop-shadow-lg ${isArabic ? 'font-arabic' : 'font-poppins'}`}>
                     {isArabic ? step.titleAr : step.title}
                   </h3>
-                  <p className={`text-sm sm:text-base text-gray-200 leading-relaxed drop-shadow-md ${isArabic ? 'font-arabic' : ''}`}>
+                  <p className={`text-sm sm:text-base text-gray-200 leading-relaxed drop-shadow-md ${isArabic ? 'font-arabic' : 'font-poppins'}`}>
                     {isArabic ? step.descriptionAr : step.description}
                   </p>
                 </div>

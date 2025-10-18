@@ -23,11 +23,11 @@ export default function Contact() {
             {isArabic? "تواصل معنا" : "Get in touch"}
           </h6>
 
-          <p className={`text-white pt-3 sm:pt-5 text-sm sm:text-base ${isArabic ? 'font-arabic' : ''}`}>
+          <p className={`text-white pt-3 sm:pt-5 text-sm sm:text-base ${isArabic ? 'font-arabic' : 'font-poppins'}`}>
             {isArabic? "هل لديك سؤال أو جاهز للتحول؟ دعونا نبدأ رحلتك في التدريب معنا" : "Have a question or ready for transformation? Let's start your fitness journey together."   }   
           </p>
 
-          <div className="flex flex-col items-start gap-4 pt-6 sm:pt-8 lg:pt-10">
+          <div className="flex flex-col items-start gap-4 pt-6 sm:pt-8 lg:pt-10 font-poppins">
             <div
               className="flex items-center gap-3 sm:gap-5 p-4 sm:p-6 lg:p-7 rounded-2xl sm:rounded-3xl backdrop-blur-xl shadow-2xl w-full sm:min-w-[350px] lg:min-w-[400px] bg-gradient-to-br from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow"
               style={{

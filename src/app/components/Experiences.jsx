@@ -243,7 +243,7 @@ export default function Service() {
             <div className={`w-[30%] h-[2px] bg-red-600 mt-4 ${isArabic ? 'ml-auto' : 'mr-auto'}`}></div>
           </div>
 
-          <p className={`pt-10  ${isArabic ? 'text-end font-arabic' : 'text-start md:pr-10 pr-10'} text-white md:text-2xl text-lg`}>
+          <p className={`pt-10  ${isArabic ? 'text-end font-arabic' : 'text-start md:pr-10 pr-10 font-poppins '} text-white  md:text-2xl text-lg`}>
             {isArabic 
               ? 'فريق بخبرة مجمعة تزيد عن 20 عاماً في الرياضة والتغذية والمجال الطبي المخبري. هدفنا هو إرشادك للوصول إلى أفضل شكل لجسمك، وغرس العادات الصحية والعقلية للحفاظ على نمط حياة أكثر صحة.'
               : 'A Team with combined experience of 20+ years in Sports,Nutrition and lab-medical field. Our goal is to guide you to reach Your best body shape, instill healthy habits and mindset to maintain a healthier lifestyle.'

@@ -456,7 +456,7 @@ export default function Pricing() {
             </span>
           </h2>
 
-          <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4 ">
+          <div className={`mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4 ${isArabic ? 'font-arabic' : 'font-poppins'} `}>
             {/* Regular - Diet only */}
             <div
               className="rounded-3xl backdrop-blur-xl shadow-2xl overflow-hidden relative flex flex-col bg-gradient-to-br from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow"
@@ -548,7 +548,7 @@ export default function Pricing() {
 
               {/* Divider accent */}
               <div
-                className="mt-6 h-px mx-6 bg-gradient-to-r from-[#fd5747]/50 via-white/10 to-red-600/50 animate-gradient-x"
+                className="mt-12 h-px mx-6 bg-gradient-to-r from-[#fd5747]/50 via-white/10 to-red-600/50 animate-gradient-x"
                 style={{ backgroundSize: "200% 200%" }}
               />
 
@@ -1259,7 +1259,7 @@ export default function Pricing() {
 
               {/* Features */}
               <div className="flex-1 flex flex-col justify-between">
-                <ul className="px-6 py-4 space-y-2 text-gray-200 text-sm max-h-96 overflow-y-auto">
+                <ul className="px-6 py-4 space-y-2 text-gray-200 text-sm  ">
                   <li
                     dir={isArabic ? "rtl" : "ltr"}
                     className="flex items-start gap-2"

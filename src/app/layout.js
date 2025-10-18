@@ -1,4 +1,4 @@
-import { Cairo, Bebas_Neue } from "next/font/google";
+import { Cairo, Bebas_Neue, Poppins } from "next/font/google";
 import "./globals.css";
 import WhatsAppButton from "./components/WhatsAppButton";
 import { LanguageProvider } from "./contexts/LanguageContext";
@@ -15,6 +15,12 @@ const bebasNeue = Bebas_Neue({
   weight: ["400"],
 });
 
+const poppins = Poppins({
+  variable: "--font-poppins",
+  subsets: ["latin"],
+  weight: ["400"],
+});
+
 export const metadata = {
   title: "BettrFitness",
   icons: {
@@ -27,7 +33,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body
         className={`
-      bg-[#1a1c21] max-w-[1600px] mx-auto ${cairo.variable} ${bebasNeue.variable}`}
+      bg-[#1a1c21] max-w-[1600px] mx-auto ${cairo.variable} ${bebasNeue.variable} ${poppins.variable}`}
       >
         <LanguageProvider>
           {children}

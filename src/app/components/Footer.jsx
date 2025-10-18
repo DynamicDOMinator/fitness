@@ -101,7 +101,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="relative mt-20 backdrop-blur-xl bg-gradient-to-br from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow rounded-t-4xl" style={{ backgroundSize: "400% 400%" }}>
+    <footer className="relative font-poppins mt-20 backdrop-blur-xl bg-gradient-to-br from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow rounded-t-4xl" style={{ backgroundSize: "400% 400%" }}>
       {/* Blur overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/50 rounded-t-4xl to-transparent backdrop-blur-sm"></div>
       

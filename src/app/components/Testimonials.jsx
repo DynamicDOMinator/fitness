@@ -167,7 +167,7 @@ export default function Testimonials() {
                   </div>
                 </div>
 
-                <p className={`${isArabic ? "font-arabic text-right" : " text-left"} text-white text-lg md:text-xl font-medium mt-4 p-4 flex-grow`}>
+                <p className={`${isArabic ? "font-arabic text-right" : " text-left font-poppins"} text-white text-lg md:text-xl font-medium mt-4 p-4 flex-grow`}>
                   {isArabic 
                     ? "بعد شهرين فقط، لاحظت والدتي أن ظهري أصبح أعرض وخصري أصغر. بالإضافة إلى ذلك، أصبح عادة بمرور الوقت - تستيقظ وأنت تعلم أن لديك ساعة واحدة من التدريب كل يوم."
                     : "Just after 2 month , My mother noticed my back has gotten wider and my waist smaller. Plus, it's become a habit over time — you wake up knowing you have one hour of training each day."
@@ -264,7 +264,7 @@ export default function Testimonials() {
                   </div>
                 </div>
 
-                <p className={`${isArabic ? "font-arabic text-right" : " text-left"} text-white text-lg md:text-xl font-medium mt-4 p-4 flex-grow`}>
+                <p className={`${isArabic ? "font-arabic text-right" : " text-left font-poppins"} text-white text-lg md:text-xl font-medium mt-4 p-4 flex-grow`}>
                   {isArabic 
                     ? "أنصح بشدة أي شخص بالعمل معك، لقد كان الأمر مجزياً ومشجعاً حقاً"
                     : "I would highly recommend anyone to work with you, it's been really rewarding and encouraging"
