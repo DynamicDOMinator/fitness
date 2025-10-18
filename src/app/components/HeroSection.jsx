@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { TiGroup } from "react-icons/ti";
 import { CgGym } from "react-icons/cg";
-import { useLanguage } from '../contexts/LanguageContext';
+import { useLanguage } from "../contexts/LanguageContext";
 
 export default function HeroSection() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -41,25 +41,36 @@ export default function HeroSection() {
   const handleVideoClick = () => {
     handlePlayClick();
   };
-// bg-gradient-to-r from-[#fd5747] to-blue-700 bg-clip-text text-transparent
+  // bg-gradient-to-r from-[#fd5747] to-blue-700 bg-clip-text text-transparent
   return (
-    <div className="w-full">
-      <div className="hero relative w-full " >
+    <div>
+      <div className="hero relative ">
         <div className="md:pt-50 pt-30 ">
           <div className="flex items-center justify-center relative z-[10]   ">
             <div className="lg:text-8xl md:text-6xl text-4xl text-center">
-              <h1 className={`text-white font-bold p-2 md:p-0 ${isArabic ? 'font-arabic' : ''}`}>
-                {isArabic ? ' لياقة حقيقية  ' : 'Real fitness for '}
-                <span className="bg-gradient-to-r from-[#fd5747] to-blue-700 bg-clip-text text-transparent">
-                  {isArabic ? ' للحياة الحقيقية' : ' Real life'}
+              <h1
+                className={`text-white font-bold p-2 md:p-0 ${
+                  isArabic ? "font-arabic" : "font-bebas"
+                }`}
+              >
+                {isArabic ? " لياقة حقيقية  " : "Real fitness for "}
+                <span
+                  className={`bg-gradient-to-r from-[#fd5747] ${
+                    isArabic ? "font-arabic" : "font-bebas"
+                  } to-blue-700 bg-clip-text text-transparent`}
+                >
+                  {isArabic ? " للحياة الحقيقية" : " Real life"}
                 </span>
               </h1>
 
-              <p className={`text-white p-3 md:p-0 text-lg md:text-xl lg:text-2xl font-normal mt-6 max-w-4xl mx-auto leading-relaxed ${isArabic ? 'font-arabic' : ''}`}>
-                {isArabic 
-                  ? 'اكتشف برامج اللياقة البدنية المصممة خصيصاً لأسلوب حياتك. احصل على نتائج حقيقية مع التدريب الشخصي والتوجيه المهني.'
-                  : 'Discover fitness programs tailored to your lifestyle. Get real results with personalized training and expert guidance.'
-                }
+              <p
+                className={`text-white p-3 md:p-0 text-lg md:text-xl lg:text-2xl ${
+                  isArabic ? "font-arabic" : ""
+                } font-normal mt-6 max-w-4xl mx-auto leading-relaxed`}
+              >
+                {isArabic
+                  ? "اكتشف برامج اللياقة البدنية المصممة خصيصاً لأسلوب حياتك. احصل على نتائج حقيقية مع التدريب الشخصي والتوجيه المهني."
+                  : "Discover fitness programs tailored to your lifestyle. Get real results with personalized training and expert guidance."}
               </p>
             </div>
           </div>
@@ -117,34 +128,29 @@ export default function HeroSection() {
           </div>
         </div>
 
-        <div className="flex items-center justify-center pt-10 gap-10 " >
-          <button className={`bg-[#fd5747] text-white text-xl px-6 py-2 rounded-full font-bold hover:bg-[#e64a3a] transition-colors duration-300 ${isArabic ? 'font-arabic' : ''}`}>
-            {isArabic ? 'احصل على اللياقة' : 'Get Fit'}
+        <div className="flex items-center justify-center pt-10 gap-10">
+          <button className="bg-[#fd5747] text-white text-xl px-6 py-2 rounded-full font-bold hover:bg-[#e64a3a] transition-colors duration-300">
+            {isArabic ? "احصل على اللياقة" : "Get Fit"}
           </button>
 
-          <button className={`text-[#fd5747] px-6 py-2 rounded-full font-bold hover:bg-[#f5f5f5] transition-colors duration-300 ${isArabic ? 'font-arabic' : ''}`}>
-            {isArabic ? 'خدمات مجانية' : 'Free Services'}
+          <button className=" text-[#fd5747] px-6 py-2 rounded-full font-bold hover:bg-[#f5f5f5] transition-colors duration-300">
+            {isArabic ? "خدمات مجانية" : "Free Services"}
           </button>
         </div>
         <div
-          className="bg-cover relative bg-center bg-no-repeat w-full h-[900px]" 
-          style={{ 
-        
-            backgroundImage: 'url(/map.jpg)'
-          }}
+          className="backdrop-blur-xl bg-gradient-to-br lg:mx-10 mx-4 from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow rounded-4xl"
+          style={{ backgroundSize: "400% 400%" }}
         >
-         <div className="bg-black/40 absolute lg:translate-y-1/2 lg:top-40 top-20 w-full p-10 lg:rounded-full rounded-2xl  ">
-
- <div className="flex flex-col md:flex-row items-center justify-between gap-6    ">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6 lg:mt-20  mt-10  p-10 ">
             <div className="flex flex-col items-start gap-5 mr-auto md:m-auto">
               <TiGroup className="text-5xl lg:text-6xl text-[#fd5747]" />
 
               <div className=" pb-6 md:pb-0">
-                <h2 className={`lg:text-3xl text-xl text-[#fd5747] ${isArabic ? 'font-arabic' : ''}`}>
-                  {isArabic ? 'عملاء سعداء' : 'Happy Clients'}{" "}
+                <h2 className="lg:text-3xl text-xl text-[#fd5747]">
+                  {isArabic ? "عملاء سعداء" : "Happy Clients"}{" "}
                 </h2>
-                <p className={`text-white pt-2  text-sm lg:text-lg ${isArabic ? 'font-arabic' : ''}`}>
-                  {isArabic ? '+7 سنوات خبرة' : '+7 years experience'}
+                <p className="text-white pt-2  text-sm lg:text-lg">
+                  {isArabic ? "+7 سنوات خبرة" : "+7 years experience"}
                 </p>
               </div>
             </div>
@@ -153,11 +159,11 @@ export default function HeroSection() {
               <CgGym className="text-5xl lg:text-6xl text-[#fd5747]" />
 
               <div className=" pb-6 md:pb-0">
-                <h2 className={`lg:text-3xl text-xl text-[#fd5747] ${isArabic ? 'font-arabic' : ''}`}>
-                  {isArabic ? 'برامج موجهة للنتائج' : 'Results-Driven Programs'}{" "}
+                <h2 className="lg:text-3xl text-xl text-[#fd5747]">
+                  {isArabic ? "برامج موجهة للنتائج" : "Results-Driven Programs"}{" "}
                 </h2>
-                <p className={`text-white pt-2  text-sm lg:text-lg ${isArabic ? 'font-arabic' : ''}`}>
-                  {isArabic ? 'تدريب شخصي' : 'Personalized Coaching'}
+                <p className="text-white pt-2  text-sm lg:text-lg">
+                  {isArabic ? "تدريب شخصي" : "Personalized Coaching"}
                 </p>
               </div>
             </div>
@@ -166,17 +172,17 @@ export default function HeroSection() {
               <TiGroup className="text-5xl lg:text-6xl text-[#fd5747]" />
 
               <div className=" pb-6 md:pb-0">
-                <h2 className={`lg:text-3xl text-xl text-[#fd5747] ${isArabic ? 'font-arabic' : ''}`}>
-                  {isArabic ? 'خدمنا أشخاص في 6 دول مختلفة' : 'Served people in 6 different countries'}{" "}
+                <h2 className="lg:text-3xl text-xl text-[#fd5747]">
+                  {isArabic
+                    ? "خدمنا أشخاص في 6 دول مختلفة"
+                    : "Served people in 6 different countries"}{" "}
                 </h2>
-                <p className={`text-white pt-2 text-sm lg:text-lg ${isArabic ? 'font-arabic' : ''}`}>
-                  {isArabic ? 'نتائج مضمونة' : 'Guaranteed Results'}
+                <p className="text-white pt-2 text-sm lg:text-lg">
+                  {isArabic ? "نتائج مضمونة" : "Guaranteed Results"}
                 </p>
               </div>
             </div>
           </div>
-
-         </div>
         </div>
       </div>
     </div>

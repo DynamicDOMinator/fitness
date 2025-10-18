@@ -8,31 +8,59 @@ export default function FAQs() {
   const faqs = [
     {
       id: 1,
-      question: isArabic ? "ما هي ساعات عمل الصالة الرياضية؟" : "What are the gym operating hours?",
+      question: isArabic ? "ما الذي يجعل تدريبك مختلفاً عن الآخرين؟" : "What makes your coaching different from others?",
       answer: isArabic 
-        ? "صالتنا الرياضية مفتوحة على مدار 24 ساعة للأعضاء الحاصلين على العضوية المميزة. الأعضاء العاديون يمكنهم الوصول للصالة من الساعة 5:00 صباحاً حتى 11:00 مساءً في أيام الأسبوع ومن 6:00 صباحاً حتى 10:00 مساءً في عطلة نهاية الأسبوع."
-        : "Our gym is open 24/7 for members with premium access. Standard members can access the gym from 5:00 AM to 11:00 PM on weekdays and 6:00 AM to 10:00 PM on weekends.",
+        ? "نحن نتعمق في كل جانب من جوانب حياتك للتأكد من حصولك على التحول الذي تحتاجه. نركز على المساءلة وتدريب العقلية وبناء العادات المستدامة لضمان حصولك على نتائج طويلة المدى."
+        : "We dive into every aspect of your life to make sure you get the transformation you need. We focus on accountability, mindset coaching, and sustainable habit-building to ensure you get long-term results.",
     },
     {
       id: 2,
-      question: isArabic ? "هل تقدمون جلسات تدريب شخصية؟" : "Do you offer personal training sessions?",
+      question: isArabic ? "متى سأرى النتائج؟" : "How soon will I see results?",
       answer: isArabic
-        ? "نعم، نقدم جلسات تدريب شخصية مع مدربين معتمدين. يمكنك حجز جلسات فردية أو تدريب جماعي صغير. اتصل بمكتب الاستقبال لجدولة استشارة والعثور على المدرب المثالي لأهدافك الرياضية."
-        : "Yes, we offer personal training sessions with certified trainers. You can book one-on-one sessions or small group training. Contact our front desk to schedule a consultation and find the perfect trainer for your fitness goals.",
+        ? "هذا يعتمد على نقطة البداية وأهدافك. معظم العملاء يبدأون في ملاحظة تغييرات في الطاقة أو القوة أو المظهر خلال أول 2-3 أسابيع. النتائج طويلة المدى تتطلب جهداً مستمراً وسنعمل معاً للحفاظ على مسارك!"
+        : "This depends on your starting point and goals. Most clients start noticing changes in energy, strength, or appearance within the first 2–3 weeks. Long-term results require consistent effort and we'll work together to keep you on track!",
     },
     {
       id: 3,
-      question: isArabic ? "ما هي الأجهزة المتوفرة في الصالة الرياضية؟" : "What equipment is available at the gym?",
+      question: isArabic ? "كيف سنتواصل؟" : "How will we communicate?",
       answer: isArabic
-        ? "لدينا مجموعة كاملة من الأجهزة الحديثة بما في ذلك أجهزة الكارديو، والأوزان الحرة، وأجهزة المقاومة، ومناطق التدريب الوظيفي، والأجهزة المتخصصة لتمارين الكروس فيت والتدريب عالي الكثافة."
-        : "We have a full range of modern equipment including cardio machines, free weights, resistance machines, functional training areas, and specialized equipment for CrossFit and HIIT workouts.",
+        ? "اعتماداً على الباقة التي تختارها، سنتواصل من خلال مكالمات فيديو للمتابعة أو واتساب فقط. أتأكد من البقاء على تواصل حتى تشعر دائماً بالدعم."
+        : "Depending on the package you choose, we'll communicate through video check-ins or only WhatsApp. I make sure to stay connected so you always feel supported.",
     },
     {
       id: 4,
-      question: isArabic ? "هل توجد حصص لياقة جماعية؟" : "Are there group fitness classes?",
+      question: isArabic ? "ماذا لو كان لدي جدول مزدحم أو أسافر كثيراً؟" : "What if I have a busy schedule or travel often?",
       answer: isArabic
-        ? "نقدم مجموعة متنوعة من حصص اللياقة الجماعية بما في ذلك اليوغا، والبيلاتس، والسبيننغ، والزومبا، والتدريب عالي الكثافة، وتدريب القوة. تحقق من جدولنا في مكتب الاستقبال أو على تطبيقنا المحمول لمواعيد الحصص والتوفر."
-        : "We offer a variety of group fitness classes including yoga, pilates, spinning, zumba, HIIT, and strength training. Check our schedule at the front desk or on our mobile app for class times and availability.",
+        ? "هدفي هو جعل اللياقة البدنية تعمل من أجلك، وليس إضافة المزيد من التوتر إلى حياتك. برنامجنا مصمم ليناسب نمط حياتك، مهما كان مزدحماً أو غير متوقع. مع خطط تمرين يمكن القيام بها في أقل من 20-30 دقيقة وخيارات للتمارين المنزلية أو في الفندق عند السفر. بالإضافة إلى التواصل في الوقت الفعلي والمتابعة المنتظمة، يمكننا تعديل خطتك بسرعة لتتناسب مع جدولك."
+        : "My goal is to make fitness work for you, not add more stress to your life. Our Program is designed to fit into your lifestyle, no matter how busy or unpredictable it may be. with workout plans that can be done in as little as 20-30 minutes and options for home or hotel workouts when you're traveling. Plus, real-time communication and regular check-ins, We can quickly adjust your plan to match your schedule.",
+    },
+    {
+      id: 5,
+      question: isArabic ? "كم من الوقت يستغرق البدء؟" : "How long does it take to start?",
+      answer: isArabic
+        ? "بعد أول جلسة تأهيل، يمكنك توقع تسليم برنامج التمرين والتغذية المخصص لك في أقل من 24 ساعة."
+        : "After our first On-boarding you can expect your personalized workout and nutrition Program to be delivered to you in less than 24 hours.",
+    },
+    {
+      id: 6,
+      question: isArabic ? "كيف تبدو جلسة المتابعة النموذجية؟" : "What does a typical check-in look like?",
+      answer: isArabic
+        ? "خلال جلسات المتابعة، سنناقش تقدمك والتحديات والأسئلة. سأقدم ملاحظات وأعدل خطتك إذا لزم الأمر وأحافظ على تحفيزك!"
+        : "During check-ins, we'll discuss your progress, challenges, and questions. I'll provide feedback, adjust your plan if needed, and keep you motivated!",
+    },
+    {
+      id: 7,
+      question: isArabic ? "هل يجب أن ألتزم ببرنامج طويل المدى؟" : "Do I have to commit to a long-term program?",
+      answer: isArabic
+        ? "ليس على الإطلاق! نحن نقدم خيارات شهرية حتى تتمكن من المتابعة طالما تشعر أنها تفيدك. ومع ذلك، معظم العملاء يرون نتائج تغير الحياة مع التزام لمدة 3 أشهر كحد أدنى."
+        : "Not at all! we offer month-to-month options so you can continue as long as you feel it's benefiting you. That said, most clients see LIFE CHANGING RESULTS with a minimum 3-month commitment.",
+    },
+    {
+      id: 8,
+      question: isArabic ? "كم مرة سيتم تحديث خطتي؟" : "How often will my plan be updated?",
+      answer: isArabic
+        ? "يتم تحديث خطط التغذية كل 7-10 أيام إذا لزم الأمر، ويتم تحديث خطط التمرين شهرياً، ولكن إذا تغير تقدمك أو أهدافك، سنقوم بإجراء تعديلات أسرع للحفاظ على مسارك."
+        : "Nutrition Plans are updated every 7-10 days if needed, workout plans are updated monthly, but if your progress or goals change, we'll make adjustments sooner to keep you on track.",
     },
   ];
 
@@ -43,7 +71,7 @@ export default function FAQs() {
 
   return (
     <div className={`max-w-6xl mx-auto p-6 mt-20 ${isArabic ? 'rtl' : 'ltr'}`}>
-      <h2 className={`text-4xl font-bold text-center text-red-500 mb-8 ${isArabic ? 'font-arabic flex justify-center items-center gap-2' : ''}`}>
+      <h2 className={`text-4xl font-bold text-center text-red-500 mb-8 ${isArabic ? 'font-arabic flex justify-center items-center gap-2' : 'font-bebas'}`}>
         {" "}
         <span className="text-white"> {isArabic ? " الشائعة" : "Frequently Asked"}</span> {isArabic ? "الأسئلة" : "Questions"}
       </h2>

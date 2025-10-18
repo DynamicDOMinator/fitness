@@ -90,7 +90,7 @@ export default function Journey() {
     <div className="py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-          <h2 className={`text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2 sm:mb-4 ${isArabic ? 'font-arabic text-center' : ''}`}>
+          <h2 className={`text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2 sm:mb-4 ${isArabic ? 'font-arabic text-center' : 'font-bebas'}`}>
             {isArabic ? "ما الذي  " : "What To  "}
             <span className="text-red-500"> {isArabic ? "  تنتظره" : " Expect "}</span>
           </h2>

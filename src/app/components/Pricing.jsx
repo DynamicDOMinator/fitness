@@ -446,11 +446,11 @@ export default function Pricing() {
       <section className="py-16 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-5xl font-extrabold text-center tracking-tight">
-            <span className={`text-white ${isArabic? 'font-bold font-arabic' : 'font-bold'}`}>
+            <span className={`text-white ${isArabic? 'font-bold font-arabic' : 'font-bold font-bebas'}`}>
               {" "}
               {isArabic ? "خطط " : "Pricing"}{" "}
             </span>{" "}
-            <span className={`text-red-500 ${isArabic? 'font-bold font-arabic' : 'font-bold'}`}>
+            <span className={`text-red-500 ${isArabic? 'font-bold font-arabic' : 'font-bold font-bebas'}`}>
               {" "}
               {isArabic ? "الأسعار" : "Plans"}{" "}
             </span>

@@ -93,7 +93,7 @@ export default function Testimonials() {
     <div className="flex items-center justify-center  md:p-8 lg:p-12 md:mt-96  lg:mt-0">
       <div className="relative max-w-[1300px] pt-20 md:pt-0 w-full">
         {/* Heading */}
-    <h5 className={`lg:text-6xl ${isArabic ?  "font-arabic pb-10" : "" }  text-3xl font-bold text-center mb-12 animated-gradient-text`}>
+    <h5 className={`lg:text-6xl ${isArabic ?  "font-arabic pb-10" : "font-bebas" }  text-3xl font-bold text-center mb-12 animated-gradient-text`}>
           {isArabic ? 'اسمعها منهم' : 'HEAR IT FROM THEM'}
         </h5>
         {/* Grid container for 2 videos */}

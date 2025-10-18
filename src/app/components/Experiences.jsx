@@ -231,12 +231,12 @@ export default function Service() {
     >
       <div className={` ${isArabic ? 'flex-row-reverse' : ''} xl:flex gap-20 block items-center justify-center relative`}>
         <div className="lg:w-[60%]  md:py-55 ">
-          <h3 className={`font-semibold text-red-600 md:text-3xl text-2xl  text-${isArabic ? 'end' : 'start'} ${isArabic ? 'font-arabic' : ''}`}>
+          <h3 className={`font-semibold text-red-600 md:text-3xl text-2xl  text-${isArabic ? 'end' : 'start'} ${isArabic ? 'font-arabic' : 'font-bebas'}`}>
             {isArabic ? 'ماذا عنا' : 'ABOUT US'}
           </h3>
 
           <div className="pt-1 relative">
-            <h4 className={`text-white md:text-6xl text-2xl font-semibold text-${isArabic ? 'end' : 'start'} ${isArabic ? 'font-arabic' : ''}`}>
+            <h4 className={`text-white md:text-6xl text-2xl font-semibold text-${isArabic ? 'end' : 'start'} ${isArabic ? 'font-arabic' : 'font-bebas'}`}>
               {isArabic ? 'من نحن' : 'WHO ARE WE'}
             </h4>
 
