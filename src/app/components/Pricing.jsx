@@ -73,6 +73,14 @@ export default function Pricing() {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
   const [uploadedFile, setUploadedFile] = useState(null);
 
+  // Form state for customer information
+  const [customerInfo, setCustomerInfo] = useState({
+    name: "",
+    email: "",
+    phone: ""
+  });
+  const [formErrors, setFormErrors] = useState({});
+
   // Period options with discounts
   const periodOptions = [
     { value: 1, label: isArabic ? "شهر واحد" : "1 Month", discount: 0 },
@@ -188,22 +196,70 @@ export default function Pricing() {
     }
   };
 
+  // Function to validate form
+  const validateForm = () => {
+    const errors = {};
+    
+    if (!customerInfo.name.trim()) {
+      errors.name = isArabic ? "الاسم مطلوب" : "Name is required";
+    }
+    
+    if (!customerInfo.email.trim()) {
+      errors.email = isArabic ? "البريد الإلكتروني مطلوب" : "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(customerInfo.email)) {
+      errors.email = isArabic ? "البريد الإلكتروني غير صحيح" : "Email is invalid";
+    }
+    
+    if (!customerInfo.phone.trim()) {
+      errors.phone = isArabic ? "رقم الهاتف مطلوب" : "Phone number is required";
+    } else if (!/^\+?[\d\s-()]{10,}$/.test(customerInfo.phone)) {
+      errors.phone = isArabic ? "رقم الهاتف غير صحيح" : "Phone number is invalid";
+    }
+    
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  // Function to handle form input changes
+  const handleInputChange = (field, value) => {
+    setCustomerInfo(prev => ({
+      ...prev,
+      [field]: value
+    }));
+    
+    // Clear error when user starts typing
+    if (formErrors[field]) {
+      setFormErrors(prev => ({
+        ...prev,
+        [field]: ""
+      }));
+    }
+  };
+
   // Function to handle form submission
   const handleSubmit = () => {
+    if (!validateForm()) {
+      return;
+    }
+    
     if (!selectedPaymentMethod) {
-      alert("Please select a payment method");
+      alert(isArabic ? "يرجى اختيار طريقة الدفع" : "Please select a payment method");
       return;
     }
     if (!uploadedFile) {
-      alert("Please upload your payment receipt");
+      alert(isArabic ? "يرجى رفع إيصال الدفع" : "Please upload your payment receipt");
       return;
     }
 
     // Here you would typically send the data to your backend
     alert(
-      `Payment submitted successfully!\nPlan: ${selectedPlan.title}\nAmount: $${selectedPlan.totalPrice}\nMethod: ${selectedPaymentMethod}\nReceipt: ${uploadedFile.name}`
+      `${isArabic ? "تم إرسال الدفع بنجاح!" : "Payment submitted successfully!"}\n${isArabic ? "الخطة:" : "Plan:"} ${selectedPlan.title}\n${isArabic ? "المبلغ:" : "Amount:"} $${selectedPlan.totalPrice}\n${isArabic ? "الطريقة:" : "Method:"} ${selectedPaymentMethod}\n${isArabic ? "الإيصال:" : "Receipt:"} ${uploadedFile.name}\n${isArabic ? "الاسم:" : "Name:"} ${customerInfo.name}\n${isArabic ? "البريد:" : "Email:"} ${customerInfo.email}\n${isArabic ? "الهاتف:" : "Phone:"} ${customerInfo.phone}`
     );
     setIsModalOpen(false);
+    
+    // Reset form
+    setCustomerInfo({ name: "", email: "", phone: "" });
+    setFormErrors({});
   };
 
   return (
@@ -297,6 +353,59 @@ export default function Pricing() {
                         ${selectedPlan?.totalPrice}
                       </span>
                     </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Customer Information Form */}
+              <div>
+                <h5 className="text-white font-semibold mb-3">
+                  {isArabic ? "معلومات العميل" : "Customer Information"}
+                </h5>
+                <div className="space-y-4">
+                  {/* Name Field */}
+                  <div>
+                    <input
+                      type="text"
+                      placeholder={isArabic ? "الاسم الكامل" : "Full Name"}
+                      value={customerInfo.name}
+                      onChange={(e) => handleInputChange("name", e.target.value)}
+                      className={`w-full bg-black/30 border ${formErrors.name ? 'border-red-500' : 'border-white/20'} rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#fd5747]/50 focus:border-[#fd5747]/50 backdrop-blur-sm transition-colors`}
+                      dir={isArabic ? "rtl" : "ltr"}
+                    />
+                    {formErrors.name && (
+                      <p className="text-red-400 text-sm mt-1">{formErrors.name}</p>
+                    )}
+                  </div>
+
+                  {/* Email Field */}
+                  <div>
+                    <input
+                      type="email"
+                      placeholder={isArabic ? "البريد الإلكتروني" : "Email Address"}
+                      value={customerInfo.email}
+                      onChange={(e) => handleInputChange("email", e.target.value)}
+                      className={`w-full bg-black/30 border ${formErrors.email ? 'border-red-500' : 'border-white/20'} rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#fd5747]/50 focus:border-[#fd5747]/50 backdrop-blur-sm transition-colors`}
+                      dir={isArabic ? "rtl" : "ltr"}
+                    />
+                    {formErrors.email && (
+                      <p className="text-red-400 text-sm mt-1">{formErrors.email}</p>
+                    )}
+                  </div>
+
+                  {/* Phone Field */}
+                  <div>
+                    <input
+                      type="tel"
+                      placeholder={isArabic ? "رقم الهاتف" : "Phone Number"}
+                      value={customerInfo.phone}
+                      onChange={(e) => handleInputChange("phone", e.target.value)}
+                      className={`w-full bg-black/30 border ${formErrors.phone ? 'border-red-500' : 'border-white/20'} rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#fd5747]/50 focus:border-[#fd5747]/50 backdrop-blur-sm transition-colors`}
+                      dir={isArabic ? "rtl" : "ltr"}
+                    />
+                    {formErrors.phone && (
+                      <p className="text-red-400 text-sm mt-1">{formErrors.phone}</p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -434,7 +543,7 @@ export default function Pricing() {
               {/* Submit Button */}
               <button
                 onClick={handleSubmit}
-                disabled={!selectedPaymentMethod || !uploadedFile}
+                disabled={!selectedPaymentMethod || !uploadedFile || !customerInfo.name.trim() || !customerInfo.email.trim() || !customerInfo.phone.trim()}
                 className="w-full bg-gradient-to-r from-[#fd5747] via-red-500 to-red-700 text-white font-semibold py-3 rounded-2xl hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
               >
                 {isArabic ? "إرسال الدفع" : "Submit Payment"}
@@ -1372,12 +1481,10 @@ export default function Pricing() {
                     className="flex items-start gap-2"
                   >
                     <span className="flex-shrink-0 mt-0.5">
-                      <CheckIcon />
+                      <CrossIcon />
                     </span>
-                    <span className="text-gray-200">
-                      {isArabic
-                        ? featureTranslations["1 live workout session / month"]
-                        : "1 live workout session / month"}
+                    <span className="text-gray-500 line-through">
+                      1 live workout session / month
                     </span>
                   </li>
                 </ul>
