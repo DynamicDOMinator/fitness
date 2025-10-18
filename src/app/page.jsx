@@ -9,6 +9,7 @@ import FAQs from "@/app/components/FAQs";
 import Pricing from "@/app/components/Pricing";
 import FitnessTools from "@/app/components/FitnessTools";
 import Contact from "@/app/components/Contact";
+import Footer from "@/app/components/Footer";
 
 export default function Home() {
   return (
@@ -45,6 +46,7 @@ export default function Home() {
       <section id="contact">
         <Contact />
       </section>
+      <Footer />
     </div>
   );
 }
