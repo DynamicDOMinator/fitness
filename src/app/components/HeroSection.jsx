@@ -43,8 +43,8 @@ export default function HeroSection() {
   };
 // bg-gradient-to-r from-[#fd5747] to-blue-700 bg-clip-text text-transparent
   return (
-    <div>
-      <div className="hero relative ">
+    <div className="w-full">
+      <div className="hero relative bg-cover bg-center bg-no-repeat w-full min-h-screen" style={{backgroundImage: 'url(/map.jpg)'}}>
         <div className="md:pt-50 pt-30 ">
           <div className="flex items-center justify-center relative z-[10]   ">
             <div className="lg:text-8xl md:text-6xl text-4xl text-center">
