@@ -1,13 +1,9 @@
 "use client";
 import { FaArrowRight } from "react-icons/fa";
 import {
-  FaFacebookF,
   FaInstagram,
-  FaLinkedinIn,
-  FaYoutube,
   FaTiktok,
 } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { IoMdFemale } from "react-icons/io";
@@ -257,37 +253,17 @@ export default function Service() {
           {/* Social Media Icons */}
           <div dir={isArabic ? 'rtl' : 'ltr'} className={`flex items-center gap-4 pt-6 pb-4 ${isArabic ? 'ml-auto' : ''}`}>
             <a
-              href="#"
-              className="text-gray-400 hover:text-red-500 transition-colors duration-300"
-            >
-              <FaFacebookF className="md:text-xl text-lg" />
-            </a>
-            <a
-              href="#"
-              className="text-gray-400 hover:text-red-500 transition-colors duration-300"
-            >
-              <FaXTwitter className="md:text-xl text-lg" />
-            </a>
-            <a
-              href="#"
+              href="https://www.instagram.com/bettrfitness/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-gray-400 hover:text-red-500 transition-colors duration-300"
             >
               <FaInstagram className="md:text-xl text-lg" />
             </a>
             <a
-              href="#"
-              className="text-gray-400 hover:text-red-500 transition-colors duration-300"
-            >
-              <FaLinkedinIn className="md:text-xl text-lg" />
-            </a>
-            <a
-              href="#"
-              className="text-gray-400 hover:text-red-500 transition-colors duration-300"
-            >
-              <FaYoutube className="md:text-xl text-lg" />
-            </a>
-            <a
-              href="#"
+              href="https://www.tiktok.com/@bettrfitness"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-gray-400 hover:text-red-500 transition-colors duration-300"
             >
               <FaTiktok className="md:text-xl text-lg" />

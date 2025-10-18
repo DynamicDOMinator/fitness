@@ -63,7 +63,7 @@ export default function Header() {
 
   return (
     <header 
-      className="fixed max-w-[1200px] mx-auto rounded-2xl  top-3 left-0 right-0 z-50 transition-all duration-300 bg-[#1a1c21]/20 backdrop-blur-xl shadow-lg border-b border-white/10" >
+      className={`fixed max-w-[1200px] ${isArabic ? "font-arabic" : "font-poppins"} mx-auto rounded-2xl  top-3 left-0 right-0 z-50 transition-all duration-300 bg-[#1a1c21]/20 backdrop-blur-xl shadow-lg border-b border-white/10`} >
       <div className=" mx-auto px-4 sm:px-6 lg:px-8 ">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}

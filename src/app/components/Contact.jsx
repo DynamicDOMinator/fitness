@@ -7,7 +7,7 @@ export default function Contact() {
     <div className="px-4 sm:px-6 lg:px-8 pb-10">
       {/* Animated Contact Us Header */}
       <div className="text-center mb-12 sm:mb-16 lg:mb-20 mt-10 sm:mt-16 lg:mt-20">
-        <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6">
+        <h2 className="text-3xl  lg:text-6xl font-bold mb-4 sm:mb-6">
           <span className={`bg-gradient-to-r from-[#fd5747] via-red-500 to-orange-700 bg-clip-text text-transparent animate-gradient-x ${isArabic ? 'font-arabic' : 'font-bebas'}`} style={{ backgroundSize: "300% 300%" }}>
             {isArabic ? "تواصل معنا" : "Contact Us"}
           </span>
@@ -43,7 +43,7 @@ export default function Contact() {
                   Email us
                 </p>
                 <p className="text-sm sm:text-lg lg:text-xl text-gray-400 break-all">
-                  ahmedsayed@gmail.com
+                 info@bettrfitness.com
                 </p>
               </div>
             </div>
@@ -63,7 +63,7 @@ export default function Contact() {
                   Call us
                 </p>
                 <p className="text-sm sm:text-lg lg:text-xl text-gray-400">
-                  +201099999999
+                  +20 1030667969
                 </p>
               </div>
             </div>
@@ -83,11 +83,13 @@ export default function Contact() {
                   className="text-white outline-none w-full sm:w-1/2 bg-transparent p-2 sm:p-3 border-2 rounded-xl sm:rounded-2xl border-white placeholder-gray-300 text-sm sm:text-base"
                   placeholder="Name"
                   type="text"
+                  suppressHydrationWarning={true}
                 />
                 <input
                   className="text-white outline-none w-full sm:w-1/2 bg-transparent p-2 sm:p-3 border-2 rounded-xl sm:rounded-2xl border-white placeholder-gray-300 text-sm sm:text-base"
                   placeholder="Phone"
                   type="tel"
+                  suppressHydrationWarning={true}
                 />
               </div>
 
@@ -96,6 +98,7 @@ export default function Contact() {
                   className="text-white outline-none w-full bg-transparent p-2 sm:p-3 border-2 rounded-xl sm:rounded-2xl border-white placeholder-gray-300 text-sm sm:text-base"
                   placeholder="Email"
                   type="email"
+                  suppressHydrationWarning={true}
                 />
               </div>
               <div className="pt-4 sm:pt-6 lg:pt-10">
@@ -103,6 +106,7 @@ export default function Contact() {
                   className="text-white outline-none w-full bg-transparent p-2 sm:p-3 border-2 rounded-xl sm:rounded-2xl border-white placeholder-gray-300 text-sm sm:text-base resize-none"
                   placeholder="Message"
                   rows={8}
+                  suppressHydrationWarning={true}
                 />
               </div>
 
@@ -110,6 +114,7 @@ export default function Contact() {
                 <button
                   type="submit"
                   className="bg-white/80 hover:bg-white/90 transition-colors duration-200 text-black px-4 sm:px-6 py-2 sm:py-3 w-full font-semibold rounded-xl sm:rounded-2xl text-sm sm:text-base"
+                  suppressHydrationWarning={true}
                 >
                   Submit
                 </button>

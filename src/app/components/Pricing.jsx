@@ -242,6 +242,7 @@ export default function Pricing() {
                     value={selectedPlan?.period || 1}
                     onChange={(e) => handleModalDurationChange(e.target.value)}
                     className="w-full bg-black/50 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#fd5747]/50 focus:border-[#fd5747]/50 backdrop-blur-sm"
+                    suppressHydrationWarning={true}
                   >
                     {periodOptions.map((option) => (
                       <option
@@ -445,7 +446,7 @@ export default function Pricing() {
 
       <section className="py-16 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-5xl font-extrabold text-center tracking-tight">
+          <h2 className="lg:text-6xl text-3xl font-extrabold text-center tracking-tight">
             <span className={`text-white ${isArabic? 'font-bold font-arabic' : 'font-bold font-bebas'}`}>
               {" "}
               {isArabic ? "خطط " : "Pricing"}{" "}
@@ -459,10 +460,10 @@ export default function Pricing() {
           <div className={`mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4 ${isArabic ? 'font-arabic' : 'font-poppins'} `}>
             {/* Regular - Diet only */}
             <div
-              className="rounded-3xl backdrop-blur-xl shadow-2xl overflow-hidden relative flex flex-col bg-gradient-to-br from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow"
+              className="rounded-3xl backdrop-blur-xl lg:min-h-[700px] shadow-2xl overflow-hidden relative flex flex-col bg-gradient-to-br from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow"
               style={{
                 backgroundSize: "400% 400%",
-                minHeight: "700px",
+              
               }}
             >
               {/* Card header */}
@@ -482,6 +483,7 @@ export default function Pricing() {
                       handlePeriodChange("Regular - Diet only", e.target.value)
                     }
                     className="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#fd5747]/50 focus:border-[#fd5747]/50 backdrop-blur-sm"
+                    suppressHydrationWarning={true}
                   >
                     {periodOptions.map((option) => (
                       <option
@@ -553,7 +555,7 @@ export default function Pricing() {
               />
 
               {/* Features */}
-              <div className="flex-1 flex flex-col justify-between">
+              <div className=" flex flex-col justify-between">
                 <ul className="px-6 pt-4 space-y-2 text-gray-200 text-sm ">
                   <li
                     dir={isArabic ? "rtl" : "ltr"}
@@ -670,11 +672,12 @@ export default function Pricing() {
               </div>
 
               {/* CTA */}
-              <div className="px-6 pb-6 flex-shrink-0">
+              <div className="px-6 pb-6 flex-shrink-0 ">
                 <button
                   onClick={() => handleGetStarted("Regular - Diet only", 49)}
-                  className="w-full rounded-2xl bg-gradient-to-r from-[#fd5747] via-red-500 to-red-700 text-white font-semibold py-2.5 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all duration-300 animate-gradient-x"
+                  className="w-full rounded-2xl bg-gradient-to-r mt-10 lg:mt-13 from-[#fd5747] via-red-500 to-red-700 text-white font-semibold py-2.5 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all duration-300 animate-gradient-x"
                   style={{ backgroundSize: "300% 300%" }}
+                  suppressHydrationWarning={true}
                 >
                   {isArabic ? "ابدأ الآن" : "Get Started"}
                 </button>
@@ -689,10 +692,10 @@ export default function Pricing() {
 
             {/* Regular - Diet & Exercise */}
             <div
-              className="rounded-3xl backdrop-blur-xl shadow-2xl overflow-hidden relative flex flex-col bg-gradient-to-br from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow"
+              className="rounded-3xl backdrop-blur-xl lg:min-h-[700px] shadow-2xl overflow-hidden relative flex flex-col bg-gradient-to-br from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow"
               style={{
                 backgroundSize: "400% 400%",
-                minHeight: "700px",
+           
               }}
             >
               {/* Card header */}
@@ -715,6 +718,7 @@ export default function Pricing() {
                       )
                     }
                     className="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#fd5747]/50 focus:border-[#fd5747]/50 backdrop-blur-sm"
+                    suppressHydrationWarning={true}
                   >
                     {periodOptions.map((option) => (
                       <option
@@ -795,7 +799,7 @@ export default function Pricing() {
               />
 
               {/* Features */}
-              <div className="flex-1 flex flex-col justify-between">
+              <div className="lg:flex-1 flex flex-col justify-between">
                 <ul className="px-6 py-4 space-y-2 text-gray-200 text-sm max-h-96 overflow-y-auto">
                   <li
                     dir={isArabic ? "rtl" : "ltr"}
@@ -913,7 +917,7 @@ export default function Pricing() {
                   onClick={() =>
                     handleGetStarted("Regular - Diet & Exercise", 69)
                   }
-                  className="w-full rounded-2xl bg-gradient-to-r from-[#fd5747] via-red-500 to-red-700 text-white font-semibold py-2.5 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all duration-300 animate-gradient-x"
+                  className="w-full rounded-2xl bg-gradient-to-r mt-8 lg:mt-0 from-[#fd5747] via-red-500 to-red-700 text-white font-semibold py-2.5 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all duration-300 animate-gradient-x"
                   style={{ backgroundSize: "300% 300%" }}
                 >
                   Get Started
@@ -929,10 +933,10 @@ export default function Pricing() {
 
             {/* Advanced coaching */}
             <div
-              className="rounded-3xl backdrop-blur-xl shadow-2xl overflow-hidden relative flex flex-col bg-gradient-to-br from-[#fd5747]/25 via-red-500/20 to-red-600/25 ring-2 ring-gradient-to-r ring-[#fd5747]/60 animate-gradient-x"
+              className="rounded-3xl lg:min-h-[700px] backdrop-blur-xl shadow-2xl overflow-hidden relative flex flex-col bg-gradient-to-br from-[#fd5747]/25 via-red-500/20 to-red-600/25 ring-2 ring-gradient-to-r ring-[#fd5747]/60 animate-gradient-x"
               style={{
                 backgroundSize: "400% 400%",
-                minHeight: "700px",
+              
               }}
             >
               {/* Popular badge */}
@@ -962,6 +966,7 @@ export default function Pricing() {
                       handlePeriodChange("Advanced coaching", e.target.value)
                     }
                     className="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#fd5747]/50 focus:border-[#fd5747]/50 backdrop-blur-sm"
+                    suppressHydrationWarning={true}
                   >
                     {periodOptions.map((option) => (
                       <option
@@ -1034,7 +1039,7 @@ export default function Pricing() {
 
               {/* Features */}
               <div className="flex-1 flex flex-col justify-between">
-                <ul className="px-6 py-4 space-y-2 text-gray-200 text-sm max-h-96 overflow-y-auto">
+                <ul className="px-6 py-4 space-y-2 text-gray-200 text-sm lg:max-h-96 overflow-y-auto">
                   <li
                     dir={isArabic ? "rtl" : "ltr"}
                     className="flex items-start gap-2"
@@ -1153,6 +1158,7 @@ export default function Pricing() {
                   onClick={() => handleGetStarted("Advanced coaching", 129)}
                   className="w-full rounded-2xl bg-gradient-to-r from-[#fd5747] via-red-500 to-red-700 text-white font-semibold py-2.5 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all duration-300 animate-gradient-x"
                   style={{ backgroundSize: "300% 300%" }}
+                  suppressHydrationWarning={true}
                 >
                   Get Started
                 </button>
@@ -1167,10 +1173,10 @@ export default function Pricing() {
 
             {/* Elite athlete */}
             <div
-              className="rounded-3xl backdrop-blur-xl shadow-2xl overflow-hidden relative flex flex-col bg-gradient-to-br from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow"
+              className="rounded-3xl lg:min-h-[700px] backdrop-blur-xl shadow-2xl overflow-hidden relative flex flex-col bg-gradient-to-br from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow"
               style={{
                 backgroundSize: "400% 400%",
-                minHeight: "700px",
+             
               }}
             >
               {/* Card header */}
@@ -1190,6 +1196,7 @@ export default function Pricing() {
                       handlePeriodChange("Elite athlete", e.target.value)
                     }
                     className="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#fd5747]/50 focus:border-[#fd5747]/50 backdrop-blur-sm"
+                    suppressHydrationWarning={true}
                   >
                     {periodOptions.map((option) => (
                       <option
@@ -1380,8 +1387,9 @@ export default function Pricing() {
               <div className="px-6 pb-6 flex-shrink-0">
                 <button
                   onClick={() => handleGetStarted("Elite athlete", 199)}
-                  className="w-full rounded-2xl bg-gradient-to-r from-[#fd5747] via-red-500 to-red-700 text-white font-semibold py-2.5 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all duration-300 animate-gradient-x"
+                  className="w-full rounded-2xl bg-gradient-to-r  from-[#fd5747] via-red-500 to-red-700 text-white font-semibold py-2.5 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all duration-300 animate-gradient-x"
                   style={{ backgroundSize: "300% 300%" }}
+                  suppressHydrationWarning={true}
                 >
                   Get Started
                 </button>

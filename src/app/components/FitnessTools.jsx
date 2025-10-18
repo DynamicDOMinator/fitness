@@ -305,7 +305,7 @@ export default function FitnessTools() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
-          <h2 className={`flex items-center gap-2 justify-center ${isArabic ? "flex-row font-arabic" : "font-bebas"} text-4xl md:text-5xl font-bold text-white mb-6`}>
+          <h2 className={`flex items-center gap-2 justify-center ${isArabic ? "flex-row font-arabic" : "font-bebas"} text-3xl lg:text-6xl font-bold text-white mb-6`}>
           {isArabic ? "المساعدة" : "Fitness" } <span className=" text-red-500"> {isArabic ? "الادوات " : " Tools"}</span>
           </h2>
           <p className={`text-xl text-gray-300 max-w-3xl mx-auto ${isArabic ? 'font-arabic text-center' : 'font-poppins'}`}>

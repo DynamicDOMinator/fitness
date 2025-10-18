@@ -71,7 +71,7 @@ export default function FAQs() {
 
   return (
     <div className={`max-w-6xl mx-auto p-6 mt-20 ${isArabic ? 'rtl' : 'ltr'}`}>
-      <h2 className={`text-4xl font-bold text-center text-red-500 mb-8 ${isArabic ? 'font-arabic flex justify-center items-center gap-2' : 'font-bebas'}`}>
+      <h2 className={`text-3xl lg:text-6xl font-bold text-center text-red-500 mb-8 ${isArabic ? 'font-arabic flex justify-center items-center gap-2' : 'font-bebas'}`}>
         {" "}
         <span className="text-white"> {isArabic ? " الشائعة" : "Frequently Asked"}</span> {isArabic ? "الأسئلة" : "Questions"}
       </h2>
@@ -93,7 +93,10 @@ export default function FAQs() {
               <h6 className={`text-white text-lg font-bold pr-4 ${isArabic ? 'font-arabic text-right' : 'text-left font-poppins'}`}>
                 {faq.question}
               </h6>
-              <button className="flex-shrink-0 w-8 h-8 rounded-full border-2 border-white flex items-center justify-center text-white font-bold text-xl transition-all duration-300">
+              <button 
+                className="flex-shrink-0 w-8 h-8 rounded-full border-2 border-white flex items-center justify-center text-white font-bold text-xl transition-all duration-300"
+                suppressHydrationWarning={true}
+              >
                 {openFAQ === faq.id ? "−" : "+"}
               </button>
             </div>
@@ -106,7 +109,7 @@ export default function FAQs() {
             >
               <div className="px-6 pb-6">
                 <div className="border-t border-red-500/30 pt-4">
-                  <p className={`text-white text-base leading-relaxed ${isArabic ? 'font-arabic text-right' : 'text-left font-poppins'}`}>
+                  <p className={`text-white text-lg leading-relaxed ${isArabic ? 'font-arabic text-right' : 'text-left font-poppins'}`}>
                     {faq.answer}
                   </p>
                 </div>

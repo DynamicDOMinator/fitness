@@ -15,6 +15,7 @@ const WhatsAppButton = () => {
         onClick={handleWhatsAppClick}
         className="bg-[#25D366] hover:bg-[#128C7E] text-white p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 group"
         aria-label="Contact us on WhatsApp"
+        suppressHydrationWarning={true}
       >
         <svg
           className="w-8 h-8"
