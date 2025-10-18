@@ -68,7 +68,7 @@ export default function Transformations() {
     <div className="w-full py-16 bg-transparent">
       <div className="container mx-auto px-4">
         <h5 className={`text-6xl ${isArabic ? 'font-bold font-arabic pb-10 text-center mb-12 animated-gradient-text' : 'font-bold font-bebas text-center mb-12 animated-gradient-text'}`}>
-          {isArabic ? 'اسمعها منهم' : 'HEAR IT FROM THEM'}
+          {isArabic ? 'قصص تلهم التغيير' : 'STORIES THAT INSPIRE CHANGE'}
         </h5>
 
         <div className="relative">
