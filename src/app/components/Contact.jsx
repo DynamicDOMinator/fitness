@@ -1,8 +1,74 @@
 "use client"
 import { IoMailOutline, IoCallOutline } from "react-icons/io5";
 import { useLanguage } from "../contexts/LanguageContext";
+import { useState } from "react";
+import axios from "axios";
+
 export default function Contact() {
   const { isArabic } = useLanguage();
+  
+  // Form state management
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: ""
+  });
+  
+  const [isLoading, setIsLoading] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null); // 'success', 'error', or null
+
+  // Handle input changes
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    // Basic validation
+    if (!formData.name || !formData.email || !formData.phone || !formData.message) {
+      setSubmitStatus('error');
+      return;
+    }
+
+    setIsLoading(true);
+    setSubmitStatus(null);
+
+    try {
+      const response = await axios.post('http://localhost:3000/contact', {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        message: formData.message
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.status === 200 || response.status === 201) {
+        setSubmitStatus('success');
+        // Reset form
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          message: ""
+        });
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <div className="px-4 sm:px-6 lg:px-8 pb-10">
       {/* Animated Contact Us Header */}
@@ -77,18 +143,38 @@ export default function Contact() {
               backgroundSize: "400% 400%",
             }}
           >
-            <form className="w-full">
+            <form className="w-full" onSubmit={handleSubmit}>
+              {/* Success/Error Messages */}
+              {submitStatus === 'success' && (
+                <div className="mb-4 p-3 bg-green-500/20 border border-green-500/50 rounded-xl text-green-400 text-sm">
+                  {isArabic ? "تم إرسال رسالتك بنجاح!" : "Message sent successfully!"}
+                </div>
+              )}
+              {submitStatus === 'error' && (
+                <div className="mb-4 p-3 bg-red-500/20 border border-red-500/50 rounded-xl text-red-400 text-sm">
+                  {isArabic ? "حدث خطأ. يرجى ملء جميع الحقول والمحاولة مرة أخرى." : "Error occurred. Please fill all fields and try again."}
+                </div>
+              )}
+              
               <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-5 w-full">
                 <input
                   className="text-white outline-none w-full sm:w-1/2 bg-transparent p-2 sm:p-3 border-2 rounded-xl sm:rounded-2xl border-white placeholder-gray-300 text-sm sm:text-base"
                   placeholder="Name"
                   type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  required
                   suppressHydrationWarning={true}
                 />
                 <input
                   className="text-white outline-none w-full sm:w-1/2 bg-transparent p-2 sm:p-3 border-2 rounded-xl sm:rounded-2xl border-white placeholder-gray-300 text-sm sm:text-base"
                   placeholder="Phone"
                   type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  required
                   suppressHydrationWarning={true}
                 />
               </div>
@@ -98,6 +184,10 @@ export default function Contact() {
                   className="text-white outline-none w-full bg-transparent p-2 sm:p-3 border-2 rounded-xl sm:rounded-2xl border-white placeholder-gray-300 text-sm sm:text-base"
                   placeholder="Email"
                   type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  required
                   suppressHydrationWarning={true}
                 />
               </div>
@@ -106,6 +196,10 @@ export default function Contact() {
                   className="text-white outline-none w-full bg-transparent p-2 sm:p-3 border-2 rounded-xl sm:rounded-2xl border-white placeholder-gray-300 text-sm sm:text-base resize-none"
                   placeholder="Message"
                   rows={8}
+                  name="message"
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  required
                   suppressHydrationWarning={true}
                 />
               </div>
@@ -113,10 +207,18 @@ export default function Contact() {
               <div className="pt-4 sm:pt-6 lg:pt-10">
                 <button
                   type="submit"
-                  className="bg-white/80 hover:bg-white/90 transition-colors duration-200 text-black px-4 sm:px-6 py-2 sm:py-3 w-full font-semibold rounded-xl sm:rounded-2xl text-sm sm:text-base"
+                  disabled={isLoading}
+                  className={`${
+                    isLoading 
+                      ? 'bg-gray-500/50 cursor-not-allowed' 
+                      : 'bg-white/80 hover:bg-white/90'
+                  } transition-colors duration-200 text-black px-4 sm:px-6 py-2 sm:py-3 w-full font-semibold rounded-xl sm:rounded-2xl text-sm sm:text-base`}
                   suppressHydrationWarning={true}
                 >
-                  Submit
+                  {isLoading 
+                    ? (isArabic ? "جاري الإرسال..." : "Sending...") 
+                    : (isArabic ? "إرسال" : "Submit")
+                  }
                 </button>
               </div>
             </form>

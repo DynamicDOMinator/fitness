@@ -2,7 +2,7 @@
 import { useState, useRef } from "react";
 import { VscPreview } from "react-icons/vsc";
 import Image from "next/image";
-import { useLanguage } from '../contexts/LanguageContext';
+import { useLanguage } from "../contexts/LanguageContext";
 
 export default function Testimonials() {
   const { isArabic } = useLanguage();
@@ -32,6 +32,8 @@ export default function Testimonials() {
       } else {
         // If paused, play the video
         videoRef.current.controls = true;
+        videoRef.current.muted = false; // Unmute the video
+        videoRef.current.volume = 1.0; // Set volume to 100%
         videoRef.current.play();
         setIsPlaying(true);
         setShowPlayIcon(false);
@@ -40,9 +42,17 @@ export default function Testimonials() {
   };
 
   const handleVideoPlay = (videoNumber) => {
+    const videoRef = videoNumber === 1 ? videoRef1 : videoRef2;
     const setIsPlaying = videoNumber === 1 ? setIsPlaying1 : setIsPlaying2;
     const setShowPlayIcon =
       videoNumber === 1 ? setShowPlayIcon1 : setShowPlayIcon2;
+    
+    // Set volume to 100% and unmute when video starts playing
+    if (videoRef.current) {
+      videoRef.current.muted = false;
+      videoRef.current.volume = 1.0;
+    }
+    
     setIsPlaying(true);
     setShowPlayIcon(false);
   };
@@ -93,11 +103,15 @@ export default function Testimonials() {
     <div className="flex items-center justify-center  md:p-8 lg:p-12 md:mt-96  lg:mt-0">
       <div className="relative max-w-[1300px] pt-20 md:pt-0 w-full">
         {/* Heading */}
-    <h5 className={`lg:text-6xl ${isArabic ?  "font-arabic pb-10" : "font-bebas" }  text-3xl font-bold text-center mb-12 animated-gradient-text`}>
-          {isArabic ? 'اسمعها منهم' : 'HEAR IT FROM THEM'}
+        <h5
+          className={`lg:text-6xl ${
+            isArabic ? "font-arabic pb-10" : "font-bebas"
+          }  text-3xl font-bold text-center mb-12 animated-gradient-text`}
+        >
+          {isArabic ? "اسمعها منهم" : "HEAR IT FROM THEM"}
         </h5>
         {/* Grid container for 2 videos */}
-        <div className="flex flex-col lg:flex-row items-stretch justify-center gap-6 md:gap-8 lg:gap-12">
+        <div className="flex flex-col lg:flex-row justify-center gap-6 md:gap-8 lg:gap-12">
           {/* First Video */}
           <div className="relative lg:w-1/2 flex">
             {/* Outer decorative frame */}
@@ -107,7 +121,7 @@ export default function Testimonials() {
               {/* Inner frame with metallic effect */}
 
               <div
-                className="rounded-xl backdrop-blur-xl shadow-2xl overflow-hidden relative bg-gradient-to-br from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow p-4 h-full flex flex-col"
+                className="rounded-xl  mx-auto w-[450px] backdrop-blur-xl shadow-2xl  relative bg-gradient-to-br from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow p-4 h-full flex flex-col"
                 style={{ backgroundSize: "400% 400%" }}
               >
                 <div className="relative ">
@@ -120,12 +134,10 @@ export default function Testimonials() {
                     {/* Video element */}
                     <video
                       ref={videoRef1}
-                      className="w-full h-[250px] sm:h-[300px] md:h-[350px] lg:h-[400px] xl:h-[450px] object-cover transition-all duration-700"
-                      src="/vid1.webm"
-                      poster="/sport.png"
+                      className="w-full h-[800px]  object-cover transition-all duration-700"
+                      src="/seif.mp4"
                       preload="metadata"
                       loading="lazy"
-                      muted
                       playsInline
                       onPlay={() => handleVideoPlay(1)}
                       onPause={() => handleVideoPause(1)}
@@ -167,14 +179,22 @@ export default function Testimonials() {
                   </div>
                 </div>
 
-                <p className={`${isArabic ? "font-arabic text-right" : " text-left font-poppins"} text-white text-lg md:text-xl font-medium mt-4 p-4 flex-grow`}>
-                  {isArabic 
+                <p
+                  className={`${
+                    isArabic
+                      ? "font-arabic text-right"
+                      : " text-left font-poppins"
+                  } text-white text-lg md:text-xl font-medium mt-4 p-4 flex-grow`}
+                >
+                  {isArabic
                     ? "بعد شهرين فقط، لاحظت والدتي أن ظهري أصبح أعرض وخصري أصغر. بالإضافة إلى ذلك، أصبح عادة بمرور الوقت - تستيقظ وأنت تعلم أن لديك ساعة واحدة من التدريب كل يوم."
-                    : "Just after 2 month , My mother noticed my back has gotten wider and my waist smaller. Plus, it's become a habit over time — you wake up knowing you have one hour of training each day."
-                  }
+                    : "Just after 2 month , My mother noticed my back has gotten wider and my waist smaller. Plus, it's become a habit over time — you wake up knowing you have one hour of training each day."}
                 </p>
 
-                <div dir={isArabic ? "rtl" : "ltr"} className="mt-auto p-4 flex items-center justify-start gap-2">
+                <div
+                  dir={isArabic ? "rtl" : "ltr"}
+                  className="mt-auto p-4 flex items-center justify-start gap-2"
+                >
                   <Image
                     src="/user.jpg"
                     alt=""
@@ -204,25 +224,23 @@ export default function Testimonials() {
               {/* Inner frame with metallic effect */}
 
               <div
-                className="rounded-xl backdrop-blur-xl shadow-2xl overflow-hidden relative bg-gradient-to-br from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow p-4 h-full flex flex-col"
+                className="rounded-xl backdrop-blur-xl w-[450px] mx-auto shadow-2xl overflow-hidden relative bg-gradient-to-br from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow p-4 h-full flex flex-col"
                 style={{ backgroundSize: "400% 400%" }}
               >
                 <div className="relative ">
                   {/* Main video container */}
                   <div
-                    className="relative rounded-2xl bg-black/30 overflow-hidden shadow-2xl transform transition-all duration-500 hover:scale-[1.01]"
+                    className="relative  rounded-2xl bg-black/30  shadow-2xl transform transition-all duration-500 hover:scale-[1.01]"
                     onMouseEnter={() => setIsHovered2(true)}
                     onMouseLeave={() => setIsHovered2(false)}
                   >
                     {/* Video element */}
                     <video
                       ref={videoRef2}
-                      className="w-full h-[250px] sm:h-[300px] md:h-[350px] lg:h-[400px] xl:h-[450px] object-cover transition-all duration-700"
-                      src="/vid1.webm"
-                      poster="/sport.png"
+                      className="w-full h-[800px] object-fill rounded-3xl transition-all duration-700"
+                      src="ahmed.mp4"
                       preload="metadata"
                       loading="lazy"
-                      muted
                       playsInline
                       onPlay={() => handleVideoPlay(2)}
                       onPause={() => handleVideoPause(2)}
@@ -264,14 +282,22 @@ export default function Testimonials() {
                   </div>
                 </div>
 
-                <p className={`${isArabic ? "font-arabic text-right" : " text-left font-poppins"} text-white text-lg md:text-xl font-medium mt-4 p-4 flex-grow`}>
-                  {isArabic 
+                <p
+                  className={`${
+                    isArabic
+                      ? "font-arabic text-right"
+                      : " text-left font-poppins"
+                  } text-white text-lg md:text-xl font-medium mt-4 p-4 flex-grow`}
+                >
+                  {isArabic
                     ? "أنصح بشدة أي شخص بالعمل معك، لقد كان الأمر مجزياً ومشجعاً حقاً"
-                    : "I would highly recommend anyone to work with you, it's been really rewarding and encouraging"
-                  }
+                    : "I would highly recommend anyone to work with you, it's been really rewarding and encouraging"}
                 </p>
 
-                <div dir={isArabic ? "rtl" : "ltr"} className="mt-auto p-4 flex items-center justify-start gap-2">
+                <div
+                  dir={isArabic ? "rtl" : "ltr"}
+                  className="mt-auto p-4 flex items-center justify-start gap-2"
+                >
                   <Image
                     src="/user.jpg"
                     alt=""

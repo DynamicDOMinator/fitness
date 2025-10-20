@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useLanguage } from "../contexts/LanguageContext";
+import axios from "axios";
 // Check and Cross SVG Icons
 
 const CheckIcon = () => (
@@ -80,6 +81,30 @@ export default function Pricing() {
     phone: ""
   });
   const [formErrors, setFormErrors] = useState({});
+  
+  // Notification state
+  const [notification, setNotification] = useState({
+    show: false,
+    type: '', // 'success' or 'error'
+    message: ''
+  });
+
+  // Drag and drop state
+  const [isDragOver, setIsDragOver] = useState(false);
+
+  // Function to show notification
+  const showNotification = (type, message) => {
+    setNotification({
+      show: true,
+      type,
+      message
+    });
+    
+    // Auto hide after 5 seconds
+    setTimeout(() => {
+      setNotification(prev => ({ ...prev, show: false }));
+    }, 5000);
+  };
 
   // Period options with discounts
   const periodOptions = [
@@ -196,6 +221,37 @@ export default function Pricing() {
     }
   };
 
+  // Drag and drop handlers
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOver(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOver(false);
+    
+    const files = e.dataTransfer.files;
+    if (files && files[0]) {
+      const file = files[0];
+      // Check file type
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
+      if (allowedTypes.includes(file.type)) {
+        setUploadedFile(file);
+      } else {
+        showNotification('error', isArabic ? 'نوع الملف غير مدعوم. يرجى رفع PNG, JPG أو PDF' : 'File type not supported. Please upload PNG, JPG, or PDF');
+      }
+    }
+  };
+
   // Function to validate form
   const validateForm = () => {
     const errors = {};
@@ -236,34 +292,127 @@ export default function Pricing() {
     }
   };
 
+  // Function to send user data to API
+  const sendUserData = async (userData) => {
+    try {
+      // Create FormData to handle file upload
+      const formData = new FormData();
+      formData.append('name', userData.name);
+      formData.append('phone', userData.phone);
+      formData.append('email', userData.email);
+      formData.append('planName', userData.planName);
+      formData.append('duration', userData.duration);
+      formData.append('price', userData.price);
+      
+      // Append the image file if it exists
+      if (userData.image) {
+        formData.append('image', userData.image);
+      }
+
+      const response = await axios.post('http://localhost:3000/users', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return { success: true, data: response.data };
+    } catch (error) {
+      console.error('Error sending user data:', error);
+      return { 
+        success: false, 
+        error: error.response?.data?.message || error.message || 'Failed to send data'
+      };
+    }
+  };
+
   // Function to handle form submission
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!validateForm()) {
       return;
     }
     
     if (!selectedPaymentMethod) {
-      alert(isArabic ? "يرجى اختيار طريقة الدفع" : "Please select a payment method");
+      showNotification('error', isArabic ? "يرجى اختيار طريقة الدفع" : "Please select a payment method");
       return;
     }
     if (!uploadedFile) {
-      alert(isArabic ? "يرجى رفع إيصال الدفع" : "Please upload your payment receipt");
+      showNotification('error', isArabic ? "يرجى رفع إيصال الدفع" : "Please upload your payment receipt");
       return;
     }
 
-    // Here you would typically send the data to your backend
-    alert(
-      `${isArabic ? "تم إرسال الدفع بنجاح!" : "Payment submitted successfully!"}\n${isArabic ? "الخطة:" : "Plan:"} ${selectedPlan.title}\n${isArabic ? "المبلغ:" : "Amount:"} $${selectedPlan.totalPrice}\n${isArabic ? "الطريقة:" : "Method:"} ${selectedPaymentMethod}\n${isArabic ? "الإيصال:" : "Receipt:"} ${uploadedFile.name}\n${isArabic ? "الاسم:" : "Name:"} ${customerInfo.name}\n${isArabic ? "البريد:" : "Email:"} ${customerInfo.email}\n${isArabic ? "الهاتف:" : "Phone:"} ${customerInfo.phone}`
-    );
-    setIsModalOpen(false);
-    
-    // Reset form
-    setCustomerInfo({ name: "", email: "", phone: "" });
-    setFormErrors({});
+    // Send user data to API
+    try {
+      // Get the selected duration for the current plan, default to 1 month
+      const currentDuration = selectedPlan ? (selectedPeriods[selectedPlan.title] || 1) : 1;
+      
+      const userData = {
+        name: customerInfo.name,
+        phone: customerInfo.phone,
+        email: customerInfo.email,
+        image: uploadedFile, // Include the uploaded file as image
+        planName: selectedPlan?.title || "Unknown Plan",
+        duration: `${currentDuration} ${currentDuration === 1 ? (isArabic ? "شهر" : "month") : (isArabic ? "أشهر" : "months")}`,
+        price: selectedPlan?.totalPrice || 0
+      };
+
+      const result = await sendUserData(userData);
+      
+      if (result.success) {
+        showNotification('success', isArabic ? "شكراً لاشتراكك! سنتواصل معك في أقرب وقت ممكن" : "Thank you for your subscription! We will contact you as soon as possible");
+        setIsModalOpen(false);
+        
+        // Reset form
+        setCustomerInfo({ name: "", email: "", phone: "" });
+        setFormErrors({});
+      } else {
+        showNotification('error', `${isArabic ? "خطأ في إرسال البيانات:" : "Error sending data:"} ${result.error}`);
+      }
+    } catch (error) {
+      console.error('Unexpected error:', error);
+      showNotification('error', isArabic ? "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى." : "An unexpected error occurred. Please try again.");
+    }
   };
 
   return (
     <>
+      {/* Notification Toast */}
+      {notification.show && (
+        <div className={`fixed top-4 right-4 z-[60] max-w-sm w-full transform transition-all duration-300 ease-in-out ${
+          notification.show ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
+        }`}>
+          <div className={`rounded-lg shadow-lg p-4 border-l-4 ${
+            notification.type === 'success' 
+              ? 'bg-green-900/90 border-green-400 text-green-100' 
+              : 'bg-red-900/90 border-red-400 text-red-100'
+          } backdrop-blur-sm`}>
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                {notification.type === 'success' ? (
+                  <CheckIcon />
+                ) : (
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                  </svg>
+                )}
+              </div>
+              <div className="ml-3">
+                <p className="text-sm font-medium">{notification.message}</p>
+              </div>
+              <div className="ml-auto pl-3">
+                <button
+                  onClick={() => setNotification(prev => ({ ...prev, show: false }))}
+                  className="inline-flex text-gray-400 hover:text-white transition-colors"
+                >
+                  <span className="sr-only">Close</span>
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Payment Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
@@ -506,7 +655,16 @@ export default function Pricing() {
                 <h5 className="text-white font-semibold mb-3">
                   {isArabic ? "ارفع إيصال الدفع" : "Upload Payment Receipt"}
                 </h5>
-                <div className="border-2 border-dashed border-gray-600 rounded-2xl p-6 text-center hover:border-[#fd5747]/50 transition-colors">
+                <div 
+                  className={`border-2 border-dashed rounded-2xl p-6 text-center transition-all duration-300 ${
+                    isDragOver 
+                      ? 'border-[#fd5747] bg-[#fd5747]/10 scale-105' 
+                      : 'border-gray-600 hover:border-[#fd5747]/50'
+                  }`}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                >
                   <input
                     type="file"
                     id="receipt-upload"

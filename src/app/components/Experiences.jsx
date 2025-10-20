@@ -284,7 +284,7 @@ export default function Service() {
                 <video
                   ref={videoRef}
                   className="w-full h-full rounded-[70px] object-cover "
-                  src="/vid1.webm"
+                  src="/about us.mp4"
                   poster="/sport.png"
                   preload="metadata"
                   onPlay={handleVideoPlay}
@@ -372,7 +372,7 @@ export default function Service() {
                   <video
                     ref={videoRef2}
                     className="w-full h-full rounded-[70px] object-cover "
-                    src="/vid1.webm"
+                    src="/about us.mp4"
                     poster="/sport.png"
                     preload="metadata"
                     onPlay={handleVideoPlay}
