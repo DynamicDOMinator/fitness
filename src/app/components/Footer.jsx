@@ -1,9 +1,16 @@
 'use client';
 import { useLanguage } from '../contexts/LanguageContext';
 import Image from 'next/image';
+import { useState } from 'react';
+import axios from 'axios';
 
 const Footer = () => {
   const { isArabic } = useLanguage();
+
+  // Newsletter state
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [isSubscribing, setIsSubscribing] = useState(false);
+  const [subscribeStatus, setSubscribeStatus] = useState(null); // 'success' | 'error' | null
 
   const content = {
     en: {
@@ -17,6 +24,7 @@ const Footer = () => {
         fitnessTools: "Fitness Tools",
         journey: "Journey",
         faqs: "FAQs",
+        ebook: "E-Book",
         contact: "Contact"
       },
       followUs: "Follow Us",
@@ -39,6 +47,7 @@ const Footer = () => {
         fitnessTools: "أدوات اللياقة",
         journey: "الرحلة",
         faqs: "الأسئلة الشائعة",
+        ebook: "الكتاب الإلكتروني",
         contact: "اتصل بنا"
       },
       followUs: "تابعنا",
@@ -81,6 +90,38 @@ const Footer = () => {
       url: 'https://www.tiktok.com/@bettrfitness'
     }
   ];
+
+  const handleNewsletterSubmit = async (e) => {
+    e?.preventDefault();
+    // Basic email validation
+    if (!newsletterEmail || !/\S+@\S+\.\S+/.test(newsletterEmail)) {
+      setSubscribeStatus('error');
+      return;
+    }
+
+    setIsSubscribing(true);
+    setSubscribeStatus(null);
+
+    try {
+      const res = await axios.post('https://dashboard.bettrfitness.com/api/contact', {
+        email: newsletterEmail
+      }, {
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      if (res.status >= 200 && res.status < 300) {
+        setSubscribeStatus('success');
+        setNewsletterEmail('');
+      } else {
+        setSubscribeStatus('error');
+      }
+    } catch (error) {
+      console.error('Newsletter subscribe error:', error);
+      setSubscribeStatus('error');
+    } finally {
+      setIsSubscribing(false);
+    }
+  };
 
   return (
     <footer className="relative font-poppins mt-20 backdrop-blur-xl bg-gradient-to-br from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow rounded-t-4xl" style={{ backgroundSize: "400% 400%" }}>
@@ -172,7 +213,7 @@ const Footer = () => {
           </div>
 
           {/* Newsletter Signup */}
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 overflow-hidden ">
             <h4 className="text-lg font-semibold text-white mb-4 font-cairo">
               {isArabic ? "اشترك في النشرة الإخبارية" : "Newsletter"}
             </h4>
@@ -182,18 +223,35 @@ const Footer = () => {
                 : "Get the latest tips and offers"
               }
             </p>
-            <div className="flex">
+            <div className="">
+              {subscribeStatus === 'success' && (
+                <div className="mb-2 p-2 bg-green-500/20 border border-green-500/50 rounded-md text-green-400 text-sm">
+                  {isArabic ? "تم الاشتراك بنجاح!" : "Subscribed successfully!"}
+                </div>
+              )}
+              {subscribeStatus === 'error' && (
+                <div className="mb-2 p-2 bg-red-500/20 border border-red-500/50 rounded-md text-red-400 text-sm">
+                  {isArabic ? "يرجى إدخال بريد إلكتروني صالح والمحاولة مرة أخرى." : "Please enter a valid email and try again."}
+                </div>
+              )}
               <input
                 type="email"
                 placeholder={isArabic ? "بريدك الإلكتروني" : "Your email"}
-                className="flex-1 px-3 py-2 bg-gray-800/50 border border-gray-700 rounded-l-md text-white placeholder-gray-400 focus:outline-none focus:border-[#00ff87]"
+                name="email"
+                value={newsletterEmail}
+                onChange={(e) => setNewsletterEmail(e.target.value)}
+                disabled={isSubscribing}
+                className=" px-3 w-full py-2 bg-gray-800/50 border border-gray-700 rounded-l-md text-white placeholder-gray-400 focus:outline-none focus:border-[#00ff87] disabled:opacity-60"
                 suppressHydrationWarning={true}
               />
               <button 
-                className="px-4 py-2 bg-red-500 text-white font-semibold rounded-r-md hover:bg-[#00ff87]/90 transition-colors"
+                type="button"
+                onClick={handleNewsletterSubmit}
+                disabled={isSubscribing}
+                className={`${isSubscribing ? 'bg-gray-500/50 cursor-not-allowed' : 'bg-red-500 hover:bg-[#00ff87]/90'} px-4 mt-2 w-full py-2 text-white font-semibold rounded-md transition-colors`}
                 suppressHydrationWarning={true}
               >
-                {isArabic ? "اشترك" : "Subscribe"}
+                {isSubscribing ? (isArabic ? "جاري الاشتراك..." : "Subscribing...") : (isArabic ? "اشترك" : "Subscribe")}
               </button>
             </div>
           </div>

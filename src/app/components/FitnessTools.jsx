@@ -1,11 +1,57 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import FFMIThermometer from './FFMIThermometer';
 import { useLanguage } from '../contexts/LanguageContext';
 export default function FitnessTools() {
   const [activeModal, setActiveModal] = useState(null);
   const [calculatorResults, setCalculatorResults] = useState({});
   const { isArabic } = useLanguage();
+
+  // Effect to handle body scroll when modal is open
+  useEffect(() => {
+    if (activeModal) {
+      // Store original values
+      const originalBodyOverflow = document.body.style.overflow;
+      const scrollY = window.scrollY;
+      
+      // Only prevent body scroll, allow modal content to scroll
+      document.body.style.overflow = 'hidden';
+      
+      // Cleanup function to restore scroll
+      return () => {
+        document.body.style.overflow = originalBodyOverflow;
+        window.scrollTo(0, scrollY);
+      };
+    }
+  }, [activeModal]);
+
+  const handleDietPlanWhatsAppClick = (event, toolId) => {
+    event?.preventDefault();
+    
+    console.log('WhatsApp clicked for tool:', toolId);
+    
+    const phoneNumber = '+201030667969';
+    const message = 'I want a customized diet plan';
+    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    
+    // Track in Meta
+    if (typeof window !== 'undefined' && typeof window.fbq !== 'undefined') {
+      const eventName = `whatsapp-tool-${toolId}`;
+      console.log('Tracking Meta event:', eventName);
+      
+      window.fbq('trackCustom', eventName, {
+        content_name: eventName,
+        content_category: 'fitness-tools',
+        tool_name: toolId,
+        action: 'whatsapp-contact',
+        platform: 'whatsapp'
+      });
+    } else {
+      console.log('Meta Pixel not found - tracking skipped');
+    }
+    
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
 
   // Calculator functions
   const calculateCalories = (formData) => {
@@ -301,7 +347,7 @@ export default function FitnessTools() {
   };
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8">
+    <section id="fitness-tools-section" className="py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
@@ -377,8 +423,8 @@ export default function FitnessTools() {
 
         {/* Modal */}
         {activeModal && (
-          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-            <div className="bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-3xl p-8 max-w-md w-full max-h-[90vh] overflow-y-auto ring-1 ring-white/10">
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-start justify-center z-50 p-4 overflow-y-auto">
+            <div className="bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-3xl p-6 max-w-md w-full my-4 max-h-[calc(100vh-2rem)] overflow-y-auto ring-1 ring-white/10">
               {/* Modal Header */}
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-2xl font-bold text-white">
@@ -397,6 +443,7 @@ export default function FitnessTools() {
                 toolId={activeModal} 
                 onSubmit={handleCalculatorSubmit}
                 result={calculatorResults[activeModal]}
+                onWhatsAppClick={handleDietPlanWhatsAppClick}
               />
             </div>
           </div>
@@ -407,7 +454,7 @@ export default function FitnessTools() {
 }
 
 // Modal Content Component
-function ModalContent({ toolId, onSubmit, result }) {
+function ModalContent({ toolId, onSubmit, result, onWhatsAppClick }) {
   const [formData, setFormData] = useState({});
 
   const handleInputChange = (field, value) => {
@@ -793,9 +840,10 @@ function ModalContent({ toolId, onSubmit, result }) {
             <span className="text-2xl font-bold text-[#fd5747]">149 EGP</span>
           </div>
           <a
-            href="https://wa.me/+201234567890?text=I want a customized diet plan"
+            href="https://wa.me/+201030667969?text=I want a customized diet plan"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={(event) => onWhatsAppClick(event, toolId)}
             className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105"
           >
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLanguage } from "../contexts/LanguageContext";
 import axios from "axios";
 // Check and Cross SVG Icons
@@ -66,7 +66,9 @@ export default function Pricing() {
   const { isArabic } = useLanguage();
 
   // State to track selected period for each plan
-  const [selectedPeriods, setSelectedPeriods] = useState({});
+  const [selectedPeriods, setSelectedPeriods] = useState({
+    "Elite athlete": 3 // Default Elite athlete to 3 months
+  });
 
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -92,6 +94,25 @@ export default function Pricing() {
   // Drag and drop state
   const [isDragOver, setIsDragOver] = useState(false);
 
+  // Effect to handle body scroll when modal is open
+  useEffect(() => {
+    if (isModalOpen) {
+      // Store original overflow values
+      const originalBodyOverflow = document.body.style.overflow;
+      const originalHtmlOverflow = document.documentElement.style.overflow;
+      
+      // Prevent body and html scroll when modal is open
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+      
+      // Cleanup function to restore scroll
+      return () => {
+        document.body.style.overflow = originalBodyOverflow;
+        document.documentElement.style.overflow = originalHtmlOverflow;
+      };
+    }
+  }, [isModalOpen]);
+
   // Function to show notification
   const showNotification = (type, message) => {
     setNotification({
@@ -110,7 +131,7 @@ export default function Pricing() {
   const periodOptions = [
     { value: 1, label: isArabic ? "شهر واحد" : "1 Month", discount: 0 },
     { value: 3, label: isArabic ? "3 أشهر" : "3 Months", discount: 0.1 }, // 10% discount
-    { value: 6, label: isArabic ? "6 أشهر" : "6 Months", discount: 0.2 }, // 20% discount
+    { value: 6, label: isArabic ? "6 أشهر" : "6 Months", discount: 0.25 }, // 25% discount
   ];
   // All possible features for comparison
   const allFeatures = [
@@ -133,6 +154,7 @@ export default function Pricing() {
       "تغيير النظام الغذائي وخطة التمارين عند الحاجة",
     "30mins onboarding zoom": "جلسة تعريفية 30 دقيقة عبر زووم",
     "Whatsapp weekly support": "دعم أسبوعي عبر واتساب",
+    "Whatsapp - 48hours support": "دعم واتساب - 48 ساعة",
     "mohamed personal Whatsapp - 24 hours support":
       "واتساب محمد الشخصي - دعم 24 ساعة",
     "Video Exercise form correction": "تصحيح شكل التمارين بالفيديو",
@@ -145,6 +167,35 @@ export default function Pricing() {
   // Function to calculate price based on selected period
   const calculatePrice = (basePrice, planTitle) => {
     const selectedPeriod = selectedPeriods[planTitle] || 1;
+    
+    // Special pricing for Elite athlete plan
+    if (planTitle === "Elite athlete") {
+      if (selectedPeriod === 3) {
+        return {
+          monthlyPrice: 5000, // Monthly price for display
+          totalPrice: 15000, // Fixed price for 3 months
+          period: selectedPeriod,
+          discount: 0, // No discount calculation for fixed pricing
+        };
+      } else if (selectedPeriod === 6) {
+        return {
+          monthlyPrice: 5000, // Monthly price for display
+          totalPrice: 30000, // Fixed price for 6 months
+          period: selectedPeriod,
+          discount: 0, // No discount calculation for fixed pricing
+        };
+      } else {
+        // For 1 month, use standard calculation
+        return {
+          monthlyPrice: basePrice,
+          totalPrice: basePrice,
+          period: selectedPeriod,
+          discount: 0,
+        };
+      }
+    }
+    
+    // Standard calculation for other plans
     const periodOption = periodOptions.find(
       (option) => option.value === selectedPeriod
     );
@@ -191,20 +242,46 @@ export default function Pricing() {
         [selectedPlan.title]: newPeriodInt,
       }));
 
-      // Calculate price with the new period directly
-      const periodOption = periodOptions.find(
-        (option) => option.value === newPeriodInt
-      );
-      const discountedPrice =
-        selectedPlan.basePrice * (1 - periodOption.discount);
-      const totalPrice = discountedPrice * newPeriodInt;
+      // Calculate price with the new period directly for Elite athlete
+      let newPriceInfo;
+      if (selectedPlan.title === "Elite athlete") {
+        if (newPeriodInt === 3) {
+          newPriceInfo = {
+            monthlyPrice: 5000,
+            totalPrice: 15000,
+            period: newPeriodInt,
+            discount: 0,
+          };
+        } else if (newPeriodInt === 6) {
+          newPriceInfo = {
+            monthlyPrice: 5000,
+            totalPrice: 30000,
+            period: newPeriodInt,
+            discount: 0,
+          };
+        } else {
+          newPriceInfo = {
+            monthlyPrice: selectedPlan.basePrice,
+            totalPrice: selectedPlan.basePrice,
+            period: newPeriodInt,
+            discount: 0,
+          };
+        }
+      } else {
+        // Standard calculation for other plans
+        const periodOption = periodOptions.find(
+          (option) => option.value === newPeriodInt
+        );
+        const discountedPrice = selectedPlan.basePrice * (1 - periodOption.discount);
+        const totalPrice = discountedPrice * newPeriodInt;
 
-      const newPriceInfo = {
-        monthlyPrice: Math.round(discountedPrice),
-        totalPrice: Math.round(totalPrice),
-        period: newPeriodInt,
-        discount: periodOption.discount,
-      };
+        newPriceInfo = {
+          monthlyPrice: Math.round(discountedPrice),
+          totalPrice: Math.round(totalPrice),
+          period: newPeriodInt,
+          discount: periodOption.discount,
+        };
+      }
 
       setSelectedPlan((prev) => ({
         ...prev,
@@ -297,19 +374,20 @@ export default function Pricing() {
     try {
       // Create FormData to handle file upload
       const formData = new FormData();
-      formData.append('name', userData.name);
-      formData.append('phone', userData.phone);
-      formData.append('email', userData.email);
-      formData.append('planName', userData.planName);
-      formData.append('duration', userData.duration);
+      formData.append('user_name', userData.user_name);
+      formData.append('user_phone', userData.user_phone);
+      formData.append('user_email', userData.user_email);
+      formData.append('plan', userData.plan);
+      formData.append('duration_days', userData.duration_days);
       formData.append('price', userData.price);
+      formData.append('payment_method', userData.payment_method);
       
-      // Append the image file if it exists
-      if (userData.image) {
-        formData.append('image', userData.image);
+      // Append the payment receipt file if it exists
+      if (userData.payment_receipt) {
+        formData.append('payment_receipt', userData.payment_receipt);
       }
 
-      const response = await axios.post('http://localhost:3000/users', formData, {
+      const response = await axios.post('https://dashboard.bettrfitness.com/api/subscribe', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -344,14 +422,21 @@ export default function Pricing() {
       // Get the selected duration for the current plan, default to 1 month
       const currentDuration = selectedPlan ? (selectedPeriods[selectedPlan.title] || 1) : 1;
       
+      // Transform payment method value for API (kebab-case -> camelCase)
+      const transformedPaymentMethod = selectedPaymentMethod
+        .split('-')
+        .map((word, index) => index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1))
+        .join('');
+      
       const userData = {
-        name: customerInfo.name,
-        phone: customerInfo.phone,
-        email: customerInfo.email,
-        image: uploadedFile, // Include the uploaded file as image
-        planName: selectedPlan?.title || "Unknown Plan",
-        duration: `${currentDuration} ${currentDuration === 1 ? (isArabic ? "شهر" : "month") : (isArabic ? "أشهر" : "months")}`,
-        price: selectedPlan?.totalPrice || 0
+        user_name: customerInfo.name,
+        user_phone: customerInfo.phone,
+        user_email: customerInfo.email,
+        payment_receipt: uploadedFile, // Include the uploaded file as payment receipt
+        plan: selectedPlan?.title || "Unknown Plan",
+        duration_days: currentDuration * 30, // Convert months to days (30 days per month)
+        price: selectedPlan?.totalPrice || 0,
+        payment_method: transformedPaymentMethod
       };
 
       const result = await sendUserData(userData);
@@ -363,6 +448,17 @@ export default function Pricing() {
         // Reset form
         setCustomerInfo({ name: "", email: "", phone: "" });
         setFormErrors({});
+
+        // Track Facebook Pixel Purchase event
+        if (typeof fbq !== 'undefined') {
+          fbq('track', 'Purchase', {
+            content_name: userData.plan,
+            content_type: 'subscription',
+            value: userData.price || 0,
+            currency: 'EGP',
+            plan_duration_days: userData.duration_days
+          });
+        }
       } else {
         showNotification('error', `${isArabic ? "خطأ في إرسال البيانات:" : "Error sending data:"} ${result.error}`);
       }
@@ -449,14 +545,16 @@ export default function Pricing() {
                     className="w-full bg-black/50 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#fd5747]/50 focus:border-[#fd5747]/50 backdrop-blur-sm"
                     suppressHydrationWarning={true}
                   >
-                    {periodOptions.map((option) => (
+                    {periodOptions.filter(option => 
+                      selectedPlan?.title === "Elite athlete" ? option.value !== 1 : true
+                    ).map((option) => (
                       <option
                         key={option.value}
                         value={option.value}
                         className="bg-gray-800 text-white"
                       >
                         {option.label}{" "}
-                        {option.discount > 0 &&
+                        {selectedPlan?.title !== "Elite athlete" && option.discount > 0 &&
                           `(${Math.round(option.discount * 100)}% ${
                             isArabic ? "خصم" : "off"
                           })`}
@@ -471,7 +569,7 @@ export default function Pricing() {
                       {isArabic ? "السعر الشهري:" : "Monthly Price:"}
                     </span>
                     <span className="text-white font-semibold">
-                      ${selectedPlan?.monthlyPrice}
+                      L.E {selectedPlan?.monthlyPrice}
                     </span>
                   </div>
                   <div className="flex justify-between text-sm">
@@ -482,7 +580,7 @@ export default function Pricing() {
                       {selectedPlan?.period} {isArabic ? "شهر" : "month(s)"}
                     </span>
                   </div>
-                  {selectedPlan?.discount > 0 && (
+                  {selectedPlan?.discount > 0 && selectedPlan?.title !== "Elite athlete" && (
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-300">
                         {isArabic ? "الخصم:" : "Discount:"}
@@ -499,7 +597,7 @@ export default function Pricing() {
                         {isArabic ? "المبلغ الإجمالي:" : "Total Amount:"}
                       </span>
                       <span className="text-[#fd5747]">
-                        ${selectedPlan?.totalPrice}
+                        L.E {selectedPlan?.totalPrice}
                       </span>
                     </div>
                   </div>
@@ -569,7 +667,7 @@ export default function Pricing() {
                     <input
                       type="radio"
                       name="paymentMethod"
-                      value="vodafone-cash"
+                      value="vodafoneCash"
                       checked={selectedPaymentMethod === "vodafone-cash"}
                       onChange={(e) => setSelectedPaymentMethod(e.target.value)}
                       className="w-4 h-4 text-[#fd5747] bg-gray-700 border-gray-600 focus:ring-[#fd5747] focus:ring-2"
@@ -607,13 +705,13 @@ export default function Pricing() {
                   <h6 className="text-blue-400 font-semibold mb-2">
                     {isArabic ? "تعليمات الدفع" : "Payment Instructions"}
                   </h6>
-                  {selectedPaymentMethod === "vodafone-cash" && (
+                  {selectedPaymentMethod === "vodafoneCash" && (
                     <div className="text-sm text-gray-300 space-y-1">
                       <p>
                         •{" "}
                         {isArabic
-                          ? `أرسل $${selectedPlan?.totalPrice} إلى:`
-                          : `Send $${selectedPlan?.totalPrice} to:`}{" "}
+                          ? `أرسل ${selectedPlan?.totalPrice}L.E إلى:`
+                          : `Send ${selectedPlan?.totalPrice}L.E to:`}{" "}
                         <span className="text-white font-semibold">
                           01018294811{" "}
                         </span>
@@ -632,8 +730,8 @@ export default function Pricing() {
                       <p>
                         •{" "}
                         {isArabic
-                          ? `أرسل $${selectedPlan?.totalPrice} إلى:`
-                          : `Send $${selectedPlan?.totalPrice} to:`}{" "}
+                          ? `أرسل ${selectedPlan?.totalPrice}L.E  إلى:`
+                          : `Send ${selectedPlan?.totalPrice}L.E  to:`}{" "}
                         <span className="text-white font-semibold">
                           moe_2@instapay
                         </span>
@@ -711,7 +809,7 @@ export default function Pricing() {
         </div>
       )}
 
-      <section className="py-16 backdrop-blur-xl">
+      <section id="pricing-section" className="py-16 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="lg:text-6xl text-3xl font-extrabold text-center tracking-tight">
             <span className={`text-white ${isArabic? 'font-bold font-arabic' : 'font-bold font-bebas'}`}>
@@ -776,26 +874,21 @@ export default function Pricing() {
                       className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#fd5747] to-red-600 animate-gradient-x"
                       style={{ backgroundSize: "200% 200%" }}
                     >
-                      ${calculatePrice(49, "Regular - Diet only").monthlyPrice}
+                      L.E {calculatePrice(900, "Regular - Diet only").monthlyPrice}
                     </span>
                     <span className="text-gray-400 text-sm ml-1">
-                      {isArabic ? "/شهر" : "/month"}
+                      {isArabic ? "/شهور" : "/month"}
                     </span>
                   </div>
                   {calculatePrice(49, "Regular - Diet only").period > 1 && (
                     <div className="mt-1">
-                      <span className="text-sm text-gray-300">
-                        Total: $
-                        {calculatePrice(49, "Regular - Diet only").totalPrice}{" "}
-                        for {calculatePrice(49, "Regular - Diet only").period}{" "}
-                        months
-                      </span>
-                      {calculatePrice(49, "Regular - Diet only").discount >
+                    
+                      {calculatePrice(900, "Regular - Diet only").discount >
                         0 && (
                         <span className="ml-2 text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded-full">
                           Save{" "}
                           {Math.round(
-                            calculatePrice(49, "Regular - Diet only").discount *
+                            calculatePrice(900, "Regular - Diet only").discount *
                               100
                           )}
                           %
@@ -861,7 +954,7 @@ export default function Pricing() {
                     <span className="flex-shrink-0 mt-0.5">
                       <CheckIcon />
                     </span>
-                    <span className="text-gray-200">
+                    <span className="text-orange-500">
                       {isArabic
                         ? featureTranslations["30mins onboarding zoom"]
                         : "30mins onboarding zoom"}
@@ -877,7 +970,7 @@ export default function Pricing() {
                     <span className="text-gray-200">
                       {isArabic
                         ? featureTranslations["Whatsapp weekly support"]
-                        : "Whatsapp weekly support"}
+                        : <>Whatsapp <span className="text-orange-500">weekly</span> support</>}
                     </span>
                   </li>
 
@@ -941,7 +1034,7 @@ export default function Pricing() {
               {/* CTA */}
               <div className="px-6 pb-6 flex-shrink-0 ">
                 <button
-                  onClick={() => handleGetStarted("Regular - Diet only", 49)}
+                  onClick={() => handleGetStarted("Regular - Diet only", 900)}
                   className="w-full rounded-2xl bg-gradient-to-r mt-10 lg:mt-13 from-[#fd5747] via-red-500 to-red-700 text-white font-semibold py-2.5 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all duration-300 animate-gradient-x"
                   style={{ backgroundSize: "300% 300%" }}
                   suppressHydrationWarning={true}
@@ -1011,35 +1104,28 @@ export default function Pricing() {
                       className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#fd5747] to-red-600 animate-gradient-x"
                       style={{ backgroundSize: "200% 200%" }}
                     >
-                      $
-                      {
-                        calculatePrice(69, "Regular - Diet & Exercise")
+                      L.E {
+                        calculatePrice(1500, "Regular - Diet & Exercise")
                           .monthlyPrice
                       }
                     </span>
                     <span className="text-gray-400 text-sm ml-1">
-                      {isArabic ? "/شهر" : "/month"}
+                      {isArabic ? 
+                        `/${calculatePrice(1500, "Regular - Diet & Exercise").period} شهر` : 
+                        `/${calculatePrice(1500, "Regular - Diet & Exercise").period} month`
+                      }
                     </span>
                   </div>
-                  {calculatePrice(69, "Regular - Diet & Exercise").period >
+                  {calculatePrice(1500, "Regular - Diet & Exercise").period >
                     1 && (
                     <div className="mt-1">
-                      <span className="text-sm text-gray-300">
-                        Total: $
-                        {
-                          calculatePrice(69, "Regular - Diet & Exercise")
-                            .totalPrice
-                        }{" "}
-                        for{" "}
-                        {calculatePrice(69, "Regular - Diet & Exercise").period}{" "}
-                        months
-                      </span>
-                      {calculatePrice(69, "Regular - Diet & Exercise")
+                     
+                      {calculatePrice(1500, "Regular - Diet & Exercise")
                         .discount > 0 && (
                         <span className="ml-2 text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded-full">
                           Save{" "}
                           {Math.round(
-                            calculatePrice(69, "Regular - Diet & Exercise")
+                            calculatePrice(1500, "Regular - Diet & Exercise")
                               .discount * 100
                           )}
                           %
@@ -1105,7 +1191,7 @@ export default function Pricing() {
                     <span className="flex-shrink-0 mt-0.5">
                       <CheckIcon />
                     </span>
-                    <span className="text-gray-200">
+                    <span className="text-orange-500">
                       {isArabic
                         ? featureTranslations["30mins onboarding zoom"]
                         : "30mins onboarding zoom"}
@@ -1121,7 +1207,7 @@ export default function Pricing() {
                     <span className="text-gray-200">
                       {isArabic
                         ? featureTranslations["Whatsapp weekly support"]
-                        : "Whatsapp weekly support"}
+                        : <>Whatsapp <span className="text-orange-500">weekly</span> support</>}
                     </span>
                   </li>
 
@@ -1158,10 +1244,12 @@ export default function Pricing() {
                     className="flex items-start gap-2"
                   >
                     <span className="flex-shrink-0 mt-0.5">
-                      <CheckIcon />
+                      <CrossIcon />
                     </span>
                     <span className="text-gray-200">
-                      1x45mins zoom check-in / month
+                      {isArabic
+                        ? featureTranslations["1x45mins zoom check-in / month"]
+                        : "1x45mins zoom check-in / month"}
                     </span>
                   </li>
                   <li
@@ -1172,7 +1260,9 @@ export default function Pricing() {
                       <CrossIcon />
                     </span>
                     <span className="text-gray-500 line-through">
-                      1 live workout session / month
+                      {isArabic
+                        ? featureTranslations["1 live workout session / month"]
+                        : "1 live workout session / month"}
                     </span>
                   </li>
                 </ul>
@@ -1182,7 +1272,7 @@ export default function Pricing() {
               <div className="px-6 pb-6 flex-shrink-0">
                 <button
                   onClick={() =>
-                    handleGetStarted("Regular - Diet & Exercise", 69)
+                    handleGetStarted("Regular - Diet & Exercise", 1500)
                   }
                   className="w-full rounded-2xl bg-gradient-to-r mt-8 lg:mt-0 from-[#fd5747] via-red-500 to-red-700 text-white font-semibold py-2.5 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all duration-300 animate-gradient-x"
                   style={{ backgroundSize: "300% 300%" }}
@@ -1259,27 +1349,21 @@ export default function Pricing() {
                       className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#fd5747] to-red-600 animate-gradient-x"
                       style={{ backgroundSize: "200% 200%" }}
                     >
-                      ${calculatePrice(129, "Advanced coaching").monthlyPrice}
+                      L.E {calculatePrice(3000, "Advanced coaching").monthlyPrice}
                     </span>
                     <span className="text-gray-400 text-sm ml-1">
                       {isArabic ? "/شهر" : "/month"}
                     </span>
                   </div>
-                  {calculatePrice(129, "Advanced coaching").period > 1 && (
+                  {calculatePrice(3000, "Advanced coaching").period > 1 && (
                     <div className="mt-1">
-                      <span className="text-sm text-gray-300">
-                        Total: $
-                        {calculatePrice(129, "Advanced coaching").totalPrice}{" "}
-                        for {calculatePrice(129, "Advanced coaching").period}{" "}
-                        months
-                      </span>
-                      {calculatePrice(129, "Advanced coaching").discount >
+                    
+                      {calculatePrice(3000, "Advanced coaching").discount >
                         0 && (
                         <span className="ml-2 text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded-full">
                           Save{" "}
                           {Math.round(
-                            calculatePrice(129, "Advanced coaching").discount *
-                              100
+                            calculatePrice(3000, "Advanced coaching").discount * 100
                           )}
                           %
                         </span>
@@ -1344,7 +1428,7 @@ export default function Pricing() {
                     <span className="flex-shrink-0 mt-0.5">
                       <CheckIcon />
                     </span>
-                    <span className="text-gray-200">
+                    <span className="text-orange-500">
                       {isArabic
                         ? featureTranslations["30mins onboarding zoom"]
                         : "30mins onboarding zoom"}
@@ -1359,8 +1443,8 @@ export default function Pricing() {
                     </span>
                     <span className="text-gray-200">
                       {isArabic
-                        ? featureTranslations["Whatsapp weekly support"]
-                        : "Whatsapp weekly support"}
+                        ? featureTranslations["Whatsapp - 48hours support"]
+                        : <>Whatsapp - <span className="text-orange-500">48hours</span> support</>}
                     </span>
                   </li>
 
@@ -1413,7 +1497,9 @@ export default function Pricing() {
                       <CrossIcon />
                     </span>
                     <span className="text-gray-500 line-through">
-                      1 live workout session / month
+                      {isArabic
+                        ? featureTranslations["1 live workout session / month"]
+                        : "1 live workout session / month"}
                     </span>
                   </li>
                 </ul>
@@ -1422,7 +1508,7 @@ export default function Pricing() {
               {/* CTA */}
               <div className="px-6 pb-6 flex-shrink-0">
                 <button
-                  onClick={() => handleGetStarted("Advanced coaching", 129)}
+                  onClick={() => handleGetStarted("Advanced coaching", 3000)}
                   className="w-full rounded-2xl bg-gradient-to-r from-[#fd5747] via-red-500 to-red-700 text-white font-semibold py-2.5 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all duration-300 animate-gradient-x"
                   style={{ backgroundSize: "300% 300%" }}
                   suppressHydrationWarning={true}
@@ -1458,22 +1544,21 @@ export default function Pricing() {
                 <div className="mt-3">
                   <select
                     dir={isArabic ? "rtl" : "ltr"}
-                    value={selectedPeriods["Elite athlete"] || 1}
+                    value={selectedPeriods["Elite athlete"] || 3}
                     onChange={(e) =>
                       handlePeriodChange("Elite athlete", e.target.value)
                     }
                     className="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#fd5747]/50 focus:border-[#fd5747]/50 backdrop-blur-sm"
                     suppressHydrationWarning={true}
                   >
-                    {periodOptions.map((option) => (
+                    {periodOptions.filter(option => option.value !== 1).map((option) => (
                       <option
                         key={option.value}
                         value={option.value}
                         className="bg-gray-800 text-white"
                       >
                         {option.label}{" "}
-                        {option.discount > 0 &&
-                          `(${Math.round(option.discount * 100)}% off)`}
+                        
                       </option>
                     ))}
                   </select>
@@ -1489,24 +1574,23 @@ export default function Pricing() {
                       className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#fd5747] to-red-600 animate-gradient-x"
                       style={{ backgroundSize: "200% 200%" }}
                     >
-                      ${calculatePrice(199, "Elite athlete").monthlyPrice}
+                      L.E {calculatePrice(5000, "Elite athlete").totalPrice}
                     </span>
                     <span className="text-gray-400 text-sm ml-1">
-                      {isArabic ? "/شهر" : "/month"}
+                      {isArabic ? 
+                        `/${calculatePrice(5000, "Elite athlete").period}شهر` : 
+                        `/${calculatePrice(5000, "Elite athlete").period}month`
+                      }
                     </span>
                   </div>
-                  {calculatePrice(199, "Elite athlete").period > 1 && (
+                  {calculatePrice(5000, "Elite athlete").period > 1 && (
                     <div className="mt-1">
-                      <span className="text-sm text-gray-300">
-                        Total: $
-                        {calculatePrice(199, "Elite athlete").totalPrice} for{" "}
-                        {calculatePrice(199, "Elite athlete").period} months
-                      </span>
-                      {calculatePrice(199, "Elite athlete").discount > 0 && (
+                   
+                      {calculatePrice(5000, "Elite athlete").discount > 0 && (
                         <span className="ml-2 text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded-full">
                           Save{" "}
                           {Math.round(
-                            calculatePrice(199, "Elite athlete").discount * 100
+                            calculatePrice(5000, "Elite athlete").discount * 100
                           )}
                           %
                         </span>
@@ -1571,7 +1655,7 @@ export default function Pricing() {
                     <span className="flex-shrink-0 mt-0.5">
                       <CheckIcon />
                     </span>
-                    <span className="text-gray-200">
+                    <span className="text-orange-500">
                       {isArabic
                         ? featureTranslations["30mins onboarding zoom"]
                         : "30mins onboarding zoom"}
@@ -1590,7 +1674,7 @@ export default function Pricing() {
                         ? featureTranslations[
                             "mohamed personal Whatsapp - 24 hours support"
                           ]
-                        : "Whatsapp - mohamed personal Whatsapp - 24 hours support"}
+                        : <>Whatsapp - mohamed personal Whatsapp - <span className="text-orange-500">24 hours</span> support</>}
                     </span>
                   </li>
                   <li
@@ -1623,7 +1707,7 @@ export default function Pricing() {
                   </li>
                   <li
                     dir={isArabic ? "rtl" : "ltr"}
-                    className="flex items-start gap-2"
+                    className="flex items-start gap-2 "
                   >
                     <span className="flex-shrink-0 mt-0.5">
                       <CheckIcon />
@@ -1634,15 +1718,17 @@ export default function Pricing() {
                         : "2x 45mins zoom check-in / month"}
                     </span>
                   </li>
-                  <li
+                   <li
                     dir={isArabic ? "rtl" : "ltr"}
                     className="flex items-start gap-2"
                   >
                     <span className="flex-shrink-0 mt-0.5">
-                      <CrossIcon />
+                     <CheckIcon />
                     </span>
-                    <span className="text-gray-500 line-through">
-                      1 live workout session / month
+                    <span className="text-gray-200 ">
+                      {isArabic
+                        ? featureTranslations["1 live workout session / month"]
+                        : "1 live workout session / month"}
                     </span>
                   </li>
                 </ul>
@@ -1651,7 +1737,7 @@ export default function Pricing() {
               {/* CTA */}
               <div className="px-6 pb-6 flex-shrink-0">
                 <button
-                  onClick={() => handleGetStarted("Elite athlete", 199)}
+                  onClick={() => handleGetStarted("Elite athlete", 5000)}
                   className="w-full rounded-2xl bg-gradient-to-r  from-[#fd5747] via-red-500 to-red-700 text-white font-semibold py-2.5 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all duration-300 animate-gradient-x"
                   style={{ backgroundSize: "300% 300%" }}
                   suppressHydrationWarning={true}

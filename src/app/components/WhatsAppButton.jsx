@@ -1,12 +1,21 @@
 "use client";
 
 const WhatsAppButton = () => {
-  const phoneNumber = "01030667969";
+  const phoneNumber = "+201030667969";
   const message = "Hello! I'm interested in your fitness services.";
   
   const handleWhatsAppClick = () => {
     const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
+
+    // Track Facebook Pixel contact event after initiating chat
+    if (typeof fbq !== 'undefined') {
+      fbq('track', 'Contact', {
+        content_name: 'whatsapp-chat',
+        content_category: 'support',
+        platform: 'whatsapp'
+      });
+    }
   };
 
   return (

@@ -41,7 +41,7 @@ export default function Contact() {
     setSubmitStatus(null);
 
     try {
-      const response = await axios.post('http://localhost:3000/contact', {
+      const response = await axios.post('https://dashboard.bettrfitness.com/api/contact-us', {
         name: formData.name,
         email: formData.email,
         phone: formData.phone,

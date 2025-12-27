@@ -7,7 +7,7 @@ import "swiper/css/autoplay";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import Image from "next/image";
-import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
+import { FaArrowRight, FaArrowLeft, FaUserCircle, FaUser } from "react-icons/fa";
 import { useState, useRef } from "react";
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -19,47 +19,47 @@ export default function Transformations() {
   const clientReviews = [
     {
       id: 1,
-      image: "/hamo.png",
+      image: "/adam.jpg",
       clientName: "Adam el-shabrawy",
       review: {
-        en: "This fitness program completely changed my life. I lost 30 pounds in 3 months and gained incredible strength. The trainers are amazing and the community is so supportive. I never thought I could achieve these results!",
-        ar: "هذا البرنامج الرياضي غير حياتي تماماً. فقدت 30 رطلاً في 3 أشهر واكتسبت قوة لا تصدق. المدربون رائعون والمجتمع داعم جداً. لم أعتقد أبداً أنني يمكنني تحقيق هذه النتائج!"
+        en: "Mohamed always answered my questions regarding specific exercise schedules even explained how certain exercises were better to include in my workouts",
+        ar: "محمد كان دائماً يجيب على أسئلتي حول جداول التمارين المحددة وحتى شرح لي كيف أن تمارين معينة كانت أفضل لتضمينها في تدريباتي"
       },
     },
     {
       id: 2,
-      image: "/sport.png",
+      image: "/Amr.jpg",
       clientName: "Amr Farh",
       review: {
-        en: "Best decision I ever made was joining this gym. The personalized training plan helped me reach my goals faster than I imagined. The nutrition guidance was spot on and the results speak for themselves.",
-        ar: "أفضل قرار اتخذته في حياتي هو الانضمام لهذا الجيم. خطة التدريب الشخصية ساعدتني في الوصول لأهدافي أسرع مما تخيلت. الإرشادات الغذائية كانت مثالية والنتائج تتحدث عن نفسها."
+        en: "my strength have been increasing every session consistently using the program I was given",
+        ar: "قوتي كانت تزداد كل جلسة باستمرار باستخدام البرنامج الذي أعطوني إياه"
       },
     },
     {
       id: 3,
-      image: "/user.jpg",
+      image: null,
       clientName: "Menna",
       review: {
-        en: "After years of struggling with my fitness, this program gave me the structure and motivation I needed. The transformation is not just physical but mental too. I feel more confident and energetic than ever.",
-        ar: "بعد سنوات من الصراع مع اللياقة البدنية، أعطاني هذا البرنامج الهيكل والدافع الذي احتجته. التحول ليس جسدياً فقط بل عقلياً أيضاً. أشعر بثقة وطاقة أكثر من أي وقت مضى."
+        en: " I really liked how organized the google sheets as it made tracking my workouts easier",
+        ar: "أعجبني حقاً كيف كانت جداول جوجل منظمة لأنها جعلت تتبع تدريباتي أسهل"
       },
     },
     {
       id: 4,
-      image: "/hamo.png",
+      image: "/seif.png",
       clientName: "Seif Mohamed",
       review: {
-        en: "The coaches here truly care about your success. They pushed me beyond my limits while keeping me safe. The results exceeded my expectations and I made lifelong friends along the way.",
-        ar: "المدربون هنا يهتمون حقاً بنجاحك. دفعوني إلى ما وراء حدودي مع الحفاظ على سلامتي. النتائج فاقت توقعاتي وكونت صداقات مدى الحياة في الطريق."
+        en: "Using the training method Mohamed told me about I managed to increase my maximum dips per set from 10 to 25+ with 10 kg extra",
+        ar: "باستخدام طريقة التدريب التي أخبرني عنها محمد تمكنت من زيادة أقصى عدد من تمارين الدبس في المجموعة من 10 إلى 25+ مع 10 كيلو إضافية"
       },
     },
     {
       id: 5,
-      image: "/sport.png",
+      image: null,
       clientName: "Andrew Ayman",
       review: {
-        en: "Amazing transformation journey! The personalized approach and constant support helped me achieve goals I never thought possible. This place changed not just my body, but my entire mindset towards fitness.",
-        ar: "رحلة تحول مذهلة! النهج الشخصي والدعم المستمر ساعدني في تحقيق أهداف لم أعتقد أنها ممكنة. هذا المكان لم يغير جسدي فقط، بل عقليتي بالكامل تجاه اللياقة البدنية."
+        en: " I had lower back pain and Mohamed told me about some exercises to do at home & I felt much better within a week",
+        ar: "كان لدي ألم في أسفل الظهر وأخبرني محمد عن بعض التمارين التي أقوم بها في المنزل وشعرت بتحسن كبير خلال أسبوع"
       },
     },
   ];
@@ -67,7 +67,7 @@ export default function Transformations() {
   return (
     <div className="w-full py-16 bg-transparent">
       <div className="container mx-auto px-4">
-        <h5 className={`text-6xl ${isArabic ? 'font-bold font-arabic pb-10 text-center mb-12 animated-gradient-text' : 'font-bold font-bebas text-center mb-12 animated-gradient-text'}`}>
+        <h5 className={`lg:text-6xl text-3xl  ${isArabic ? 'font-bold font-arabic pb-10 text-center mb-12 animated-gradient-text' : 'font-bold font-bebas text-center mb-12 animated-gradient-text'}`}>
           {isArabic ? 'قصص تلهم التغيير' : 'STORIES THAT INSPIRE CHANGE'}
         </h5>
 
@@ -120,14 +120,22 @@ export default function Transformations() {
 
                       {/* Reviewer Info Section */}
                       <div className={`flex ${isArabic ? 'flex-row-reverse' : 'flex-row'} items-center gap-3 lg:gap-4 mt-4 lg:mt-6 pt-3 lg:pt-4`}>
-                        <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-full overflow-hidden border-2 border-white/30">
-                          <Image
-                            src={item.image}
-                            alt={item.clientName}
-                            width={48}
-                            height={48}
-                            className="w-full h-full object-cover"
-                          />
+                        <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-full overflow-hidden border-2 border-white/30 flex items-center justify-center">
+                          {item.image ? (
+                            <Image
+                              src={item.image}
+                              alt={item.clientName}
+                              width={48}
+                              height={48}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            item.clientName === "Menna" ? (
+                              <FaUserCircle className="w-8 h-8 text-pink-400" />
+                            ) : (
+                              <FaUser className="w-8 h-8 text-gray-300" />
+                            )
+                          )}
                         </div>
                         <div>
                           <h4 className={`text-white font-semibold text-sm lg:text-base ${isArabic ? 'text-right' : ''}`}>
@@ -149,7 +157,7 @@ export default function Transformations() {
           <div className="custom-prev hidden  absolute left-4 top-1/2 transform -translate-y-1/2 z-1 text-black w-12 h-12 rounded-full lg:flex items-center justify-center cursor-pointer transition-all duration-300  shadow-lg hover:scale-110">
             <FaArrowLeft className="text-lg text-white" />
           </div>
-          <div className=" absolute right-4 top-1/2 transform -translate-y-1/2 z-10  text-w w-12 h-12 rounded-full hidden lg:flex items-center justify-center cursor-pointer transition-all duration-300 shadow-lg hover:scale-110">
+          <div className="custom-next absolute right-4 top-1/2 transform -translate-y-1/2 z-10 text-black w-12 h-12 rounded-full hidden lg:flex items-center justify-center cursor-pointer transition-all duration-300 shadow-lg hover:scale-110">
             <FaArrowRight className="text-lg text-white" />
           </div>
         </div>

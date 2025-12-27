@@ -111,17 +111,17 @@ export default function Testimonials() {
           {isArabic ? "اسمعها منهم" : "HEAR IT FROM THEM"}
         </h5>
         {/* Grid container for 2 videos */}
-        <div className="flex flex-col lg:flex-row justify-center gap-6 md:gap-8 lg:gap-12">
+        <div className="flex flex-col lg:flex-row justify-center items-center gap-6 md:gap-8 lg:gap-12">
           {/* First Video */}
           <div className="relative lg:w-1/2 flex">
             {/* Outer decorative frame */}
-            <div className="relative p-6 md:p-8 lg:p-10 flex-1">
+            <div className="relative p-6 md:p-8 lg:p-10">
               {/* Corner frame elements */}
 
               {/* Inner frame with metallic effect */}
 
               <div
-                className="rounded-xl  mx-auto w-[450px] backdrop-blur-xl shadow-2xl  relative bg-gradient-to-br from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow p-4 h-full flex flex-col"
+                className="rounded-xl  mx-auto lg:w-[450px] backdrop-blur-xl shadow-2xl  relative bg-gradient-to-br from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow p-4 h-full flex flex-col"
                 style={{ backgroundSize: "400% 400%" }}
               >
                 <div className="relative ">
@@ -131,51 +131,25 @@ export default function Testimonials() {
                     onMouseEnter={() => setIsHovered1(true)}
                     onMouseLeave={() => setIsHovered1(false)}
                   >
-                    {/* Video element */}
-                    <video
+                    {/* YouTube iframe embed */}
+                    <iframe
                       ref={videoRef1}
-                      className="w-full h-[800px]  object-cover transition-all duration-700"
-                      src="/seif.mp4"
-                      preload="metadata"
+                      className="w-full lg:h-[800px] h-[500px] transition-all duration-700"
+                      src="https://www.youtube.com/embed/4RRrQDZUZUE?autoplay=0&mute=0&controls=1&rel=0&modestbranding=1"
+                      title="Fitness Testimonial Video 1"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
                       loading="lazy"
-                      playsInline
-                      onPlay={() => handleVideoPlay(1)}
-                      onPause={() => handleVideoPause(1)}
-                      onEnded={() => handleVideoEnded(1)}
-                      onClick={() => handleVideoClick(1)}
-                      onLoadStart={() =>
-                        console.log("Testimonials video 1 loading started")
-                      }
-                      onCanPlay={() =>
-                        console.log("Testimonials video 1 can start playing")
+                      onLoad={() =>
+                        console.log("Testimonials video 1 loaded successfully")
                       }
                       onError={(e) =>
                         console.error("Testimonials video 1 error:", e)
                       }
-                      style={{
-                        filter: isPlaying1
-                          ? "none"
-                          : "brightness(0.8) contrast(1.1)",
-                      }}
                     />
 
-                    {/* Play button - only show when video hasn't started or when paused without controls */}
-                    {showPlayIcon1 && !videoRef1.current?.controls && (
-                      <div
-                        className="absolute  inset-0 w-fit top-10 left-4 cursor-pointer transition-all duration-300"
-                        onClick={() => handlePlayClick(1)}
-                      >
-                        <div className=" bg-white bg-opacity-95 rounded-full p-2 hover:bg-opacity-100 hover:scale-110 transition-all duration-300 shadow-2xl border-2 md:border-3 lg:border-4 border-red-700">
-                          <svg
-                            className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-red-500 ml-1"
-                            fill="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path d="M8 5v14l11-7z" />
-                          </svg>
-                        </div>
-                      </div>
-                    )}
+                 
                   </div>
                 </div>
 
@@ -195,13 +169,7 @@ export default function Testimonials() {
                   dir={isArabic ? "rtl" : "ltr"}
                   className="mt-auto p-4 flex items-center justify-start gap-2"
                 >
-                  <Image
-                    src="/user.jpg"
-                    alt=""
-                    className="w-12 h-12 rounded-full "
-                    height={40}
-                    width={40}
-                  />
+            
                   <div>
                     <h3 className="text-xl  font-bold text-white mb-2">
                       Seif El-Masry
@@ -218,13 +186,13 @@ export default function Testimonials() {
           {/* Second Video */}
           <div className="relative lg:w-1/2 flex">
             {/* Outer decorative frame */}
-            <div className="relative p-6 md:p-8 lg:p-10 flex-1">
+            <div className="relative p-6 md:p-8 lg:p-10 ">
               {/* Corner frame elements */}
 
               {/* Inner frame with metallic effect */}
 
               <div
-                className="rounded-xl backdrop-blur-xl w-[450px] mx-auto shadow-2xl overflow-hidden relative bg-gradient-to-br from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow p-4 h-full flex flex-col"
+                className="rounded-xl backdrop-blur-xl lg:w-[450px] ove mx-auto shadow-2xl overflow-hidden relative bg-gradient-to-br from-black/50 via-gray-800/30 to-black/50 ring-1 ring-white/10 animate-gradient-slow p-4 h-full flex flex-col"
                 style={{ backgroundSize: "400% 400%" }}
               >
                 <div className="relative ">
@@ -234,51 +202,25 @@ export default function Testimonials() {
                     onMouseEnter={() => setIsHovered2(true)}
                     onMouseLeave={() => setIsHovered2(false)}
                   >
-                    {/* Video element */}
-                    <video
+                    {/* YouTube iframe embed */}
+                    <iframe
                       ref={videoRef2}
-                      className="w-full h-[800px] object-fill rounded-3xl transition-all duration-700"
-                      src="ahmed.mp4"
-                      preload="metadata"
+                      className="w-full lg:h-[800px] h-[500px] rounded-3xl transition-all duration-700"
+                      src="https://www.youtube.com/embed/XFXtHBztQIk?si=OU7EOe-C8tIzY1tx&autoplay=0&mute=0&controls=1&rel=0&modestbranding=1"
+                      title="Fitness Testimonial Video 2"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
                       loading="lazy"
-                      playsInline
-                      onPlay={() => handleVideoPlay(2)}
-                      onPause={() => handleVideoPause(2)}
-                      onEnded={() => handleVideoEnded(2)}
-                      onClick={() => handleVideoClick(2)}
-                      onLoadStart={() =>
-                        console.log("Testimonials video 2 loading started")
-                      }
-                      onCanPlay={() =>
-                        console.log("Testimonials video 2 can start playing")
+                      onLoad={() =>
+                        console.log("Testimonials video 2 loaded successfully")
                       }
                       onError={(e) =>
                         console.error("Testimonials video 2 error:", e)
                       }
-                      style={{
-                        filter: isPlaying2
-                          ? "none"
-                          : "brightness(0.8) contrast(1.1)",
-                      }}
                     />
 
-                    {/* Play button - only show when video hasn't started or when paused without controls */}
-                    {showPlayIcon2 && !videoRef2.current?.controls && (
-                      <div
-                        className="absolute  inset-0 w-fit top-10 left-4 cursor-pointer transition-all duration-300"
-                        onClick={() => handlePlayClick(2)}
-                      >
-                        <div className=" bg-white bg-opacity-95 rounded-full p-2 hover:bg-opacity-100 hover:scale-110 transition-all duration-300 shadow-2xl border-2 md:border-3 lg:border-4 border-red-700">
-                          <svg
-                            className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-red-500 ml-1"
-                            fill="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path d="M8 5v14l11-7z" />
-                          </svg>
-                        </div>
-                      </div>
-                    )}
+                 
                   </div>
                 </div>
 
@@ -298,13 +240,7 @@ export default function Testimonials() {
                   dir={isArabic ? "rtl" : "ltr"}
                   className="mt-auto p-4 flex items-center justify-start gap-2"
                 >
-                  <Image
-                    src="/user.jpg"
-                    alt=""
-                    className="w-12 h-12 rounded-full "
-                    height={40}
-                    width={40}
-                  />
+            
                   <div>
                     <h3 className="text-xl  font-bold text-white mb-2">
                       Ahmed Farag

@@ -227,12 +227,12 @@ export default function Service() {
     >
       <div className={` ${isArabic ? 'flex-row-reverse' : ''} xl:flex gap-20 block items-center justify-center relative`}>
         <div className="lg:w-[60%]  md:py-55 ">
-          <h3 className={`font-semibold text-red-600 md:text-3xl text-2xl  text-${isArabic ? 'end' : 'start'} ${isArabic ? 'font-arabic' : 'font-bebas'}`}>
+          <h3 className={`font-semibold text-red-500 md:text-3xl text-2xl  text-${isArabic ? 'end' : 'start'} ${isArabic ? 'font-arabic' : 'font-bebas'}`}>
             {isArabic ? 'ماذا عنا' : 'ABOUT US'}
           </h3>
 
           <div className="pt-1 relative">
-            <h4 className={`text-white md:text-6xl text-2xl font-semibold text-${isArabic ? 'end' : 'start'} ${isArabic ? 'font-arabic' : 'font-bebas'}`}>
+            <h4 className={`text-white md:text-6xl text-3xl font-semibold text-${isArabic ? 'end' : 'start'} ${isArabic ? 'font-arabic' : 'font-bebas'}`}>
               {isArabic ? 'من نحن' : 'WHO ARE WE'}
             </h4>
 
@@ -285,12 +285,11 @@ export default function Service() {
                   ref={videoRef}
                   className="w-full h-full rounded-[70px] object-cover "
                   src="/about us.mp4"
-                  poster="/sport.png"
                   preload="metadata"
                   onPlay={handleVideoPlay}
                   onPause={handleVideoPause}
                   onEnded={handleVideoEnded}
-                  controls={isPlaying}
+                  
                   muted
                   playsInline
                   webkit-playsinline="true"
@@ -341,16 +340,9 @@ export default function Service() {
                 )}
               </>
             ) : (
-              <Image
-                src="/sport.png"
-                alt="Fitness Training"
-                width={1000}
-                height={1000}
-                className="w-full h-full object-cover rounded-[70px]"
-                style={{
-                  objectFit: "cover",
-                }}
-              />
+              <div className="w-full h-full bg-gray-200 rounded-[70px] flex items-center justify-center">
+                <span className="text-gray-500">Video unavailable</span>
+              </div>
             )}
           </div>
         </div>
@@ -372,13 +364,12 @@ export default function Service() {
                   <video
                     ref={videoRef2}
                     className="w-full h-full rounded-[70px] object-cover "
-                    src="/about us.mp4"
-                    poster="/sport.png"
+                    src="/TRY3.mp4"
                     preload="metadata"
                     onPlay={handleVideoPlay}
                     onPause={handleVideoPause}
                     onEnded={handleVideoEnded}
-                    controls={isPlaying}
+                   
                     muted
                     playsInline
                     webkit-playsinline="true"

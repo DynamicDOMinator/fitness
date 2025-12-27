@@ -13,7 +13,7 @@ export default function Header() {
       setIsScrolled(window.scrollY > 50);
       
       // Update active section based on scroll position
-      const sections = ['home', 'services', 'testimonials', 'experiences', 'pricing', 'transformations', 'journey', 'faqs'];
+      const sections = ['home', 'services', 'testimonials', 'experiences', 'pricing', 'transformations', 'journey', 'faqs', 'ebook'];
       const scrollPosition = window.scrollY + 120; // Increased offset for better detection
       
       let currentSection = 'home'; // Default to home
@@ -59,6 +59,7 @@ export default function Header() {
     { id: 'transformations', label: isArabic ? 'التحولات' : 'Transformations' },
     { id: 'journey', label: isArabic ? 'الرحلة' : 'Journey' },
     { id: 'faqs', label: isArabic ? 'الأسئلة الشائعة' : 'FAQs' },
+    { id: 'ebook', label: isArabic ? 'الكتاب الإلكتروني' : 'E-Book' },
   ];
 
   return (

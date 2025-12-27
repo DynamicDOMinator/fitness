@@ -157,7 +157,11 @@ export default function Journey() {
                 `}
               >
                 <div
-                  className={`bg-black/10 rounded-xl shadow-2xl p-4 sm:p-6 transform transition-all duration-700 ${
+                  className={`rounded-3xl backdrop-blur-xl shadow-2xl overflow-hidden relative flex flex-col cursor-pointer transform transition-all duration-700 ring-1 animate-gradient-slow group p-4 sm:p-6 ${
+                    step.id === 2 
+                      ? 'bg-gradient-to-br from-[#fd5747]/20 via-red-600/10 to-[#fd5747]/20 ring-[#fd5747]/30 border-2 border-[#fd5747]/50' 
+                      : 'bg-gradient-to-br from-black/50 via-gray-800/30 to-black/50 ring-white/10'
+                  } ${
                     visibleSteps.has(index)
                       ? "translate-x-0 opacity-100"
                       : step.side === "left"
@@ -166,14 +170,20 @@ export default function Journey() {
                   }`}
                   style={{
                     transitionDelay: `${index * 300}ms`,
-                    boxShadow:
-                      "0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.1)",
+                    backgroundSize: '400% 400%',
+                    minHeight: '150px',
                   }}
                 >
-                  <h3 className={`text-lg sm:text-xl font-semibold text-white mb-2 sm:mb-3 drop-shadow-lg ${isArabic ? 'font-arabic' : 'font-poppins'}`}>
+                  {/* Special Badge for OnBoarding */}
+                  {step.id === 2 && (
+                    <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 z-20">
+                   
+                    </div>
+                  )}
+                  <h3 className={`text-lg sm:text-xl font-semibold text-white mb-2 sm:mb-3 drop-shadow-lg transition-transform duration-300 ${isArabic ? 'font-arabic' : 'font-poppins'}`}>
                     {isArabic ? step.titleAr : step.title}
                   </h3>
-                  <p className={`text-sm sm:text-base text-gray-200 leading-relaxed drop-shadow-md ${isArabic ? 'font-arabic' : 'font-poppins'}`}>
+                  <p className={`text-sm sm:text-base text-gray-300 leading-relaxed drop-shadow-md ${isArabic ? 'font-arabic' : 'font-poppins'}`}>
                     {isArabic ? step.descriptionAr : step.description}
                   </p>
                 </div>

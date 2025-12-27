@@ -8,6 +8,7 @@ import Journey from "@/app/components/Journey";
 import FAQs from "@/app/components/FAQs";
 import Pricing from "@/app/components/Pricing";
 import FitnessTools from "@/app/components/FitnessTools";
+import EBook from "@/app/components/EBook";
 import Contact from "@/app/components/Contact";
 import Footer from "@/app/components/Footer";
 
@@ -42,6 +43,9 @@ export default function Home() {
       </section>
       <section id="faqs">
         <FAQs />
+      </section>
+      <section id="ebook">
+        <EBook />
       </section>
       <section id="contact">
         <Contact />
